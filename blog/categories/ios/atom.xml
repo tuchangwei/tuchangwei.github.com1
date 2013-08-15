@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iOS | Vale's Blog]]></title>
+  <link href="http://tuchangwei.github.io/blog/categories/ios/atom.xml" rel="self"/>
+  <link href="http://tuchangwei.github.io/"/>
+  <updated>2013-08-15T22:35:14+08:00</updated>
+  <id>http://tuchangwei.github.io/</id>
+  <author>
+    <name><![CDATA[Vale T.]]></name>
+    <email><![CDATA[tcwliphone@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to export mp3 from ipod-library]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/06/04/how-to-export-mp3-from-ipod-library/"/>
+    <updated>2013-06-04T22:33:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/06/04/how-to-export-mp3-from-ipod-library</id>
+    <content type="html"><![CDATA[<p>Someday, our leader let me export videos, music and photos from Video, Music and Photos in iPad or iPhone. After looked up some articles, I found it was difficult to export mp3.</p>
+
+<p>But, Nowadays, it came true to export mp3, so every format of ipod-library files can be exported.</p>
+
+<p>Now, See how to do it.</p>
+
+<ul>
+<li>first, import some frameworks, such as <code>MobileCoreServices.framework</code>,<code>MediaPlayer.framework</code>,<code>AVFoundation.framework</code></li>
+<li><p>second, query the media from ipod-library.</p>
+
+<pre><code>  //request videos and music come from system's Videos and Music 
+  NSNumber *videoTypeNum = [NSNumber numberWithInteger:MPMediaTypeAny];
+
+  MPMediaPropertyPredicate *videoPredicate = [MPMediaPropertyPredicate predicateWithValue:videoTypeNum forProperty:MPMediaItemPropertyMediaType];
+
+  MPMediaQuery *videoQuery = [[MPMediaQuery alloc] init];
+  [videoQuery addFilterPredicate: videoPredicate];
+  _mediaItems = [[videoQuery items] copy];
+</code></pre></li>
+</ul>
+
+
+<p>*third, convert MPMediaItem to AVURLAsset, generate file name and file extension, then start export,the format of exported file is &ldquo;MOV&rdquo;.Finally, i need use NSFileManager rename the mov to mp3.</p>
+
+<pre><code> MPMediaItem *mediaItem = [_mediaItems objectAtIndex:_count];
+
+ //get the name of the file.
+ NSString *songTitle = [mediaItem valueForProperty: MPMediaItemPropertyTitle];
+
+ //convert MPMediaItem to AVURLAsset.
+ AVURLAsset *sset = [AVURLAsset assetWithURL:[mediaItem valueForProperty:MPMediaItemPropertyAssetURL]];
+
+//get the extension of the file.
+NSString *fileType = [[[[sset.URL absoluteString] componentsSeparatedByString:@"?"] objectAtIndex:0] pathExtension];
+
+//init export, here you must set "presentName" argument to "AVAssetExportPresetPassthrough". If not, you will can't export mp3 correct.
+AVAssetExportSession *export = [[AVAssetExportSession alloc] initWithAsset:sset presetName:AVAssetExportPresetPassthrough];
+
+NSLog(@"export.supportedFileTypes : %@",export.supportedFileTypes);
+//export to mov format.
+export.outputFileType = @"com.apple.quicktime-movie";
+
+export.shouldOptimizeForNetworkUse = YES;
+
+NSString *extension = ( NSString *)UTTypeCopyPreferredTagWithClass(( CFStringRef)export.outputFileType, kUTTagClassFilenameExtension);
+
+NSLog(@"extension %@",extension);
+NSString *path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@.%@",songTitle,extension];
+
+NSURL *outputURL = [NSURL fileURLWithPath:path];
+export.outputURL = outputURL;
+[export exportAsynchronouslyWithCompletionHandler:^{
+
+   if (export.status == AVAssetExportSessionStatusCompleted)
+     {
+        //then rename mov format to the original format.
+         NSFileManager *manage = [NSFileManager defaultManager];
+
+         NSString *mp3Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@.%@",songTitle,fileType];
+
+         NSError *error = nil;
+
+         [manage moveItemAtPath:path toPath:mp3Path error:&amp;error];
+
+         NSLog(@"error %@",error);
+
+      }
+      else
+      {
+         NSLog(@"%@",export.error);
+      }
+
+}];
+</code></pre>
+
+<p>Some points you need notice:</p>
+
+<ul>
+<li>when you init AVAssetExportSession object, the &ldquo;presetName&rdquo; argument must be &ldquo;AVAssetExportPresetPassthrough&rdquo;.</li>
+<li>The &ldquo;outputFileType&rdquo; may be &ldquo;com.apple.quicktime-movie&rdquo;.</li>
+</ul>
+
+
+<p>So easy, doesn&rsquo;t it? Good night.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The replacement of the semaphore]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/05/24/the-replacement-of-the-semaphore/"/>
+    <updated>2013-05-24T22:49:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/05/24/the-replacement-of-the-semaphore</id>
+    <content type="html"><![CDATA[<p>In order to synchronize between threads, i used semaphore in <a href="http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang/">here</a>. Today, I find a replacement of the semaphore. I think it is more efficient and cool. Now, i note it as follow:</p>
+
+<pre><code>    - (id)initWithLibraryChangedHandler:(void (^)(void))libraryChangedHandler
+{
+    self = [super init];
+    if (self) 
+    {
+        _assetItems = [NSMutableArray array];
+        //Creates a new dispatch queue to which blocks can be submitted.  创建一个新的分发队列用于提交blocks
+        _assetItemsQueue = dispatch_queue_create("com.apple.avmovieexporter.assetItemLibraryQueue", DISPATCH_QUEUE_SERIAL);
+
+        _libraryGroup = dispatch_group_create();
+        //Returns a well-known global concurrent queue of a given priority level.
+        //The well-known global concurrent queues cannot be modified
+        //Blocks submitted to these global concurrent queues may be executed concurrently with respect to each other.
+        _libraryQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+
+        // Update the table view whenever the library changes
+        [[NSNotificationCenter defaultCenter] addObserverForName:ALAssetsLibraryChangedNotification 
+                                                          object:nil 
+                                                           queue:[NSOperationQueue mainQueue] 
+                                                      usingBlock:^(NSNotification *block){
+                                                               libraryChangedHandler();
+                                                           }];
+    }
+
+    return self;
+}
+
+- (void)dealloc
+{
+    dispatch_release(_assetItemsQueue);
+
+    dispatch_release(_libraryQueue);
+    dispatch_release(_libraryGroup);
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
+}
+
+- (void)loadLibraryWithCompletionBlock:(void (^)(void))completionHandler
+{
+    // Load content using the Media Library and AssetLibrary APIs, also check for content included in the application bundle
+    [self.assetItems removeAllObjects];
+
+    [self buildMediaLibrary];
+    [self buildAssetLibrary];
+    [self buildApplicationBundleLibrary];
+
+
+    //Schedules a block object to be submitted to a queue when a group of previously submitted block objects have completed.
+    dispatch_group_notify(self.libraryGroup, self.libraryQueue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler();
+        });
+    });
+}
+
+- (void)addURL:(NSURL *)url
+{
+    __unsafe_unretained __block VideoLibrary *weakSelf = (VideoLibrary *)self;
+
+    if (url == nil)
+        return;
+
+    dispatch_async(self.assetItemsQueue, ^{
+        [weakSelf.assetItems addObject:[[AssetItem alloc] initWithURL:url]];
+    });
+}
+
+#pragma mark - iPod Library
+
+- (void)buildMediaLibrary
+{
+    __unsafe_unretained __block VideoLibrary *weakSelf = (VideoLibrary *)self;
+
+    //将blocks绑定到libraryGroup，然后放在libraryQueue并发队列中
+    dispatch_group_async(self.libraryGroup, self.libraryQueue, ^{
+        NSLog(@"started building media library...");
+
+        // Search for video content in the Media Library
+#if  __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= 50000
+        NSNumber *videoTypeNum = [NSNumber numberWithInteger:MPMediaTypeAnyVideo];
+#else
+        NSNumber *videoTypeNum = [NSNumber numberWithInteger:(MPMediaTypeAny ^ MPMediaTypeAnyAudio)];
+#endif
+        MPMediaPropertyPredicate *videoPredicate = [MPMediaPropertyPredicate predicateWithValue:videoTypeNum forProperty:MPMediaItemPropertyMediaType];
+        MPMediaQuery *videoQuery = [[MPMediaQuery alloc] init];
+        [videoQuery addFilterPredicate: videoPredicate];
+        NSArray *items = [videoQuery items];
+
+        for (MPMediaItem *mediaItem in items) 
+            [weakSelf addURL:[mediaItem valueForProperty:MPMediaItemPropertyAssetURL]];
+
+        NSLog(@"done building media library...");
+    });
+}
+
+- (void)buildAssetLibrary
+{
+    NSLog(@"started building asset library...");
+
+    __unsafe_unretained __block VideoLibrary *weakSelf = (VideoLibrary *)self;
+    dispatch_group_enter(weakSelf.libraryGroup);
+
+    ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
+
+    // Enumerate through all the groups in the Asset Library
+    [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll 
+                                usingBlock:
+     ^(ALAssetsGroup *group, BOOL *stop)
+     {
+         if (group != nil)
+         {
+             // Filter by groups that contain video
+             [group setAssetsFilter:[ALAssetsFilter allVideos]];
+             [group enumerateAssetsUsingBlock:
+              ^(ALAsset *asset, NSUInteger index, BOOL *stop)
+              {
+                  if (asset)
+                      [weakSelf addURL:[[asset defaultRepresentation] url]];
+              }];
+         }
+         else
+         {
+             dispatch_group_leave(weakSelf.libraryGroup);
+             NSLog(@"done building asset library...");
+         }
+     }
+                              failureBlock:^(NSError *error)
+     {
+         dispatch_group_leave(weakSelf.libraryGroup);
+         NSLog(@"error enumerating AssetLibrary groups %@\n", error);
+     }];
+
+}
+</code></pre>
+
+<p>The above is used for understanding the whole plot, now you can see the detail:</p>
+
+<pre><code>dispatch_group_notify(self.libraryGroup, self.libraryQueue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler();
+        });
+    });
+}
+</code></pre>
+
+<p>The explain of the <a href="https://developer.apple.com/library/ios/#documentation/Performance/Reference/GCD_libdispatch_Ref/Reference/reference.html">document</a> for the selector is that &ldquo;Schedules a block object to be submitted to a queue when a group of previously submitted block objects have completed.&rdquo; So, we can wait the tasks to complete, then to do something we want. The <code>dispatch_group_enter</code> is cool as well. it can let the block enter the queue and execute as a task associated group.</p>
+
+<p>So, that is all. See you.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GCD和信号量]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang/"/>
+    <updated>2013-03-05T21:50:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang</id>
+    <content type="html"><![CDATA[<h1>GCD</h1>
+
+<p>概念不多说，直接上代码。话说也不是什么高深的东东，不过极大简化了代码，一目了然。后面对信号量的记录也采用了相同的原理。</p>
+
+<pre><code>//抛出线程
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+
+    NSURL * url = [NSURL URLWithString:@"http://www.google.com"];
+    NSString * data = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+    if (data != nil) {
+        //抛出的线程执行完后，回到主线程处理界面逻辑。
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+        });
+    } else {
+
+    }
+});
+</code></pre>
+
+<h1>semaphore（信号量）</h1>
+
+<p>信号量主要是用在传说中的生产者消费者模式里面，当信号量为0时线程挂起，当信号量大于0时继续向下执行。以前研究过一次，不过没怎么搞懂，反而把界面给搞死了。这次，取相册里的图片，GCD加Semaphore，又折腾了一次，还好。不多说，继续上代码。</p>
+
+<pre><code>//这几段代码的大概意思是：抛一个线程出来，取相册里的group，再在取group中的线程中抛出线程，去取group中的result，最终到界面线程中去操作。
+//这里需要两个信号量，一个用来阻塞取group的线程，避免界面线程先于取group的线程运行完毕。另外一个用来阻塞取result中的线程，避免取result的
+//线程先于取group执行完毕。
+
+//抛出线程
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+
+    //创建信号量
+    dispatch_semaphore_t semaphore1 = dispatch_semaphore_create(0);
+    dispatch_semaphore_t semaphore2 = dispatch_semaphore_create(0);
+    ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
+
+        if (result == nil) {
+            //当某个group取完毕后，信号量加1，dispatch_semaphore_wait方法执行，信号量为0，程序循环，去取下一个group中的result
+            dispatch_semaphore_signal(semaphore2);
+
+        }else if ([[result valueForProperty:ALAssetPropertyType]isEqualToString:ALAssetTypePhoto]||[[result valueForProperty:ALAssetPropertyType]
+ isEqualToString:ALAssetTypeVideo]) {
+
+            FileNode *node = [[FileNode alloc] init];
+            node.m_name =  result.defaultRepresentation.filename;
+            node.m_path = [result.defaultRepresentation.url absoluteString];
+            [self.picList addObject:node];
+            NSLog(@"%@",node.m_name);
+            NSLog(@"%@",node.m_path);
+            [node release];
+
+        }
+    };
+
+
+    ALAssetsLibraryGroupsEnumerationResultsBlock libraryGroupsEnumeration = ^(ALAssetsGroup* group, BOOL* stop){
+
+        if (group!=nil)
+        {
+
+            [group enumerateAssetsUsingBlock:groupEnumerAtion];
+            dispatch_semaphore_wait(semaphore2, DISPATCH_TIME_FOREVER);
+
+        }else{
+            //当所有group取完后，信号量加1，程序不再阻塞，进入界面线程。
+            dispatch_semaphore_signal(semaphore1);
+        }
+
+    };
+
+    ALAssetsLibraryAccessFailureBlock failureblock = ^(NSError *error){
+
+
+        NSLog(@"failureblock:%@",error);
+    };
+
+
+    ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+    [library enumerateGroupsWithTypes:ALAssetsGroupAll
+                           usingBlock:libraryGroupsEnumeration
+                         failureBlock:failureblock];
+
+    dispatch_semaphore_wait(semaphore1, DISPATCH_TIME_FOREVER);
+    dispatch_release(semaphore1);
+    dispatch_release(semaphore2);
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        [self loadPicAtPage:self.currentPage];
+        [self loadPicAtPage:self.currentPage + 1];
+    });
+});
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: GCD | Vale's Blog]]></title>
+  <link href="http://tuchangwei.github.io/blog/categories/gcd/atom.xml" rel="self"/>
+  <link href="http://tuchangwei.github.io/"/>
+  <updated>2013-08-15T22:35:14+08:00</updated>
+  <id>http://tuchangwei.github.io/</id>
+  <author>
+    <name><![CDATA[Vale T.]]></name>
+    <email><![CDATA[tcwliphone@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[The replacement of the semaphore]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/05/24/the-replacement-of-the-semaphore/"/>
+    <updated>2013-05-24T22:49:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/05/24/the-replacement-of-the-semaphore</id>
+    <content type="html"><![CDATA[<p>In order to synchronize between threads, i used semaphore in <a href="http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang/">here</a>. Today, I find a replacement of the semaphore. I think it is more efficient and cool. Now, i note it as follow:</p>
+
+<pre><code>    - (id)initWithLibraryChangedHandler:(void (^)(void))libraryChangedHandler
+{
+    self = [super init];
+    if (self) 
+    {
+        _assetItems = [NSMutableArray array];
+        //Creates a new dispatch queue to which blocks can be submitted.  创建一个新的分发队列用于提交blocks
+        _assetItemsQueue = dispatch_queue_create("com.apple.avmovieexporter.assetItemLibraryQueue", DISPATCH_QUEUE_SERIAL);
+
+        _libraryGroup = dispatch_group_create();
+        //Returns a well-known global concurrent queue of a given priority level.
+        //The well-known global concurrent queues cannot be modified
+        //Blocks submitted to these global concurrent queues may be executed concurrently with respect to each other.
+        _libraryQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+
+        // Update the table view whenever the library changes
+        [[NSNotificationCenter defaultCenter] addObserverForName:ALAssetsLibraryChangedNotification 
+                                                          object:nil 
+                                                           queue:[NSOperationQueue mainQueue] 
+                                                      usingBlock:^(NSNotification *block){
+                                                               libraryChangedHandler();
+                                                           }];
+    }
+
+    return self;
+}
+
+- (void)dealloc
+{
+    dispatch_release(_assetItemsQueue);
+
+    dispatch_release(_libraryQueue);
+    dispatch_release(_libraryGroup);
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
+}
+
+- (void)loadLibraryWithCompletionBlock:(void (^)(void))completionHandler
+{
+    // Load content using the Media Library and AssetLibrary APIs, also check for content included in the application bundle
+    [self.assetItems removeAllObjects];
+
+    [self buildMediaLibrary];
+    [self buildAssetLibrary];
+    [self buildApplicationBundleLibrary];
+
+
+    //Schedules a block object to be submitted to a queue when a group of previously submitted block objects have completed.
+    dispatch_group_notify(self.libraryGroup, self.libraryQueue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler();
+        });
+    });
+}
+
+- (void)addURL:(NSURL *)url
+{
+    __unsafe_unretained __block VideoLibrary *weakSelf = (VideoLibrary *)self;
+
+    if (url == nil)
+        return;
+
+    dispatch_async(self.assetItemsQueue, ^{
+        [weakSelf.assetItems addObject:[[AssetItem alloc] initWithURL:url]];
+    });
+}
+
+#pragma mark - iPod Library
+
+- (void)buildMediaLibrary
+{
+    __unsafe_unretained __block VideoLibrary *weakSelf = (VideoLibrary *)self;
+
+    //将blocks绑定到libraryGroup，然后放在libraryQueue并发队列中
+    dispatch_group_async(self.libraryGroup, self.libraryQueue, ^{
+        NSLog(@"started building media library...");
+
+        // Search for video content in the Media Library
+#if  __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= 50000
+        NSNumber *videoTypeNum = [NSNumber numberWithInteger:MPMediaTypeAnyVideo];
+#else
+        NSNumber *videoTypeNum = [NSNumber numberWithInteger:(MPMediaTypeAny ^ MPMediaTypeAnyAudio)];
+#endif
+        MPMediaPropertyPredicate *videoPredicate = [MPMediaPropertyPredicate predicateWithValue:videoTypeNum forProperty:MPMediaItemPropertyMediaType];
+        MPMediaQuery *videoQuery = [[MPMediaQuery alloc] init];
+        [videoQuery addFilterPredicate: videoPredicate];
+        NSArray *items = [videoQuery items];
+
+        for (MPMediaItem *mediaItem in items) 
+            [weakSelf addURL:[mediaItem valueForProperty:MPMediaItemPropertyAssetURL]];
+
+        NSLog(@"done building media library...");
+    });
+}
+
+- (void)buildAssetLibrary
+{
+    NSLog(@"started building asset library...");
+
+    __unsafe_unretained __block VideoLibrary *weakSelf = (VideoLibrary *)self;
+    dispatch_group_enter(weakSelf.libraryGroup);
+
+    ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
+
+    // Enumerate through all the groups in the Asset Library
+    [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll 
+                                usingBlock:
+     ^(ALAssetsGroup *group, BOOL *stop)
+     {
+         if (group != nil)
+         {
+             // Filter by groups that contain video
+             [group setAssetsFilter:[ALAssetsFilter allVideos]];
+             [group enumerateAssetsUsingBlock:
+              ^(ALAsset *asset, NSUInteger index, BOOL *stop)
+              {
+                  if (asset)
+                      [weakSelf addURL:[[asset defaultRepresentation] url]];
+              }];
+         }
+         else
+         {
+             dispatch_group_leave(weakSelf.libraryGroup);
+             NSLog(@"done building asset library...");
+         }
+     }
+                              failureBlock:^(NSError *error)
+     {
+         dispatch_group_leave(weakSelf.libraryGroup);
+         NSLog(@"error enumerating AssetLibrary groups %@\n", error);
+     }];
+
+}
+</code></pre>
+
+<p>The above is used for understanding the whole plot, now you can see the detail:</p>
+
+<pre><code>dispatch_group_notify(self.libraryGroup, self.libraryQueue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler();
+        });
+    });
+}
+</code></pre>
+
+<p>The explain of the <a href="https://developer.apple.com/library/ios/#documentation/Performance/Reference/GCD_libdispatch_Ref/Reference/reference.html">document</a> for the selector is that &ldquo;Schedules a block object to be submitted to a queue when a group of previously submitted block objects have completed.&rdquo; So, we can wait the tasks to complete, then to do something we want. The <code>dispatch_group_enter</code> is cool as well. it can let the block enter the queue and execute as a task associated group.</p>
+
+<p>So, that is all. See you.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Avoid retain cycle in block]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/04/10/avoid-retain-cycle-in-block/"/>
+    <updated>2013-04-10T23:08:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/04/10/avoid-retain-cycle-in-block</id>
+    <content type="html"><![CDATA[<p>Let us make long story short. Please see the codes as following:</p>
+
+<pre><code>- (IBAction)didTapUploadButton:(id)sender
+{
+  NSString *clientID = @"YOUR_CLIENT_ID_HERE";
+
+  NSString *title = [[self titleTextField] text];
+  NSString *description = [[self descriptionTextField] text];
+
+  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+
+  __weak MLViewController *weakSelf = self;
+dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    UIImage *image = [UIImage imageNamed:@"balloons.jpg"];
+    NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
+
+[MLIMGURUploader uploadPhoto:imageData 
+                       title:title 
+                 description:description 
+               imgurClientID:clientID completionBlock:^(NSString *result) {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [[weakSelf linkTextView] setText:result];
+  });
+} failureBlock:^(NSURLResponse *response, NSError *error, NSInteger status) {
+  dispatch_async(dispatch_get_main_queue(), ^{
+  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+  [[[UIAlertView alloc] initWithTitle:@"Upload Failed"
+                              message:[NSString stringWithFormat:@"%@ (Status code %d)", 
+                                               [error localizedDescription], status]
+                             delegate:nil
+                    cancelButtonTitle:nil
+                    otherButtonTitles:@"OK", nil] show];
+  });
+}];
+
+  });
+}
+</code></pre>
+
+<p>This is a method for uploading images to <a href="http://imgur.com/">imgur</a>. In the section we can find the codes <code>__weak MLViewController *weakSelf = self;</code> and use it like <code>[[weakSelf linkTextView] setText:result];</code>. So, we have a question: Why we don‘t call self directly,but rather give a weak pointer to point it and use the weak pointer in the block section?</p>
+
+<p>It is what i will say. As we all know, the property of blocks is copy, and the property of self is retain. So, if we use self in the block section, we will get a retain circle. We will never release them. For this reason, we need do it as above.</p>
+
+<p><a href="http://blog.random-ideas.net/?p=160">Here</a> is one reference</p>
+
+<p>Ok, Good night. See you.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Use Block to call back instead of Delegate]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/03/21/use-block-to-call-back-instead-of-delegate/"/>
+    <updated>2013-03-21T22:25:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/03/21/use-block-to-call-back-instead-of-delegate</id>
+    <content type="html"><![CDATA[<p>Some days ago, i posted the <a href="http://tuchangwei.github.com/blog/2013/03/19/dui-xiang-chuan-zhi-de-ji-chong-fang-shi-some-methods-to-make-talk-to-each-other-between-objects-a-and-b/">blog</a> to introduce some ways to talk to each oher between Object A and B. One of the points is Blocks. Now I will show how to call back use Block instead of Delegate.</p>
+
+<p>Some codes posted as follow:</p>
+
+<pre><code>A：SWDPromptViewController
+
+.h
+//declare a block named "dismissPromptViewBlock".
+@property (copy, nonatomic) void(^dismissPromptViewBlock)   (SWDPromptViewController *prompt);
+
+.m
+//after some operations, we will dismiss A and release it.
+-(void)dismissPrompt
+{
+    if (self.dismissPromptViewBlock)
+    {
+     self.dismissPromptViewBlock(self);
+     self.dismissPromptViewBlock = nil;
+    }
+}
+
+
+B：
+.m
+//declare A object and init it,then assign a block to the property of A.
+//so when A executes the method "dismissPrompt", the block plays a part of
+//Delegate.
+SWDPromptViewController *promptViewController = [[SWDPromptViewController   alloc] initWithNibName:@"SWDPromptViewController" bundle:nil type:type];
+UIWindow *promptWindow = [[UIWindow alloc] initWithFrame:[[UIScreen     mainScreen] bounds]];
+promptWindow.windowLevel = UIWindowLevelAlert;
+promptWindow.backgroundColor = [UIColor clearColor];
+promptWindow.rootViewController = promptViewController;
+[promptViewController release];
+[promptWindow makeKeyAndVisible];
+
+promptViewController.dismissPromptViewBlock = ^(SWDPromptViewController     *prompt){
+
+    [promptWindow release];
+    };
+</code></pre>
+
+<p>   That is all. Welcome to communicate with me.O(∩_∩)O~.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Blocks的申明调用与Queue当做锁的用法]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/03/10/blocksde-shen-ming-diao-yong-yu-queuedang-zuo-suo-de-yong-fa/"/>
+    <updated>2013-03-10T11:40:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/03/10/blocksde-shen-ming-diao-yong-yu-queuedang-zuo-suo-de-yong-fa</id>
+    <content type="html"><![CDATA[<h3>Blocks的申明与调用</h3>
+
+<p>话说Blocks在方法内使用还是挺方便的，之前都是把相同的代码封装成外部函数，然后在一个方法里需要的时候调用，这样挺麻烦的。使用Blocks之后，我们可以把相同代码在这个方法里封装起来，然后再在这个方法中需要的地方直接调用，逻辑清晰，操作也不会那么繁琐。</p>
+
+<p>上代码：</p>
+
+<pre><code>//在方法体内
+//block申明与初始化
+ void(^removePicViewBlock)(int,int) = ^(int start,int stop){
+
+    while (start &lt;= stop)
+    {
+        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        SWDPictureView *view = (SWDPictureView *)[self.scroller viewWithTag:start + 1];
+        view.imageView.image = nil;
+        view.imageView = nil;
+        view.delegate2 = nil;
+        [view removeFromSuperview];
+        start ++;
+        [pool drain];
+    }
+
+
+};
+if (page &lt; self.currentPage)
+{
+    //block的调用
+    removePicViewBlock(0,page);
+}
+else if(page &gt; self.currentPage)
+{
+    //block的调用
+    removePicViewBlock(page,[self.picList count]-1);
+}
+</code></pre>
+
+<h3>Queue作为锁的用法</h3>
+
+<p>说到多线程就必须要提到锁了，话说用锁也蛮麻烦，需要在初始化的时候申明一个锁，然后每个方法的开头加一把锁，结尾再把锁去掉。如果用queue就不必那么麻烦了。根据task在queue中FIFO的特性就可以防止多线程中资源被同时访问。</p>
+
+<p>上代码。</p>
+
+<pre><code>//初始化时初始化一个queue
+UserQueue = dispatch_queue_create("use for storing image to disk", nil);
+
+//多线程调用时，将任务放在queue中执行。此时queue充当锁的角色。
+//存储图片缓冲到硬盘
+-(void)storeImage:(UIImage *)image key:(NSString *)key
+{
+    dispatch_async(UserQueue, ^{
+
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        BOOL succ = [fileManager createFileAtPath:[self cachePathForKey:key] contents:UIImageJPEGRepresentation(image, (CGFloat)0.6) attributes:nil];
+        NSLog(@"store successfully!!! %d",succ);
+        [fileManager release];
+        fileManager = nil;
+    });
+
+}
+</code></pre>
+
+<p>好了，就这些。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GCD和信号量]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang/"/>
+    <updated>2013-03-05T21:50:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang</id>
+    <content type="html"><![CDATA[<h1>GCD</h1>
+
+<p>概念不多说，直接上代码。话说也不是什么高深的东东，不过极大简化了代码，一目了然。后面对信号量的记录也采用了相同的原理。</p>
+
+<pre><code>//抛出线程
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+
+    NSURL * url = [NSURL URLWithString:@"http://www.google.com"];
+    NSString * data = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+    if (data != nil) {
+        //抛出的线程执行完后，回到主线程处理界面逻辑。
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+        });
+    } else {
+
+    }
+});
+</code></pre>
+
+<h1>semaphore（信号量）</h1>
+
+<p>信号量主要是用在传说中的生产者消费者模式里面，当信号量为0时线程挂起，当信号量大于0时继续向下执行。以前研究过一次，不过没怎么搞懂，反而把界面给搞死了。这次，取相册里的图片，GCD加Semaphore，又折腾了一次，还好。不多说，继续上代码。</p>
+
+<pre><code>//这几段代码的大概意思是：抛一个线程出来，取相册里的group，再在取group中的线程中抛出线程，去取group中的result，最终到界面线程中去操作。
+//这里需要两个信号量，一个用来阻塞取group的线程，避免界面线程先于取group的线程运行完毕。另外一个用来阻塞取result中的线程，避免取result的
+//线程先于取group执行完毕。
+
+//抛出线程
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+
+    //创建信号量
+    dispatch_semaphore_t semaphore1 = dispatch_semaphore_create(0);
+    dispatch_semaphore_t semaphore2 = dispatch_semaphore_create(0);
+    ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
+
+        if (result == nil) {
+            //当某个group取完毕后，信号量加1，dispatch_semaphore_wait方法执行，信号量为0，程序循环，去取下一个group中的result
+            dispatch_semaphore_signal(semaphore2);
+
+        }else if ([[result valueForProperty:ALAssetPropertyType]isEqualToString:ALAssetTypePhoto]||[[result valueForProperty:ALAssetPropertyType]
+ isEqualToString:ALAssetTypeVideo]) {
+
+            FileNode *node = [[FileNode alloc] init];
+            node.m_name =  result.defaultRepresentation.filename;
+            node.m_path = [result.defaultRepresentation.url absoluteString];
+            [self.picList addObject:node];
+            NSLog(@"%@",node.m_name);
+            NSLog(@"%@",node.m_path);
+            [node release];
+
+        }
+    };
+
+
+    ALAssetsLibraryGroupsEnumerationResultsBlock libraryGroupsEnumeration = ^(ALAssetsGroup* group, BOOL* stop){
+
+        if (group!=nil)
+        {
+
+            [group enumerateAssetsUsingBlock:groupEnumerAtion];
+            dispatch_semaphore_wait(semaphore2, DISPATCH_TIME_FOREVER);
+
+        }else{
+            //当所有group取完后，信号量加1，程序不再阻塞，进入界面线程。
+            dispatch_semaphore_signal(semaphore1);
+        }
+
+    };
+
+    ALAssetsLibraryAccessFailureBlock failureblock = ^(NSError *error){
+
+
+        NSLog(@"failureblock:%@",error);
+    };
+
+
+    ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+    [library enumerateGroupsWithTypes:ALAssetsGroupAll
+                           usingBlock:libraryGroupsEnumeration
+                         failureBlock:failureblock];
+
+    dispatch_semaphore_wait(semaphore1, DISPATCH_TIME_FOREVER);
+    dispatch_release(semaphore1);
+    dispatch_release(semaphore2);
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        [self loadPicAtPage:self.currentPage];
+        [self loadPicAtPage:self.currentPage + 1];
+    });
+});
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

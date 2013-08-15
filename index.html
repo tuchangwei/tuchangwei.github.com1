@@ -1,1 +1,1154 @@
-My Octopress Page is coming soon &hellip;
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Vale's Blog</title>
+	<meta name="author" content="Vale T.">
+
+	
+	<meta name="description" content="Jun 4th, 2013 iOS, ipod-library How to Export Mp3 From Ipod-library Someday, our leader let me export videos, music and photos from Video, Music and &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Vale's Blog" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tuchangwei.github.io/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<script src="/javascripts/md5.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("tcwliphone@gmail.com") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+		});
+	</script>
+</div>
+<hgroup>
+  <h1><a href="/">Vale's Blog</a></h1>
+  
+    <h2>iOS Developer, Dad, Freelancer.</h2>
+  
+</hgroup>
+
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    In the world, we play the role of Party A or Party B frequently, but the timeless thing is our sincerity given to others, in return, will be treat sincerely.
+  </p>
+</section>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/valetu1988" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/tuchangwei" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-04T22:33:00+08:00" data-updated="true" itemprop="datePublished">Jun 4<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ios/'>iOS</a>, <a class='category' href='/blog/categories/ipod-library/'>ipod-library</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/06/04/how-to-export-mp3-from-ipod-library/" itemprop="url">How to Export Mp3 From Ipod-library</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Someday, our leader let me export videos, music and photos from Video, Music and Photos in iPad or iPhone. After looked up some articles, I found it was difficult to export mp3.</p>
+
+<p>But, Nowadays, it came true to export mp3, so every format of ipod-library files can be exported.</p>
+
+<p>Now, See how to do it.</p>
+
+<ul>
+<li>first, import some frameworks, such as <code>MobileCoreServices.framework</code>,<code>MediaPlayer.framework</code>,<code>AVFoundation.framework</code></li>
+<li><p>second, query the media from ipod-library.</p>
+
+<pre><code>  //request videos and music come from system's Videos and Music 
+  NSNumber *videoTypeNum = [NSNumber numberWithInteger:MPMediaTypeAny];
+
+  MPMediaPropertyPredicate *videoPredicate = [MPMediaPropertyPredicate predicateWithValue:videoTypeNum forProperty:MPMediaItemPropertyMediaType];
+
+  MPMediaQuery *videoQuery = [[MPMediaQuery alloc] init];
+  [videoQuery addFilterPredicate: videoPredicate];
+  _mediaItems = [[videoQuery items] copy];
+</code></pre></li>
+</ul>
+
+
+<p>*third, convert MPMediaItem to AVURLAsset, generate file name and file extension, then start export,the format of exported file is &ldquo;MOV&rdquo;.Finally, i need use NSFileManager rename the mov to mp3.</p>
+
+<pre><code> MPMediaItem *mediaItem = [_mediaItems objectAtIndex:_count];
+
+ //get the name of the file.
+ NSString *songTitle = [mediaItem valueForProperty: MPMediaItemPropertyTitle];
+
+ //convert MPMediaItem to AVURLAsset.
+ AVURLAsset *sset = [AVURLAsset assetWithURL:[mediaItem valueForProperty:MPMediaItemPropertyAssetURL]];
+
+//get the extension of the file.
+NSString *fileType = [[[[sset.URL absoluteString] componentsSeparatedByString:@"?"] objectAtIndex:0] pathExtension];
+
+//init export, here you must set "presentName" argument to "AVAssetExportPresetPassthrough". If not, you will can't export mp3 correct.
+AVAssetExportSession *export = [[AVAssetExportSession alloc] initWithAsset:sset presetName:AVAssetExportPresetPassthrough];
+
+NSLog(@"export.supportedFileTypes : %@",export.supportedFileTypes);
+//export to mov format.
+export.outputFileType = @"com.apple.quicktime-movie";
+
+export.shouldOptimizeForNetworkUse = YES;
+
+NSString *extension = ( NSString *)UTTypeCopyPreferredTagWithClass(( CFStringRef)export.outputFileType, kUTTagClassFilenameExtension);
+
+NSLog(@"extension %@",extension);
+NSString *path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@.%@",songTitle,extension];
+
+NSURL *outputURL = [NSURL fileURLWithPath:path];
+export.outputURL = outputURL;
+[export exportAsynchronouslyWithCompletionHandler:^{
+
+   if (export.status == AVAssetExportSessionStatusCompleted)
+     {
+        //then rename mov format to the original format.
+         NSFileManager *manage = [NSFileManager defaultManager];
+
+         NSString *mp3Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@.%@",songTitle,fileType];
+
+         NSError *error = nil;
+
+         [manage moveItemAtPath:path toPath:mp3Path error:&amp;error];
+
+         NSLog(@"error %@",error);
+
+      }
+      else
+      {
+         NSLog(@"%@",export.error);
+      }
+
+}];
+</code></pre>
+
+<p>Some points you need notice:</p>
+
+<ul>
+<li>when you init AVAssetExportSession object, the &ldquo;presetName&rdquo; argument must be &ldquo;AVAssetExportPresetPassthrough&rdquo;.</li>
+<li>The &ldquo;outputFileType&rdquo; may be &ldquo;com.apple.quicktime-movie&rdquo;.</li>
+</ul>
+
+
+<p>So easy, doesn&rsquo;t it? Good night.</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-24T22:49:00+08:00" data-updated="true" itemprop="datePublished">May 24<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gcd/'>GCD</a>, <a class='category' href='/blog/categories/ios/'>iOS</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/05/24/the-replacement-of-the-semaphore/" itemprop="url">The Replacement of the Semaphore</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>In order to synchronize between threads, i used semaphore in <a href="http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang/">here</a>. Today, I find a replacement of the semaphore. I think it is more efficient and cool. Now, i note it as follow:</p>
+
+<pre><code>    - (id)initWithLibraryChangedHandler:(void (^)(void))libraryChangedHandler
+{
+    self = [super init];
+    if (self) 
+    {
+        _assetItems = [NSMutableArray array];
+        //Creates a new dispatch queue to which blocks can be submitted.  创建一个新的分发队列用于提交blocks
+        _assetItemsQueue = dispatch_queue_create("com.apple.avmovieexporter.assetItemLibraryQueue", DISPATCH_QUEUE_SERIAL);
+
+        _libraryGroup = dispatch_group_create();
+        //Returns a well-known global concurrent queue of a given priority level.
+        //The well-known global concurrent queues cannot be modified
+        //Blocks submitted to these global concurrent queues may be executed concurrently with respect to each other.
+        _libraryQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+
+        // Update the table view whenever the library changes
+        [[NSNotificationCenter defaultCenter] addObserverForName:ALAssetsLibraryChangedNotification 
+                                                          object:nil 
+                                                           queue:[NSOperationQueue mainQueue] 
+                                                      usingBlock:^(NSNotification *block){
+                                                               libraryChangedHandler();
+                                                           }];
+    }
+
+    return self;
+}
+
+- (void)dealloc
+{
+    dispatch_release(_assetItemsQueue);
+
+    dispatch_release(_libraryQueue);
+    dispatch_release(_libraryGroup);
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
+}
+
+- (void)loadLibraryWithCompletionBlock:(void (^)(void))completionHandler
+{
+    // Load content using the Media Library and AssetLibrary APIs, also check for content included in the application bundle
+    [self.assetItems removeAllObjects];
+
+    [self buildMediaLibrary];
+    [self buildAssetLibrary];
+    [self buildApplicationBundleLibrary];
+
+
+    //Schedules a block object to be submitted to a queue when a group of previously submitted block objects have completed.
+    dispatch_group_notify(self.libraryGroup, self.libraryQueue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler();
+        });
+    });
+}
+
+- (void)addURL:(NSURL *)url
+{
+    __unsafe_unretained __block VideoLibrary *weakSelf = (VideoLibrary *)self;
+
+    if (url == nil)
+        return;
+
+    dispatch_async(self.assetItemsQueue, ^{
+        [weakSelf.assetItems addObject:[[AssetItem alloc] initWithURL:url]];
+    });
+}
+
+#pragma mark - iPod Library
+
+- (void)buildMediaLibrary
+{
+    __unsafe_unretained __block VideoLibrary *weakSelf = (VideoLibrary *)self;
+
+    //将blocks绑定到libraryGroup，然后放在libraryQueue并发队列中
+    dispatch_group_async(self.libraryGroup, self.libraryQueue, ^{
+        NSLog(@"started building media library...");
+
+        // Search for video content in the Media Library
+#if  __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= 50000
+        NSNumber *videoTypeNum = [NSNumber numberWithInteger:MPMediaTypeAnyVideo];
+#else
+        NSNumber *videoTypeNum = [NSNumber numberWithInteger:(MPMediaTypeAny ^ MPMediaTypeAnyAudio)];
+#endif
+        MPMediaPropertyPredicate *videoPredicate = [MPMediaPropertyPredicate predicateWithValue:videoTypeNum forProperty:MPMediaItemPropertyMediaType];
+        MPMediaQuery *videoQuery = [[MPMediaQuery alloc] init];
+        [videoQuery addFilterPredicate: videoPredicate];
+        NSArray *items = [videoQuery items];
+
+        for (MPMediaItem *mediaItem in items) 
+            [weakSelf addURL:[mediaItem valueForProperty:MPMediaItemPropertyAssetURL]];
+
+        NSLog(@"done building media library...");
+    });
+}
+
+- (void)buildAssetLibrary
+{
+    NSLog(@"started building asset library...");
+
+    __unsafe_unretained __block VideoLibrary *weakSelf = (VideoLibrary *)self;
+    dispatch_group_enter(weakSelf.libraryGroup);
+
+    ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
+
+    // Enumerate through all the groups in the Asset Library
+    [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll 
+                                usingBlock:
+     ^(ALAssetsGroup *group, BOOL *stop)
+     {
+         if (group != nil)
+         {
+             // Filter by groups that contain video
+             [group setAssetsFilter:[ALAssetsFilter allVideos]];
+             [group enumerateAssetsUsingBlock:
+              ^(ALAsset *asset, NSUInteger index, BOOL *stop)
+              {
+                  if (asset)
+                      [weakSelf addURL:[[asset defaultRepresentation] url]];
+              }];
+         }
+         else
+         {
+             dispatch_group_leave(weakSelf.libraryGroup);
+             NSLog(@"done building asset library...");
+         }
+     }
+                              failureBlock:^(NSError *error)
+     {
+         dispatch_group_leave(weakSelf.libraryGroup);
+         NSLog(@"error enumerating AssetLibrary groups %@\n", error);
+     }];
+
+}
+</code></pre>
+
+<p>The above is used for understanding the whole plot, now you can see the detail:</p>
+
+<pre><code>dispatch_group_notify(self.libraryGroup, self.libraryQueue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler();
+        });
+    });
+}
+</code></pre>
+
+<p>The explain of the <a href="https://developer.apple.com/library/ios/#documentation/Performance/Reference/GCD_libdispatch_Ref/Reference/reference.html">document</a> for the selector is that &ldquo;Schedules a block object to be submitted to a queue when a group of previously submitted block objects have completed.&rdquo; So, we can wait the tasks to complete, then to do something we want. The <code>dispatch_group_enter</code> is cool as well. it can let the block enter the queue and execute as a task associated group.</p>
+
+<p>So, that is all. See you.</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-20T22:07:00+08:00" data-updated="true" itemprop="datePublished">Apr 20<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/localize/'>Localize</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/04/20/localize-string-and-some-utilities/" itemprop="url">Localize Strings Using Some Utilities</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>When release applications, one thing will not be avoided, it is localizing. According to the different user demands, we can divide them into <code>Set language through Settings</code> and <code>Set language inside App</code></p>
+
+<h3>Set language through Settings</h3>
+
+<p>The user demand is easier than another one, when we change language by &ldquo;Settings &ndash;> General &ndash;> international&rdquo;, all applications will restart. So, the .strings file will be loaded again and the language is changed.</p>
+
+<p>Now, let&rsquo;s see how to do it.</p>
+
+<ul>
+<li>Use the macro <code>NSLocalizedString(@"user_label_text", nil);</code> to wrap your strings.</li>
+<li>Add one kind of language to project as follow, Xcode will generate a forder named <code>language-lproj</code>.
+<a href="http://www.flickr.com/photos/tuchangwei/8664824887/" title="Flickr 上 涂 涂 的 412C868B-805A-405A-B5FB-B8F4FB0B96CC"><img src="http://static.flickr.com/8244/8664824887_29f530680e.jpg" width="500" height="284" alt="412C868B-805A-405A-B5FB-B8F4FB0B96CC"></a></li>
+<li><p>Use the commend tool <code>genstrings</code> to generate Localizable.strings file.</p>
+
+<pre><code>  genstrings *m -a -o  language-lproj
+</code></pre></li>
+<li><p>Change the value of the key for different language.</p>
+
+<pre><code>  "user_label_text" = "用户登陆"
+</code></pre></li>
+</ul>
+
+
+<p>The game seems over, but it is not true. The genstrings commend either replaces your earily changes, or just follows the changes, does not merge them. This is boring.</p>
+
+<p>So what can i do? You know, we do not be defeated by Ants. Some advice as follows:</p>
+
+<ol>
+<li><a href="http://www.delitestudio.com/app/localizable-strings-merge/">Localizable Strings Merge </a> needs $4.99.</li>
+<li><a href="AGi18n">AGi18n</a> free and can auto convert strings in xib.</li>
+<li><p>my shells.</p>
+
+<p> localizedstring.sh</p>
+
+<pre><code> #!/bin/sh
+ echo "input the language you want localize:"
+ read language
+ echo $language
+ desFilePath=$PWD/"$language".lproj/Localizable.strings
+ echo des file path is:"$desFilePath"
+ if [ ! -e $desFilePath ] ; then
+     echo "des file doed not exit, touch it."
+     touch $desFilePath
+ fi
+ tmpDir=$PWD/"$language".lproj/tmp
+ tmpFile="$tmpDir"/Localizable.strings
+ tmpFile1="$tmpDir"/Localizable1.strings
+
+ rm -rf $tmpDir
+ mkdir $tmpDir
+ touch $tmpFile1
+ find . -name '*.m' | xargs genstrings -macRoman -a -o  $tmpDir
+ find . -name '*.mm' | xargs genstrings -macRoman -a -o  $tmpDir
+ iconv -f utf-16le  -t utf-8 $tmpFile &gt; $tmpFile1
+ chmod 755 loop.sh
+ echo  tempfile=$tmpFile1
+ echo des=$desFilePath
+ ./loop.sh $tmpFile1 $desFilePath
+</code></pre>
+
+<p> loop.sh</p>
+
+<pre><code> #!/bin/sh  
+ echo 1=$1
+ echo 2=$2
+ SRC=$1
+ DES=$2
+ if [ $# -ne 2 ] ; then
+     echo Usage: loop.sh src des
+     exit 1
+ fi
+ echo arg OK
+ while read line; do
+     #line is NULL
+ #echo line=$line
+     if [ "$line" == "" ] ; then
+         echo $line &gt;&gt; $2
+         continue
+     fi  
+     equal=`echo $line|grep "="`
+     if [ "$equal" == "" ] ; then
+         echo "$line" &gt;&gt; $2
+         continue
+     fi  
+     left=`echo $line| cut -d "=" -f1`
+     num=`cat $2|grep "$left"|wc -l`
+ #echo num=$num
+ #   sleep 1
+     if [ $num -eq 0 ]; then
+ #   echo "$line insert $2 !!!!!!!!!!!!"
+         echo $line &gt;&gt; $2
+     fi
+ done &lt; $SRC
+</code></pre></li>
+<li><p><a href="https://github.com/questbeat/Lin">Lin</a> can reduce workload for you.</p>
+
+<p> <img src="https://a248.e.akamai.net/camo.github.com/e089475332f6d71842cf1769d80aaccb14b5e809/687474703a2f2f61646f746f75742e73616b7572612e6e652e6a702f6769746875622f4c696e2f6c696e5f737330312e706e67" alt="" /></p>
+
+<p> <img src="https://a248.e.akamai.net/camo.github.com/6c4fc4630543be9addbb384133d07074866d0a8a/687474703a2f2f61646f746f75742e73616b7572612e6e652e6a702f6769746875622f4c696e2f6c696e5f737330322e706e67" alt="" /></p>
+
+<p> <img src="https://a248.e.akamai.net/camo.github.com/cd16d08d3838fbe83fc72922046ca2e1a03fe7a3/687474703a2f2f61646f746f75742e73616b7572612e6e652e6a702f6769746875622f4c696e2f6c696e5f737330332e706e67" alt="" /></p>
+
+<p> <img src="https://a248.e.akamai.net/camo.github.com/ee79f2b06520190d207530b805dc4e656c396efa/687474703a2f2f61646f746f75742e73616b7572612e6e652e6a702f6769746875622f4c696e2f6c696e5f737330342e706e67" alt="" /></p></li>
+</ol>
+
+
+<h3>Set language inside App</h3>
+
+<p>For this, we need an Object to load stings information real-time.</p>
+
+<p>LanguageHelper.h</p>
+
+<pre><code>#import &lt;Foundation/Foundation.h&gt;
+#define CustomLocalizedString(str,comment) [LanguageHelper  get:str alter:nil]
+@interface LanguageHelper : NSObject
+
++(void)initialize;
++(void)setLanguage:(NSString *)lan;
++(NSString *)get:(NSString *)key alter:(NSString *)alternate;
+
+/* @brief 返回当前语言
+ * @return 返回当前设置的语言
+ */
++(NSString *)currentLanguage;
+@end
+</code></pre>
+
+<p>LanguageHelper.m</p>
+
+<pre><code>#import "LanguageHelper.h"
+
+@implementation LanguageHelper
+
+static NSBundle *bundle = nil;
+
++(void)initialize {
+
+
+    NSUserDefaults* defs = [NSUserDefaults standardUserDefaults];
+    NSString *current = @"";
+    if ([defs valueForKey:@"userLanguage"])
+    {
+        current = [defs valueForKey:@"userLanguage"];
+    }
+    else
+    {
+        NSArray* languages = [defs objectForKey:@"AppleLanguages"];
+        current =[languages objectAtIndex:0];
+
+
+        NSArray *supportLanguage = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SupportedLanguage"];
+        if (![supportLanguage containsObject:current])
+        {
+            current = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"DefaultLanguage"];
+        }
+        [defs setValue:current forKey:@"userLanguage"];
+        [defs synchronize];
+    }
+
+    [self setLanguage:current];
+
+}
++(void)setLanguage:(NSString *)lan {
+    NSLog(@"preferredLang: %@", lan);
+    NSString *path = [[ NSBundle mainBundle ] pathForResource:lan ofType:@"lproj" ];
+    bundle = [NSBundle bundleWithPath:path];
+}
+
++(NSString *)get:(NSString *)key alter:(NSString *)alternate {
+    return [bundle localizedStringForKey:key value:alternate table:nil];
+}
+
++(NSString *)currentLanguage{
+    NSUserDefaults* defs = [NSUserDefaults standardUserDefaults];
+
+    return [defs objectForKey:@"userLanguage"];
+}
+
+@end
+</code></pre>
+
+<p>First, we need replace <code>NSLocalizable(string,commit)</code> to <code>CustomLocalizable(string,commit)</code>, then when the app initializes, we call the method <code>+(void)initialize</code>, when we  change another language, we call the method <code>+(void)setLanguage:(NSString *)lan</code>, then we reload the data on views, the function come true.</p>
+
+<h3>Attention！！！</h3>
+
+<p>Today, the earthquake attracked YaAn. They need our help, you can donate money through <a href="https://love.alipay.com/donate/itemDetail.htm?name=201304201216494301">壹基金</a>, God blesses YaAn and us.</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-10T23:08:00+08:00" data-updated="true" itemprop="datePublished">Apr 10<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gcd/'>GCD</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/04/10/avoid-retain-cycle-in-block/" itemprop="url">Avoid Retain Cycle in Block</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Let us make long story short. Please see the codes as following:</p>
+
+<pre><code>- (IBAction)didTapUploadButton:(id)sender
+{
+  NSString *clientID = @"YOUR_CLIENT_ID_HERE";
+
+  NSString *title = [[self titleTextField] text];
+  NSString *description = [[self descriptionTextField] text];
+
+  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+
+  __weak MLViewController *weakSelf = self;
+dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    UIImage *image = [UIImage imageNamed:@"balloons.jpg"];
+    NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
+
+[MLIMGURUploader uploadPhoto:imageData 
+                       title:title 
+                 description:description 
+               imgurClientID:clientID completionBlock:^(NSString *result) {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [[weakSelf linkTextView] setText:result];
+  });
+} failureBlock:^(NSURLResponse *response, NSError *error, NSInteger status) {
+  dispatch_async(dispatch_get_main_queue(), ^{
+  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+  [[[UIAlertView alloc] initWithTitle:@"Upload Failed"
+                              message:[NSString stringWithFormat:@"%@ (Status code %d)", 
+                                               [error localizedDescription], status]
+                             delegate:nil
+                    cancelButtonTitle:nil
+                    otherButtonTitles:@"OK", nil] show];
+  });
+}];
+
+  });
+}
+</code></pre>
+
+<p>This is a method for uploading images to <a href="http://imgur.com/">imgur</a>. In the section we can find the codes <code>__weak MLViewController *weakSelf = self;</code> and use it like <code>[[weakSelf linkTextView] setText:result];</code>. So, we have a question: Why we don‘t call self directly,but rather give a weak pointer to point it and use the weak pointer in the block section?</p>
+
+<p>It is what i will say. As we all know, the property of blocks is copy, and the property of self is retain. So, if we use self in the block section, we will get a retain circle. We will never release them. For this reason, we need do it as above.</p>
+
+<p><a href="http://blog.random-ideas.net/?p=160">Here</a> is one reference</p>
+
+<p>Ok, Good night. See you.</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-06T17:18:00+08:00" data-updated="true" itemprop="datePublished">Apr 6<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/mpmovieplayerviewcontroller/'>MPMoviePlayerViewController</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/04/06/how-to-customize-the-ui-of-mpmovieplayerviewcontroller/" itemprop="url">How to Customize the UI of MPMoviePlayerViewController</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>As we all know, the user interface of MPMoviePlayerViewController is ugly. Sometimes, our customer needs a better UI, so let&rsquo;s do it.</p>
+
+<p>Some codes like this:</p>
+
+<pre><code>MPMoviePlayerViewController *player = [[MPMoviePlayerViewController alloc] init];
+    player.moviePlayer.contentURL = self.url;
+    //here, i set the controlStyle equal to MPMovieControlStyleNone, as a result, we only see the movie view, yet volume button, progress slider, play button as so on.
+    player.moviePlayer.controlStyle = MPMovieControlStyleNone;
+    player.moviePlayer.view.frame = self.playerViewController.view.frame;
+    //next, i create a UIViewController named playerViewController, and insert the moverPlay view to the view of playerViewController.
+    [self.playerViewController.view insertSubview:player.moviePlayer.view atIndex:0];
+    [player.moviePlayer play];
+    [self presentModalViewController:self.playerViewController animated:YES];
+</code></pre>
+
+<p>after do that, we need add a view to playerViewController, and set the view is transparent  , we can add custom button on the view to control the move playing. The effect as below:</p>
+
+<p><a href="http://www.flickr.com/photos/tuchangwei/8624399482/" title="Flickr 上 涂 涂 的 Screenshot 2013.04.03 09.32.26"><img src="http://static.flickr.com/8111/8624399482_3801facaf7.jpg" width="500" height="375" alt="Screenshot 2013.04.03 09.32.26"></a></p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-06T16:59:00+08:00" data-updated="true" itemprop="datePublished">Apr 6<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/life/'>life</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/04/06/how-to-learn-to-cattle-men/" itemprop="url">How to Learn to Cattle Men</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>修行之道：</p>
+
+<p>关注大师的言行，</p>
+
+<p>跟随大师的举动，</p>
+
+<p>和大师一并修行，</p>
+
+<p>领会大师的意境，</p>
+
+<p>成为真正的大师。</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-31T21:46:00+08:00" data-updated="true" itemprop="datePublished">Mar 31<span>st</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/arc/'>ARC</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/31/some-advice-about-using-arc/" itemprop="url">Some Advice About Using ARC</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<ol>
+<li>As long as there is a variable pointing to an object, that object stay in memory. When the pointer gets a new value or ceases to exist, the associated object is released.This is true for all variables:instance variables,synthesized properties, adn even local variables.</li>
+<li>&ldquo;weak&rdquo; pointer. Variables that are weak can still point to objects but they do not become owners.</li>
+<li>Please change the <code>Complier for C/C++/Object-c</code> option to <code>Apple LLVM compiler 3.0</code>.</li>
+<li>Please set <code>Other Waring Flags</code> option to <code>-Wall</code>.</li>
+<li>Please set <code>Run Static Analyzer</code> option to <code>Yes</code>.</li>
+<li>Please set <code>Objective-c Automatic Reference Counting</code> option to <code>Yes</code>.</li>
+<li>Some files needn&rsquo;t to convert to ARC support, use the <code>-fno-objc-arc</code> flag.</li>
+<li><p>You will get this error when your code does the following:</p>
+
+<pre><code> switch (X)
+ {   
+     case Y:
+         NSString *s = ...;
+         break;
+ }
+</code></pre>
+
+<p> you need do this:</p>
+
+<pre><code> switch (X)
+ {   
+    case Y:
+    {
+        NSString *s = ...;
+        break;
+    }
+ }
+</code></pre></li>
+<li><p>If instace variables are a part of the internals of your class and not something you want expose in its public interface. you can move the instace variables from interface section to implementation section. some codes from .h file as following:</p>
+
+<pre><code> #import &lt;UIKit/UIKit.h&gt;
+
+ @interface MainViewController : UIViewController 
+   &lt;UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, 
+   NSXMLParserDelegate&gt;
+
+ @property (nonatomic, retain) IBOutlet UITableView *tableView;
+ @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
+
+ @end
+</code></pre>
+
+<p> move the instace variables to implementation section as following:</p>
+
+<pre><code> @implementation MainViewController
+ {
+     NSOperationQueue *queue;
+     NSMutableString *currentStringValue;
+ }
+</code></pre></li>
+<li><p>Generally, dealloc method isn&rsquo;t need.The only reason for keeping a dealloc method around is when you need to free certain resources that do not fall under ARC’s umbrella. Examples of this are calling CFRelease() on Core Foundation objects, calling free() on memory that you allocated with malloc(), unregistering for notifications, invalidating a timer, and so on.</p></li>
+<li>Toll-Free Bridging</li>
+</ol>
+
+
+<p> Change ownership from Core Foundation to Objecttive-C, use CFBridgingRelease().</p>
+
+<p> Change ownership from Objective-C to Core Foundation, use CFBridgingRetain().</p>
+
+<p> Want to use one type temporarily as if it were another without owership change, use __bridge.</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-30T17:02:00+08:00" data-updated="true" itemprop="datePublished">Mar 30<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/utility/'>Utility</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/30/use-command-line-to-pack-applications/" itemprop="url">Use Command Line to Pack Applications</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>All right. It is time for me to write something. My wife has stayed in her hometown about half a month. I miss her very much. It is dark out of the window.  You know, in summer, the rain is rich in ShenZhen. Sometimes, I am very anxious about doing something which is matter with opportunity and ability. Anyway, let us do something about work.</p>
+
+<p>Sometimes we need to build apps for many channels, we needn&rsquo;t change many codes but some configurations. As we all know, we use Xcode to build and run application. many channels many building. So boring! So let us see how to do it using command line.</p>
+
+<ul>
+<li><p>first shell, it is used for generating binary to upload AppStore.</p>
+
+<pre><code>  #!/bin/sh
+  target="Power7 MobileView"
+  distDir="/Users/tuchangwei/Documents/WorkSpace/Release/${factory}/${appName}_V${version}"
+  rm -rdf "$distDir"
+  mkdir "$distDir"
+
+  uploadDir="${distDir}/Upload AppStore"
+  rm -rdf "$uploadDir"
+  mkdir "$uploadDir"
+  /usr/bin/xcodebuild -target "$target" clean
+  echo "******************start build*********************"
+  /usr/bin/xcodebuild -target "$target" CODE_SIGN_IDENTITY="$distribution"
+  echo "******************start pick .ipa*********************"
+  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${uploadDir}/${appName}.ipa" --sign "$distribution"
+  echo "******************start pick test .ipa*********************"
+  codesign -f --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" build/Release-iphoneos/*.app
+  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${distDir}/${appName}_V${version}.ipa" --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" --embed "/Users/tuchangwei/Library/MobileDevice/Provisioning Profiles/D788EEA0-848E-4F5E-AA30-87D38154DA9B.mobileprovision"
+</code></pre></li>
+<li><p>second shell is used for generating test binary</p>
+
+<pre><code>  #!/bin/sh
+  target="Power7 MobileView"
+  distDir="/Users/tuchangwei/Desktop/Test"
+  rm -rdf "$distDir"
+  mkdir "$distDir"
+  /usr/bin/xcodebuild -target "$target" clean
+  echo "******************start build*********************"
+  /usr/bin/xcodebuild -target "$target" 
+  echo "******************start pick test .ipa*********************"
+  codesign -f --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" build/Release-iphoneos/*.app
+  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${distDir}/test.ipa" --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" --embed "/Users/tuchangwei/Library/MobileDevice/Provisioning Profiles/D788EEA0-848E-4F5E-AA30-87D38154DA9B.mobileprovision"
+</code></pre></li>
+<li><p>third shell is used for deleting .svn files in project.</p>
+
+<pre><code>  #!/bin/sh
+  echo "start delete .svn..."
+  find $PWD/ -name .svn -print0 | xargs -0 rm -rf
+  echo "finish delete .svn."
+</code></pre></li>
+</ul>
+
+
+<p>So, you know, i also use some shell to improve efficiency. See you,O(∩_∩)O~.</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-30T16:51:00+08:00" data-updated="true" itemprop="datePublished">Mar 30<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/utility/'>Utility</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/30/terminal-shortcuts/" itemprop="url">Terminal Shortcuts</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<h3>mac/linux终端光标的快捷键操作</h3>
+
+<h4>常用的快捷键：</h4>
+
+<ul>
+<li>Ctrl + d        删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）</li>
+<li>Ctrl + h        退格删除一个字符，相当于通常的Backspace键</li>
+<li>Ctrl + u        删除光标之前到行首的字符</li>
+<li>Ctrl + k        删除光标之前到行尾的字符</li>
+<li>Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break</li>
+<li>Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键</li>
+<li>Ctrl + e        光标移动到行尾（End of line）</li>
+<li>Ctrl + f        光标向前(Forward)移动一个字符位置</li>
+<li>Ctrl + b        光标往回(Backward)移动一个字符位置</li>
+<li>Ctrl + l        清屏，相当于执行clear命令</li>
+<li>Ctrl + p        调出命令历史中的前一条（Previous）命令，相当于通常的上箭头</li>
+<li>Ctrl + n        调出命令历史中的下一条（Next）命令，相当于通常的上箭头</li>
+<li>Ctrl + r        显示：号提示，根据用户输入查找相关历史命令（reverse-i-search）</li>
+</ul>
+
+
+<h4>次常用快捷键：</h4>
+
+<ul>
+<li>Alt + f         光标向前（Forward）移动到下一个单词</li>
+<li>Alt + b         光标往回（Backward）移动到前一个单词</li>
+<li>Ctrl + w        删除从光标位置前到当前所处单词（Word）的开头</li>
+<li>Alt + d         删除从光标位置到当前所处单词的末尾</li>
+<li>Ctrl + y        粘贴最后一次被删除的单词</li>
+</ul>
+
+
+<p>以上就是快捷键了，在这里我只想揭露一些事情，这些快捷键都是emacs的快捷键！熟悉终端的同学应该知道，终端里可以设置快捷键的类型是vim还是emacs。当然了大多数的终端都用的emacs，因为啥自己想去吧。</p>
+
+<p>在这里之所以又将这些东西提出来的原因是：mac os x虽然是图形界面，但是chrome，xcode啥的也支持这些快捷键！</p>
+
+<p>摘自：<a href="http://blog.cnrainbird.com/index.php/2012/03/23/mac_linux_zhong_duan_guang_biao_de_kuai_jie_jian_cao_zuo/">http://blog.cnrainbird.com/index.php/2012/03/23/mac_linux_zhong_duan_guang_biao_de_kuai_jie_jian_cao_zuo/</a></p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-26T00:30:00+08:00" data-updated="true" itemprop="datePublished">Mar 26<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/nslog/'>NSLog</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/26/how-should-we-use-nslog/" itemprop="url">How Should We Use NSLog</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>As we all know, every programming language has a selector to print the value on the Console which we want to. This way to debug is too violence, too simple and underestimated by someone. Other way is setting breakpoints, after application runs, it will stop when meets a breakpoint. Someone like this way, he need not see the Console and restart the application again and again to print.</p>
+
+<p>But i want to say, unitl now, i really have been tend to print value. Because  when some mulitithreadings run at the same time, it is difficult to track the breakpoint. However other way is easy just as “History don&rsquo;t lie”. We can print the system time,the line of printing, the selector, the value of some object，the class as so on.</p>
+
+<p>So,let us see the follow codes.</p>
+
+<pre><code>#if DEBUG
+#define NSLog(FORMAT, ...) {\
+NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];\
+[dateFormatter setDateStyle:NSDateFormatterMediumStyle];\
+[dateFormatter setTimeStyle:NSDateFormatterShortStyle];\
+[dateFormatter setDateFormat:@"HH:mm:ss:SSSSSS"]; \
+NSString *str = [dateFormatter stringFromDate:[NSDate date]];\
+[dateFormatter release];\
+fprintf(stderr,"[--%s--]*[--%s--]*[--%s:%d--]\n",[str UTF8String],  [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String],[[[NSString  stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__);\
+}
+#else
+#define NSLog(FORMAT, ...) nil
+#endif 
+</code></pre>
+
+<p>This is a macro definition. You can copy this to your CommonHead.h file and import the  CommonHead.h to your .pch file so that you can use it at anywhere in your project. The macrodefinition is great, when you use debug mode to print value, you will find the value, the system time, the line and the object where the selector in, yet using the release mode, you will see nothing. The reason is as follow:</p>
+
+<p><a href="http://www.flickr.com/photos/tuchangwei/8590218136/" title="Flickr 上 涂 涂 的 0F804C40-EA0B-42C5-8058-7E3230E01A13"><img src="http://static.flickr.com/8108/8590218136_2798079941.jpg" width="500" height="237" alt="0F804C40-EA0B-42C5-8058-7E3230E01A13"></a></p>
+
+<p>Why we need print the line of the selector? Yes, you guess it, press &ldquo;cmd&rdquo; + &ldquo;i&rdquo; when using Xcode, you will find the selector right now!</p>
+
+		
+		
+	</div>
+
+</article>
+
+</div>
+<nav id="pagenavi">
+    
+    
+        <a href="/blog/page/2/" class="next">Next</a>
+    
+    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Vale T. -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a></footer>
+			<script src="/javascripts/slash.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tuchangwei';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

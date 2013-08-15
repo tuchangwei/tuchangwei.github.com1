@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Code-Standard | Vale's Blog]]></title>
+  <link href="http://tuchangwei.github.io/blog/categories/code-standard/atom.xml" rel="self"/>
+  <link href="http://tuchangwei.github.io/"/>
+  <updated>2013-08-15T22:35:14+08:00</updated>
+  <id>http://tuchangwei.github.io/</id>
+  <author>
+    <name><![CDATA[Vale T.]]></name>
+    <email><![CDATA[tcwliphone@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[管理iOS代码的一些规范]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/03/19/guan-li-iosdai-ma-de-yi-xie-gui-fan/"/>
+    <updated>2013-03-19T20:08:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/03/19/guan-li-iosdai-ma-de-yi-xie-gui-fan</id>
+    <content type="html"><![CDATA[<ol>
+<li>做任何事前先<code>git init</code>。</li>
+<li>使用<a href="http://cocoapods.org/">CocoaPods</a>管理第三方库。</li>
+<li>使用ARC。如果第三方库没有使用ARC，可以在他们的.m文件中加上<code>-fno-objc-arc</code>关键字。</li>
+<li>清除<code>@synthesize</code>。当你为成员变量增加<code>@property</code>时，Xcode会在编译时候默认为你增加<code>@synthesize</code>关键字。</li>
+<li>移除注释掉的代码或工程中未使用的文件。</li>
+<li>不要在AppDelete中写代码。</li>
+<li>增加<code>#pragram mark –</code>在你需要注释的地方</li>
+<li>管理好Xcode工程中的文件夹结构。一般使用<code>Model</code>,<code>View</code>,<code>Controller</code>,<code>Helper/Manager</code>和<code>Images</code>文件夹。如果有第三方库，则用<code>External</code>文件夹。</li>
+<li>代码格式，空格。</li>
+<li>将<code>__mycompany</code>改成有意义的。</li>
+<li>时常NSLog，形成日志系统。</li>
+</ol>
+
+
+<p>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-神奇的分割线&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;</p>
+
+<p>又找到了一些规范：</p>
+
+<p>Under the Warnings header, also set the Other Linker Flags option to -Wall. The compiler will now check for all possible situations that can cause problems. By default many of these warnings are turned off but I find it useful to always have all warnings on and to treat them as fatal errors. In other words, if the compiler gives a warning I will first fix it before continuing. Whether that is something you may want to do on your own projects is up to you, but during the conversion to ARC I recommend that you take a good look at any issues the compiler may complain about.
+For the exact same reason, also enable the Run Static Analyzer option under the Build Options header, Xcode will now run the analyzer every time we build the app. That makes the builds a bit slower but for an app of this size that’s barely noticeable.</p>
+
+<p>如果大家有什么好的代码规范，欢迎补充。O(∩_∩)O~。</p>
+]]></content>
+  </entry>
+  
+</feed>

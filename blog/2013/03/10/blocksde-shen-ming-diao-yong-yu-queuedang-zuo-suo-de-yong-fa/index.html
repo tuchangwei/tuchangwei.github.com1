@@ -1,0 +1,224 @@
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Blocks的申明调用与Queue当做锁的用法 - Vale's Blog</title>
+	<meta name="author" content="Vale T.">
+
+	
+	<meta name="description" content="Blocks的申明调用与Queue当做锁的用法 Blocks的申明与调用 话说Blocks在方法内使用还是挺方便的，之前都是把相同的代码封装成外部函数，然后在一个方法里需要的时候调用，这样挺麻烦的。使用Blocks之后，我们可以把相同代码在这个方法里封装起来，然后再在这个方法中需要的地方直接调用 &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Vale's Blog" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tuchangwei.github.io/blog/2013/03/10/blocksde-shen-ming-diao-yong-yu-queuedang-zuo-suo-de-yong-fa/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<script src="/javascripts/md5.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("tcwliphone@gmail.com") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+		});
+	</script>
+</div>
+<hgroup>
+  <h1><a href="/">Vale's Blog</a></h1>
+  
+    <h2>iOS Developer, Dad, Freelancer.</h2>
+  
+</hgroup>
+
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    In the world, we play the role of Party A or Party B frequently, but the timeless thing is our sincerity given to others, in return, will be treat sincerely.
+  </p>
+</section>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/valetu1988" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/tuchangwei" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Blocks的申明调用与Queue当做锁的用法</h1>
+	<div class="entry-content" itemprop="articleBody"><h3>Blocks的申明与调用</h3>
+
+<p>话说Blocks在方法内使用还是挺方便的，之前都是把相同的代码封装成外部函数，然后在一个方法里需要的时候调用，这样挺麻烦的。使用Blocks之后，我们可以把相同代码在这个方法里封装起来，然后再在这个方法中需要的地方直接调用，逻辑清晰，操作也不会那么繁琐。</p>
+
+<p>上代码：</p>
+
+<pre><code>//在方法体内
+//block申明与初始化
+ void(^removePicViewBlock)(int,int) = ^(int start,int stop){
+
+    while (start &lt;= stop)
+    {
+        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        SWDPictureView *view = (SWDPictureView *)[self.scroller viewWithTag:start + 1];
+        view.imageView.image = nil;
+        view.imageView = nil;
+        view.delegate2 = nil;
+        [view removeFromSuperview];
+        start ++;
+        [pool drain];
+    }
+
+
+};
+if (page &lt; self.currentPage)
+{
+    //block的调用
+    removePicViewBlock(0,page);
+}
+else if(page &gt; self.currentPage)
+{
+    //block的调用
+    removePicViewBlock(page,[self.picList count]-1);
+}
+</code></pre>
+
+<h3>Queue作为锁的用法</h3>
+
+<p>说到多线程就必须要提到锁了，话说用锁也蛮麻烦，需要在初始化的时候申明一个锁，然后每个方法的开头加一把锁，结尾再把锁去掉。如果用queue就不必那么麻烦了。根据task在queue中FIFO的特性就可以防止多线程中资源被同时访问。</p>
+
+<p>上代码。</p>
+
+<pre><code>//初始化时初始化一个queue
+UserQueue = dispatch_queue_create("use for storing image to disk", nil);
+
+//多线程调用时，将任务放在queue中执行。此时queue充当锁的角色。
+//存储图片缓冲到硬盘
+-(void)storeImage:(UIImage *)image key:(NSString *)key
+{
+    dispatch_async(UserQueue, ^{
+
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        BOOL succ = [fileManager createFileAtPath:[self cachePathForKey:key] contents:UIImageJPEGRepresentation(image, (CGFloat)0.6) attributes:nil];
+        NSLog(@"store successfully!!! %d",succ);
+        [fileManager release];
+        fileManager = nil;
+    });
+
+}
+</code></pre>
+
+<p>好了，就这些。</p>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Vale T. -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a></footer>
+			<script src="/javascripts/slash.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tuchangwei';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tuchangwei.github.io/blog/2013/03/10/blocksde-shen-ming-diao-yong-yu-queuedang-zuo-suo-de-yong-fa/';
+        var disqus_url = 'http://tuchangwei.github.io/blog/2013/03/10/blocksde-shen-ming-diao-yong-yu-queuedang-zuo-suo-de-yong-fa/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

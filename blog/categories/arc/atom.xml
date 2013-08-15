@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ARC | Vale's Blog]]></title>
+  <link href="http://tuchangwei.github.io/blog/categories/arc/atom.xml" rel="self"/>
+  <link href="http://tuchangwei.github.io/"/>
+  <updated>2013-08-15T22:35:14+08:00</updated>
+  <id>http://tuchangwei.github.io/</id>
+  <author>
+    <name><![CDATA[Vale T.]]></name>
+    <email><![CDATA[tcwliphone@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Some advice about Using ARC]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/03/31/some-advice-about-using-arc/"/>
+    <updated>2013-03-31T21:46:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/03/31/some-advice-about-using-arc</id>
+    <content type="html"><![CDATA[<ol>
+<li>As long as there is a variable pointing to an object, that object stay in memory. When the pointer gets a new value or ceases to exist, the associated object is released.This is true for all variables:instance variables,synthesized properties, adn even local variables.</li>
+<li>&ldquo;weak&rdquo; pointer. Variables that are weak can still point to objects but they do not become owners.</li>
+<li>Please change the <code>Complier for C/C++/Object-c</code> option to <code>Apple LLVM compiler 3.0</code>.</li>
+<li>Please set <code>Other Waring Flags</code> option to <code>-Wall</code>.</li>
+<li>Please set <code>Run Static Analyzer</code> option to <code>Yes</code>.</li>
+<li>Please set <code>Objective-c Automatic Reference Counting</code> option to <code>Yes</code>.</li>
+<li>Some files needn&rsquo;t to convert to ARC support, use the <code>-fno-objc-arc</code> flag.</li>
+<li><p>You will get this error when your code does the following:</p>
+
+<pre><code> switch (X)
+ {   
+     case Y:
+         NSString *s = ...;
+         break;
+ }
+</code></pre>
+
+<p> you need do this:</p>
+
+<pre><code> switch (X)
+ {   
+    case Y:
+    {
+        NSString *s = ...;
+        break;
+    }
+ }
+</code></pre></li>
+<li><p>If instace variables are a part of the internals of your class and not something you want expose in its public interface. you can move the instace variables from interface section to implementation section. some codes from .h file as following:</p>
+
+<pre><code> #import &lt;UIKit/UIKit.h&gt;
+
+ @interface MainViewController : UIViewController 
+   &lt;UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, 
+   NSXMLParserDelegate&gt;
+
+ @property (nonatomic, retain) IBOutlet UITableView *tableView;
+ @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
+
+ @end
+</code></pre>
+
+<p> move the instace variables to implementation section as following:</p>
+
+<pre><code> @implementation MainViewController
+ {
+     NSOperationQueue *queue;
+     NSMutableString *currentStringValue;
+ }
+</code></pre></li>
+<li><p>Generally, dealloc method isn&rsquo;t need.The only reason for keeping a dealloc method around is when you need to free certain resources that do not fall under ARC’s umbrella. Examples of this are calling CFRelease() on Core Foundation objects, calling free() on memory that you allocated with malloc(), unregistering for notifications, invalidating a timer, and so on.</p></li>
+<li>Toll-Free Bridging</li>
+</ol>
+
+
+<p> Change ownership from Core Foundation to Objecttive-C, use CFBridgingRelease().</p>
+
+<p> Change ownership from Objective-C to Core Foundation, use CFBridgingRetain().</p>
+
+<p> Want to use one type temporarily as if it were another without owership change, use __bridge.</p>
+]]></content>
+  </entry>
+  
+</feed>

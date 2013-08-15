@@ -1,0 +1,331 @@
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Vale's Blog</title>
+	<meta name="author" content="Vale T.">
+
+	
+	<meta name="description" content="Feb 16th, 2013 octopress Octopress怎么增加导航栏标签 多年前学习的html知识都又还回去了，再加上不懂ruby，对博客样式的修改觉得还很吃力。几经摸索，找到增加导航栏标签的方法如下： 用命令行增加新页面 tumatoMac-mini:octopress &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Vale's Blog" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tuchangwei.github.io/blog/page/3/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<script src="/javascripts/md5.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("tcwliphone@gmail.com") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+		});
+	</script>
+</div>
+<hgroup>
+  <h1><a href="/">Vale's Blog</a></h1>
+  
+    <h2>iOS Developer, Dad, Freelancer.</h2>
+  
+</hgroup>
+
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    In the world, we play the role of Party A or Party B frequently, but the timeless thing is our sincerity given to others, in return, will be treat sincerely.
+  </p>
+</section>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/valetu1988" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/tuchangwei" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-16T13:24:00+08:00" data-updated="true" itemprop="datePublished">Feb 16<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/octopress/'>octopress</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/02/16/octopresszen-yao-zeng-jia-dao-hang-lan-biao-qian/" itemprop="url">Octopress怎么增加导航栏标签</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>多年前学习的html知识都又还回去了，再加上不懂ruby，对博客样式的修改觉得还很吃力。几经摸索，找到增加导航栏标签的方法如下：</p>
+
+<h3>用命令行增加新页面</h3>
+
+<pre><code>tumatoMac-mini:octopress tuchangwei$ rake new_page[你要添加的标签]
+mkdir -p source/你要添加的标签
+Creating new page: source/你要添加的标签/index.markdown 
+</code></pre>
+
+<h3>在source/_includes/custom/navigation.html中添加如下代码</h3>
+
+<pre><code>&lt;li&gt;&lt;a href="/你要添加的标签"&gt;你要添加的标签名&lt;/a&gt;&lt;/li&gt;
+</code></pre>
+
+<p>那么剩下的操作就是在新的标签页的index.markdown文件中写博文了。</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-16T11:07:00+08:00" data-updated="true" itemprop="datePublished">Feb 16<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/octopress/'>octopress</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/02/16/zen-yao-tian-jia-fen-lei/" itemprop="url">Octopress 怎么添加分类</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>大致步骤为：</p>
+
+<h3>增加category_list插件</h3>
+
+<p>保存以下代码到plugins/category_list_tag.rb：</p>
+
+<pre><code>module Jekyll
+  class CategoryListTag &lt; Liquid::Tag
+    def render(context)
+      html = ""
+      categories = context.registers[:site].categories.keys
+      categories.sort.each do |category|
+        posts_in_category = context.registers[:site].categories[category].size
+        category_dir = context.registers[:site].config['category_dir']
+        category_url = File.join(category_dir, category.gsub(/_|\P{Word}/, '-').gsub(/-{2,}/, '-').downcase)
+        html &lt;&lt; "&lt;li class='category'&gt;&lt;a href='/#{category_url}/'&gt;#{category} (#{posts_in_category})&lt;/a&gt;&lt;/li&gt;\n"
+      end
+      html
+    end
+  end
+end
+
+Liquid::Template.register_tag('category_list', Jekyll::CategoryListTag)
+</code></pre>
+
+<p>这个插件会向liquid注册一个名为category_list的tag，该tag就是以li的形式将站点所有的category组织起来。如果要将category加入到侧边导航栏，需要增加一个aside。</p>
+
+<h3>增加aside</h3>
+
+<p>复制以下代码到source/_includes/asides/category_list.html。(请将下面的$号换成%号)</p>
+
+<pre><code>&lt;section&gt;
+  &lt;h1&gt;Categories&lt;/h1&gt;
+  &lt;ul id="categories"&gt;    
+    {$ category_list $}     
+  &lt;/ul&gt;
+&lt;/section&gt;
+</code></pre>
+
+<p>配置侧边栏需要修改_config.yml文件，修改其default_asides项：</p>
+
+<pre><code>default_asides: [asides/category_list.html, asides/recent_posts.html]
+</code></pre>
+
+<h3>使用</h3>
+
+<p>当新建markdown文件时，顶部会自动显示：“categories:”，在其后写上自己的分类名即可。</p>
+
+<h3>参考</h3>
+
+<p><a href="http://codemacro.com/2012/07/18/add-category-list-to-octopress/">http://codemacro.com/2012/07/18/add-category-list-to-octopress/</a></p>
+
+<p>  
+		
+		<a href="/blog/2013/02/16/zen-yao-tian-jia-fen-lei/" class="more-link">Read on &rarr;</a>
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-15T13:53:00+08:00" data-updated="true" itemprop="datePublished">Feb 15<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/octopress/'>octopress</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/02/15/zhong-yu-you-zi-ji-de-bo-ke-liao/" itemprop="url">终于有自己的博客了</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>将octopress搭建在github上,我终于有了自己的第一个博客。
+昨天在网上瞎逛，看到唐巧的博客，说自己的博客是建立在github上，前段时间因为12306的关系，github无法访问。于是搜索资料，开始搭建自己的第一个博客，由于中间安装ruby以及配置SSH key的关系，到目前为止才搭建完毕。</p>
+
+<h4>参考</h4>
+
+<ul>
+<li><a href="http://blog.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">http://blog.devtang.com/blog/2012/02/10/setup-blog-based-on-github/</a></li>
+<li><a href="http://easypi.github.com/blog/2013/01/05/using-octopress-to-setup-blog-on-github/">http://easypi.github.com/blog/2013/01/05/using-octopress-to-setup-blog-on-github/</a></li>
+<li><a href="http://sharecore.info/blog/2012/12/25/octopress-plus-github/">http://sharecore.info/blog/2012/12/25/octopress-plus-github/</a></li>
+</ul>
+
+
+<h4>博文发布工具</h4>
+
+<ul>
+<li><a href="http://mouapp.com/">http://mouapp.com/</a></li>
+</ul>
+
+
+		
+		
+	</div>
+
+</article>
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/blog/page/2/" class="prev">Prev</a>
+    
+    
+    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Vale T. -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a></footer>
+			<script src="/javascripts/slash.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tuchangwei';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

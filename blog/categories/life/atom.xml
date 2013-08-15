@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: life | Vale's Blog]]></title>
+  <link href="http://tuchangwei.github.io/blog/categories/life/atom.xml" rel="self"/>
+  <link href="http://tuchangwei.github.io/"/>
+  <updated>2013-08-15T22:35:14+08:00</updated>
+  <id>http://tuchangwei.github.io/</id>
+  <author>
+    <name><![CDATA[Vale T.]]></name>
+    <email><![CDATA[tcwliphone@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to learn to cattle men]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/04/06/how-to-learn-to-cattle-men/"/>
+    <updated>2013-04-06T16:59:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/04/06/how-to-learn-to-cattle-men</id>
+    <content type="html"><![CDATA[<p>修行之道：</p>
+
+<p>关注大师的言行，</p>
+
+<p>跟随大师的举动，</p>
+
+<p>和大师一并修行，</p>
+
+<p>领会大师的意境，</p>
+
+<p>成为真正的大师。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[2012年总结，2013年计划]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/02/16/2012nian-zong-jie-%2C2013nian-ji-hua/"/>
+    <updated>2013-02-16T21:13:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/02/16/2012nian-zong-jie-,2013nian-ji-hua</id>
+    <content type="html"><![CDATA[<p>2012年经历了很多，辞职，回校答辩，找工作，结婚，拿毕业证，还有将要出生的涂这这同学，这一年过的好赶啊。</p>
+
+<p>2012年最想做的事就是辞职呆在家里做freelancer，结果因对自己信心不足而放弃。虽然如此，做一名优秀的freelancer还是我的梦想，2013年将继续努力，希望离这个梦想更近一点。2012年学习的时间少了很多，在新公司一大半的时间都在做维护工作，因为是oem的原因，所以很繁琐很累，每晚都九点十点才回家，周末也时常加班，没有时间搞学习，也没时间陪家人，这也是我最痛心的事。</p>
+
+<p>说说2013年的计划吧。</p>
+
+<ul>
+<li><p>锻炼身体。</p>
+
+<p>坚持每晚下班回家跑步，做仰卧起坐。身体很重要很重要！！！</p></li>
+<li><p>研究fmpeg，并做出全能播放器。</p>
+
+<p>  术业有专攻，就从视频编解码开始。</p></li>
+<li><p>学习c++，研究boost库。</p></li>
+<li><p>熟练运用blocks。</p></li>
+<li><p>熟悉android开发平台。</p></li>
+<li><p>学会弹几首吉他曲。</p></li>
+</ul>
+
+
+<hr />
+
+<p>一些补充（2013.3.30）：</p>
+
+<ul>
+<li>熟悉ARC</li>
+<li>OpenGL</li>
+<li>学习英语</li>
+<li>熟悉Ruby on Rails</li>
+</ul>
+
+
+<p>话说想到在公司工作我又想吐槽，本来想将多抽出一点时间陪家人作为新一年的计划，想想实际情况还是算了。公司的情况是无论你多么的高效，永远有做不完的事，就算没事早点回家领导也会有意见。不知道是公司特例还是普遍现象。也欢迎大家吐槽。</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Summary | Vale's Blog]]></title>
+  <link href="http://tuchangwei.github.io/blog/categories/summary/atom.xml" rel="self"/>
+  <link href="http://tuchangwei.github.io/"/>
+  <updated>2013-08-15T22:35:14+08:00</updated>
+  <id>http://tuchangwei.github.io/</id>
+  <author>
+    <name><![CDATA[Vale T.]]></name>
+    <email><![CDATA[tcwliphone@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[对象传值的几种方式(Some  methods to make talk to each other between objects A and B)]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/03/19/dui-xiang-chuan-zhi-de-ji-chong-fang-shi-some-methods-to-make-talk-to-each-other-between-objects-a-and-b/"/>
+    <updated>2013-03-19T21:59:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/03/19/dui-xiang-chuan-zhi-de-ji-chong-fang-shi-some-methods-to-make-talk-to-each-other-between-objects-a-and-b</id>
+    <content type="html"><![CDATA[<ol>
+<li><strong>NSNotificationCenter</strong>. This is anonymous one-to-many communication. Object A posts a notification to the NSNotificationCenter, which then distributes it to any other objects listening for that notification, including Object B. A and B do not have to know anything about each other, so this is a very loose coupling. Maybe a little too loose…</li>
+<li><strong>KVO (Key-Value Observing)</strong>. One object observes the properties of another. This is a very tight coupling, because Object B is now peeking directly into Object A. The advantage of KVO is that Object A doesn’t have to be aware of this at all, and therefore does not need to send out any notifications — the KVO mechanism takes care of this behind the scenes.</li>
+<li><strong>Direct pointers</strong>. Object A has a pointer to Object B and directly sends it messages when something of interest happens. This is the tightest coupling possible because A and B cannot function without each other. In the case of view controllers you generally want to avoid this.</li>
+<li><strong>Delegates</strong>. Object B is a delegate of Object A. In this scenario, Object A does not know anything about Object B. It just knows that some object performs the role of its delegate and it will happily send messages to that delegate, but it doesn’t know — or care — that this is Object B. The delegate pattern is often the preferred way to communicate between view controllers, but it takes some work to set up.</li>
+<li><strong>Blocks</strong>. Essentially the same approach as delegates, except that Object B now gives Object A one or more blocks (closures) to be executed when certain events take place. There is no formal delegate protocol and the only thing that Object A sees of Object B is the blocks it is given.</li>
+</ol>
+
+
+<p>话说KVO检测对象的属性和Blocks相互传值还没使用过，回头试一下。</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,187 @@
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>从Nib加载View(loading view from nib) - Vale's Blog</title>
+	<meta name="author" content="Vale T.">
+
+	
+	<meta name="description" content="从Nib加载View(loading View From Nib) 话说，有些View界面控件比较多，还是用nib拖拖拉拉方便。但是麻烦的一点是，我们要将nib与View对应的类进行连接，然后使用这个View的地方通过nib进行对象反序列化。我们一般用下面的语句进行反对象序列化。 self. &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Vale's Blog" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tuchangwei.github.io/blog/2013/03/19/cong-nibjia-zai-view-loading-view-from-nib/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<script src="/javascripts/md5.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("tcwliphone@gmail.com") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+		});
+	</script>
+</div>
+<hgroup>
+  <h1><a href="/">Vale's Blog</a></h1>
+  
+    <h2>iOS Developer, Dad, Freelancer.</h2>
+  
+</hgroup>
+
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    In the world, we play the role of Party A or Party B frequently, but the timeless thing is our sincerity given to others, in return, will be treat sincerely.
+  </p>
+</section>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/valetu1988" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/tuchangwei" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">从Nib加载View(loading View From Nib)</h1>
+	<div class="entry-content" itemprop="articleBody"><p>话说，有些View界面控件比较多，还是用nib拖拖拉拉方便。但是麻烦的一点是，我们要将nib与View对应的类进行连接，然后使用这个View的地方通过nib进行对象反序列化。我们一般用下面的语句进行反对象序列化。</p>
+
+<pre><code>self.aboutView = [[[NSBundle mainBundle]loadNibNamed:@"AboutView" owner:self options:nil] objectAtIndex:0];
+[self.view addSubview:self.aboutView];
+</code></pre>
+
+<p>每次都写如上的代码有些麻烦，其实我们可以为UIView创建一个category:</p>
+
+<pre><code>@implementation UIView (MHExtensions)
+
++ (id)mh_viewFromNibNamed:(NSString *)nibName owner:(id)ownerOrNil
+{
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:nibName owner:ownerOrNil options:nil];
+    for (id object in nib)
+    {
+        if ([object isKindOfClass:[self class]])
+            return object;
+    }
+    return nil;
+}
+
+@end
+</code></pre>
+
+<p>这样每次反序列化就只需要调用 <code>+ (id)mh_viewFromNibNamed:(NSString *)nibName owner:(id)ownerOrNil</code> 这个方法即可。</p>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Vale T. -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a></footer>
+			<script src="/javascripts/slash.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tuchangwei';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tuchangwei.github.io/blog/2013/03/19/cong-nibjia-zai-view-loading-view-from-nib/';
+        var disqus_url = 'http://tuchangwei.github.io/blog/2013/03/19/cong-nibjia-zai-view-loading-view-from-nib/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

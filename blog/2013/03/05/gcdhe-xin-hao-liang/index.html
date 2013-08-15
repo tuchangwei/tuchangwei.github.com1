@@ -1,0 +1,255 @@
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>GCD和信号量 - Vale's Blog</title>
+	<meta name="author" content="Vale T.">
+
+	
+	<meta name="description" content="GCD和信号量 GCD 概念不多说，直接上代码。话说也不是什么高深的东东，不过极大简化了代码，一目了然。后面对信号量的记录也采用了相同的原理。 //抛出线程
+dispatch_async(dispatch_get_global_queue(0, 0), ^{ NSURL * url = [ &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Vale's Blog" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<script src="/javascripts/md5.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("tcwliphone@gmail.com") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+		});
+	</script>
+</div>
+<hgroup>
+  <h1><a href="/">Vale's Blog</a></h1>
+  
+    <h2>iOS Developer, Dad, Freelancer.</h2>
+  
+</hgroup>
+
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    In the world, we play the role of Party A or Party B frequently, but the timeless thing is our sincerity given to others, in return, will be treat sincerely.
+  </p>
+</section>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/valetu1988" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/tuchangwei" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">GCD和信号量</h1>
+	<div class="entry-content" itemprop="articleBody"><h1>GCD</h1>
+
+<p>概念不多说，直接上代码。话说也不是什么高深的东东，不过极大简化了代码，一目了然。后面对信号量的记录也采用了相同的原理。</p>
+
+<pre><code>//抛出线程
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+
+    NSURL * url = [NSURL URLWithString:@"http://www.google.com"];
+    NSString * data = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+    if (data != nil) {
+        //抛出的线程执行完后，回到主线程处理界面逻辑。
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+        });
+    } else {
+
+    }
+});
+</code></pre>
+
+<h1>semaphore（信号量）</h1>
+
+<p>信号量主要是用在传说中的生产者消费者模式里面，当信号量为0时线程挂起，当信号量大于0时继续向下执行。以前研究过一次，不过没怎么搞懂，反而把界面给搞死了。这次，取相册里的图片，GCD加Semaphore，又折腾了一次，还好。不多说，继续上代码。</p>
+
+<pre><code>//这几段代码的大概意思是：抛一个线程出来，取相册里的group，再在取group中的线程中抛出线程，去取group中的result，最终到界面线程中去操作。
+//这里需要两个信号量，一个用来阻塞取group的线程，避免界面线程先于取group的线程运行完毕。另外一个用来阻塞取result中的线程，避免取result的
+//线程先于取group执行完毕。
+
+//抛出线程
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+
+    //创建信号量
+    dispatch_semaphore_t semaphore1 = dispatch_semaphore_create(0);
+    dispatch_semaphore_t semaphore2 = dispatch_semaphore_create(0);
+    ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
+
+        if (result == nil) {
+            //当某个group取完毕后，信号量加1，dispatch_semaphore_wait方法执行，信号量为0，程序循环，去取下一个group中的result
+            dispatch_semaphore_signal(semaphore2);
+
+        }else if ([[result valueForProperty:ALAssetPropertyType]isEqualToString:ALAssetTypePhoto]||[[result valueForProperty:ALAssetPropertyType]
+ isEqualToString:ALAssetTypeVideo]) {
+
+            FileNode *node = [[FileNode alloc] init];
+            node.m_name =  result.defaultRepresentation.filename;
+            node.m_path = [result.defaultRepresentation.url absoluteString];
+            [self.picList addObject:node];
+            NSLog(@"%@",node.m_name);
+            NSLog(@"%@",node.m_path);
+            [node release];
+
+        }
+    };
+
+
+    ALAssetsLibraryGroupsEnumerationResultsBlock libraryGroupsEnumeration = ^(ALAssetsGroup* group, BOOL* stop){
+
+        if (group!=nil)
+        {
+
+            [group enumerateAssetsUsingBlock:groupEnumerAtion];
+            dispatch_semaphore_wait(semaphore2, DISPATCH_TIME_FOREVER);
+
+        }else{
+            //当所有group取完后，信号量加1，程序不再阻塞，进入界面线程。
+            dispatch_semaphore_signal(semaphore1);
+        }
+
+    };
+
+    ALAssetsLibraryAccessFailureBlock failureblock = ^(NSError *error){
+
+
+        NSLog(@"failureblock:%@",error);
+    };
+
+
+    ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+    [library enumerateGroupsWithTypes:ALAssetsGroupAll
+                           usingBlock:libraryGroupsEnumeration
+                         failureBlock:failureblock];
+
+    dispatch_semaphore_wait(semaphore1, DISPATCH_TIME_FOREVER);
+    dispatch_release(semaphore1);
+    dispatch_release(semaphore2);
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        [self loadPicAtPage:self.currentPage];
+        [self loadPicAtPage:self.currentPage + 1];
+    });
+});
+</code></pre>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Vale T. -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a></footer>
+			<script src="/javascripts/slash.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tuchangwei';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang/';
+        var disqus_url = 'http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

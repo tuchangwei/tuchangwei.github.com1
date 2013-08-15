@@ -1,0 +1,172 @@
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>对象传值的几种方式(Some  methods to make talk to each other between objects A and B) - Vale's Blog</title>
+	<meta name="author" content="Vale T.">
+
+	
+	<meta name="description" content="对象传值的几种方式(Some Methods to Make Talk to Each Other Between Objects a and B) NSNotificationCenter. This is anonymous one-to-many communication. Object &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Vale's Blog" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tuchangwei.github.io/blog/2013/03/19/dui-xiang-chuan-zhi-de-ji-chong-fang-shi-some-methods-to-make-talk-to-each-other-between-objects-a-and-b/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<script src="/javascripts/md5.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("tcwliphone@gmail.com") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+		});
+	</script>
+</div>
+<hgroup>
+  <h1><a href="/">Vale's Blog</a></h1>
+  
+    <h2>iOS Developer, Dad, Freelancer.</h2>
+  
+</hgroup>
+
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    In the world, we play the role of Party A or Party B frequently, but the timeless thing is our sincerity given to others, in return, will be treat sincerely.
+  </p>
+</section>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/valetu1988" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/tuchangwei" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">对象传值的几种方式(Some Methods to Make Talk to Each Other Between Objects a and B)</h1>
+	<div class="entry-content" itemprop="articleBody"><ol>
+<li><strong>NSNotificationCenter</strong>. This is anonymous one-to-many communication. Object A posts a notification to the NSNotificationCenter, which then distributes it to any other objects listening for that notification, including Object B. A and B do not have to know anything about each other, so this is a very loose coupling. Maybe a little too loose…</li>
+<li><strong>KVO (Key-Value Observing)</strong>. One object observes the properties of another. This is a very tight coupling, because Object B is now peeking directly into Object A. The advantage of KVO is that Object A doesn’t have to be aware of this at all, and therefore does not need to send out any notifications — the KVO mechanism takes care of this behind the scenes.</li>
+<li><strong>Direct pointers</strong>. Object A has a pointer to Object B and directly sends it messages when something of interest happens. This is the tightest coupling possible because A and B cannot function without each other. In the case of view controllers you generally want to avoid this.</li>
+<li><strong>Delegates</strong>. Object B is a delegate of Object A. In this scenario, Object A does not know anything about Object B. It just knows that some object performs the role of its delegate and it will happily send messages to that delegate, but it doesn’t know — or care — that this is Object B. The delegate pattern is often the preferred way to communicate between view controllers, but it takes some work to set up.</li>
+<li><strong>Blocks</strong>. Essentially the same approach as delegates, except that Object B now gives Object A one or more blocks (closures) to be executed when certain events take place. There is no formal delegate protocol and the only thing that Object A sees of Object B is the blocks it is given.</li>
+</ol>
+
+
+<p>话说KVO检测对象的属性和Blocks相互传值还没使用过，回头试一下。</p>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Vale T. -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a></footer>
+			<script src="/javascripts/slash.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tuchangwei';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tuchangwei.github.io/blog/2013/03/19/dui-xiang-chuan-zhi-de-ji-chong-fang-shi-some-methods-to-make-talk-to-each-other-between-objects-a-and-b/';
+        var disqus_url = 'http://tuchangwei.github.io/blog/2013/03/19/dui-xiang-chuan-zhi-de-ji-chong-fang-shi-some-methods-to-make-talk-to-each-other-between-objects-a-and-b/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

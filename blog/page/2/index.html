@@ -1,0 +1,952 @@
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Vale's Blog</title>
+	<meta name="author" content="Vale T.">
+
+	
+	<meta name="description" content="Mar 21st, 2013 GCD Use Block to Call Back Instead of Delegate Some days ago, i posted the blog to introduce some ways to talk to each oher between &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Vale's Blog" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tuchangwei.github.io/blog/page/2/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<script src="/javascripts/md5.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("tcwliphone@gmail.com") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+		});
+	</script>
+</div>
+<hgroup>
+  <h1><a href="/">Vale's Blog</a></h1>
+  
+    <h2>iOS Developer, Dad, Freelancer.</h2>
+  
+</hgroup>
+
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    In the world, we play the role of Party A or Party B frequently, but the timeless thing is our sincerity given to others, in return, will be treat sincerely.
+  </p>
+</section>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/valetu1988" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/tuchangwei" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-21T22:25:00+08:00" data-updated="true" itemprop="datePublished">Mar 21<span>st</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gcd/'>GCD</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/21/use-block-to-call-back-instead-of-delegate/" itemprop="url">Use Block to Call Back Instead of Delegate</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Some days ago, i posted the <a href="http://tuchangwei.github.com/blog/2013/03/19/dui-xiang-chuan-zhi-de-ji-chong-fang-shi-some-methods-to-make-talk-to-each-other-between-objects-a-and-b/">blog</a> to introduce some ways to talk to each oher between Object A and B. One of the points is Blocks. Now I will show how to call back use Block instead of Delegate.</p>
+
+<p>Some codes posted as follow:</p>
+
+<pre><code>A：SWDPromptViewController
+
+.h
+//declare a block named "dismissPromptViewBlock".
+@property (copy, nonatomic) void(^dismissPromptViewBlock)   (SWDPromptViewController *prompt);
+
+.m
+//after some operations, we will dismiss A and release it.
+-(void)dismissPrompt
+{
+    if (self.dismissPromptViewBlock)
+    {
+     self.dismissPromptViewBlock(self);
+     self.dismissPromptViewBlock = nil;
+    }
+}
+
+
+B：
+.m
+//declare A object and init it,then assign a block to the property of A.
+//so when A executes the method "dismissPrompt", the block plays a part of
+//Delegate.
+SWDPromptViewController *promptViewController = [[SWDPromptViewController   alloc] initWithNibName:@"SWDPromptViewController" bundle:nil type:type];
+UIWindow *promptWindow = [[UIWindow alloc] initWithFrame:[[UIScreen     mainScreen] bounds]];
+promptWindow.windowLevel = UIWindowLevelAlert;
+promptWindow.backgroundColor = [UIColor clearColor];
+promptWindow.rootViewController = promptViewController;
+[promptViewController release];
+[promptWindow makeKeyAndVisible];
+
+promptViewController.dismissPromptViewBlock = ^(SWDPromptViewController     *prompt){
+
+    [promptWindow release];
+    };
+</code></pre>
+
+<p>   That is all. Welcome to communicate with me.O(∩_∩)O~.</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-19T22:15:00+08:00" data-updated="true" itemprop="datePublished">Mar 19<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/nib/'>nib</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/19/cong-nibjia-zai-view-loading-view-from-nib/" itemprop="url">从Nib加载View(loading View From Nib)</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>话说，有些View界面控件比较多，还是用nib拖拖拉拉方便。但是麻烦的一点是，我们要将nib与View对应的类进行连接，然后使用这个View的地方通过nib进行对象反序列化。我们一般用下面的语句进行反对象序列化。</p>
+
+<pre><code>self.aboutView = [[[NSBundle mainBundle]loadNibNamed:@"AboutView" owner:self options:nil] objectAtIndex:0];
+[self.view addSubview:self.aboutView];
+</code></pre>
+
+<p>每次都写如上的代码有些麻烦，其实我们可以为UIView创建一个category:</p>
+
+<pre><code>@implementation UIView (MHExtensions)
+
++ (id)mh_viewFromNibNamed:(NSString *)nibName owner:(id)ownerOrNil
+{
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:nibName owner:ownerOrNil options:nil];
+    for (id object in nib)
+    {
+        if ([object isKindOfClass:[self class]])
+            return object;
+    }
+    return nil;
+}
+
+@end
+</code></pre>
+
+<p>这样每次反序列化就只需要调用 <code>+ (id)mh_viewFromNibNamed:(NSString *)nibName owner:(id)ownerOrNil</code> 这个方法即可。</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-19T21:59:00+08:00" data-updated="true" itemprop="datePublished">Mar 19<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/summary/'>Summary</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/19/dui-xiang-chuan-zhi-de-ji-chong-fang-shi-some-methods-to-make-talk-to-each-other-between-objects-a-and-b/" itemprop="url">对象传值的几种方式(Some Methods to Make Talk to Each Other Between Objects a and B)</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<ol>
+<li><strong>NSNotificationCenter</strong>. This is anonymous one-to-many communication. Object A posts a notification to the NSNotificationCenter, which then distributes it to any other objects listening for that notification, including Object B. A and B do not have to know anything about each other, so this is a very loose coupling. Maybe a little too loose…</li>
+<li><strong>KVO (Key-Value Observing)</strong>. One object observes the properties of another. This is a very tight coupling, because Object B is now peeking directly into Object A. The advantage of KVO is that Object A doesn’t have to be aware of this at all, and therefore does not need to send out any notifications — the KVO mechanism takes care of this behind the scenes.</li>
+<li><strong>Direct pointers</strong>. Object A has a pointer to Object B and directly sends it messages when something of interest happens. This is the tightest coupling possible because A and B cannot function without each other. In the case of view controllers you generally want to avoid this.</li>
+<li><strong>Delegates</strong>. Object B is a delegate of Object A. In this scenario, Object A does not know anything about Object B. It just knows that some object performs the role of its delegate and it will happily send messages to that delegate, but it doesn’t know — or care — that this is Object B. The delegate pattern is often the preferred way to communicate between view controllers, but it takes some work to set up.</li>
+<li><strong>Blocks</strong>. Essentially the same approach as delegates, except that Object B now gives Object A one or more blocks (closures) to be executed when certain events take place. There is no formal delegate protocol and the only thing that Object A sees of Object B is the blocks it is given.</li>
+</ol>
+
+
+<p>话说KVO检测对象的属性和Blocks相互传值还没使用过，回头试一下。</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-19T20:08:00+08:00" data-updated="true" itemprop="datePublished">Mar 19<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/code-standard/'>Code-Standard</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/19/guan-li-iosdai-ma-de-yi-xie-gui-fan/" itemprop="url">管理iOS代码的一些规范</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<ol>
+<li>做任何事前先<code>git init</code>。</li>
+<li>使用<a href="http://cocoapods.org/">CocoaPods</a>管理第三方库。</li>
+<li>使用ARC。如果第三方库没有使用ARC，可以在他们的.m文件中加上<code>-fno-objc-arc</code>关键字。</li>
+<li>清除<code>@synthesize</code>。当你为成员变量增加<code>@property</code>时，Xcode会在编译时候默认为你增加<code>@synthesize</code>关键字。</li>
+<li>移除注释掉的代码或工程中未使用的文件。</li>
+<li>不要在AppDelete中写代码。</li>
+<li>增加<code>#pragram mark –</code>在你需要注释的地方</li>
+<li>管理好Xcode工程中的文件夹结构。一般使用<code>Model</code>,<code>View</code>,<code>Controller</code>,<code>Helper/Manager</code>和<code>Images</code>文件夹。如果有第三方库，则用<code>External</code>文件夹。</li>
+<li>代码格式，空格。</li>
+<li>将<code>__mycompany</code>改成有意义的。</li>
+<li>时常NSLog，形成日志系统。</li>
+</ol>
+
+
+<p>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-神奇的分割线&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;</p>
+
+<p>又找到了一些规范：</p>
+
+<p>Under the Warnings header, also set the Other Linker Flags option to -Wall. The compiler will now check for all possible situations that can cause problems. By default many of these warnings are turned off but I find it useful to always have all warnings on and to treat them as fatal errors. In other words, if the compiler gives a warning I will first fix it before continuing. Whether that is something you may want to do on your own projects is up to you, but during the conversion to ARC I recommend that you take a good look at any issues the compiler may complain about.
+For the exact same reason, also enable the Run Static Analyzer option under the Build Options header, Xcode will now run the analyzer every time we build the app. That makes the builds a bit slower but for an app of this size that’s barely noticeable.</p>
+
+<p>如果大家有什么好的代码规范，欢迎补充。O(∩_∩)O~。</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-10T11:40:00+08:00" data-updated="true" itemprop="datePublished">Mar 10<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gcd/'>GCD</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/10/blocksde-shen-ming-diao-yong-yu-queuedang-zuo-suo-de-yong-fa/" itemprop="url">Blocks的申明调用与Queue当做锁的用法</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<h3>Blocks的申明与调用</h3>
+
+<p>话说Blocks在方法内使用还是挺方便的，之前都是把相同的代码封装成外部函数，然后在一个方法里需要的时候调用，这样挺麻烦的。使用Blocks之后，我们可以把相同代码在这个方法里封装起来，然后再在这个方法中需要的地方直接调用，逻辑清晰，操作也不会那么繁琐。</p>
+
+<p>上代码：</p>
+
+<pre><code>//在方法体内
+//block申明与初始化
+ void(^removePicViewBlock)(int,int) = ^(int start,int stop){
+
+    while (start &lt;= stop)
+    {
+        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        SWDPictureView *view = (SWDPictureView *)[self.scroller viewWithTag:start + 1];
+        view.imageView.image = nil;
+        view.imageView = nil;
+        view.delegate2 = nil;
+        [view removeFromSuperview];
+        start ++;
+        [pool drain];
+    }
+
+
+};
+if (page &lt; self.currentPage)
+{
+    //block的调用
+    removePicViewBlock(0,page);
+}
+else if(page &gt; self.currentPage)
+{
+    //block的调用
+    removePicViewBlock(page,[self.picList count]-1);
+}
+</code></pre>
+
+<h3>Queue作为锁的用法</h3>
+
+<p>说到多线程就必须要提到锁了，话说用锁也蛮麻烦，需要在初始化的时候申明一个锁，然后每个方法的开头加一把锁，结尾再把锁去掉。如果用queue就不必那么麻烦了。根据task在queue中FIFO的特性就可以防止多线程中资源被同时访问。</p>
+
+<p>上代码。</p>
+
+<pre><code>//初始化时初始化一个queue
+UserQueue = dispatch_queue_create("use for storing image to disk", nil);
+
+//多线程调用时，将任务放在queue中执行。此时queue充当锁的角色。
+//存储图片缓冲到硬盘
+-(void)storeImage:(UIImage *)image key:(NSString *)key
+{
+    dispatch_async(UserQueue, ^{
+
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        BOOL succ = [fileManager createFileAtPath:[self cachePathForKey:key] contents:UIImageJPEGRepresentation(image, (CGFloat)0.6) attributes:nil];
+        NSLog(@"store successfully!!! %d",succ);
+        [fileManager release];
+        fileManager = nil;
+    });
+
+}
+</code></pre>
+
+<p>好了，就这些。</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-10T08:19:00+08:00" data-updated="true" itemprop="datePublished">Mar 10<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/wall/'>Wall</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/10/shuo-shuo-fan-qiang-ruan-jian-goagentx/" itemprop="url">说说翻墙软件 GoAgentX</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>翻墙软件对程序猿来说应该都是必备的吧，最近翻墙又出现了问题，所以又捣鼓了一遍。现在记下来，免得以后出问题又要翻半天。</p>
+
+<ol>
+<li><a href="https://appengine.google.com/">申请Google Appengine</a>。这是需要注意的是：申请时填写的app id不要包含移动平台的字段，比如iphone或者android。不然进入facebook，twitter网站会默认进入移动版。</li>
+<li><a href="https://github.com/ohdarling/GoAgentX/downloads">下载GoAgentX</a>。最新的版本里已经包含了goagent，所以不再需要下载goagent。</li>
+<li>安装GoAgentX并配置。这里要注意的是：服务配置选项卡里面的服务密码要填写。其他设置中的“导入goagent根证书”要点击导入。一个是为了防止出现url/2的错误，一个是为了防止无法登陆https网站。</li>
+<li>chrome安装<a href="https://chrome.google.com/webstore/detail/proxy-switchysharp/dpplabbmogkhghncfbfdeeokoefdjegm">SwitchySharp插件</a>,并在插件中导入<a href="http://goagent.googlecode.com/files/SwitchyOptions.bak">http://goagent.googlecode.com/files/SwitchyOptions.bak</a></li>
+</ol>
+
+
+<p>那么，希望各位能在一个开放自由的互联网环境中学习，成长。</p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-09T17:23:00+08:00" data-updated="true" itemprop="datePublished">Mar 9<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/debug/'>Debug</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/09/crashlytics-diao-shi-li-qi/" itemprop="url">Crashlytics 调试利器</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>今天收到Crashlytics员工发来的邮件，说他收到很多我发的重复请求，如果已收到邀请，请及时回复。话说他这个注册还挺麻烦，先发一个邮件地址过去，要等一天的样子，然后会收到一个邮件说你是否通过验证，通过验证才能注册。不知道要等那么久，以为是邮箱的关系，就不断的请求请求。哈。不管怎样，总算可以注册了。</p>
+
+<p>说一下Crashlytics吧。</p>
+
+<p>了解的不多，大概是将它的sdk加入到工程中可以随时监控iOS的崩溃情况，甚至可以定位到代码行级别。这个比iOS的崩溃日志强多了。</p>
+
+<p>更多优点使用之后再和大家分享。</p>
+
+<p><a href="http://www.flickr.com/photos/tuchangwei/8540600027/" title="Flickr 上 涂 涂 的 DEE758DA-B46C-477A-B790-13C9B14DE43F"><img src="http://static.flickr.com/8106/8540600027_a9a942a4ba.jpg" width="500" height="325" alt="DEE758DA-B46C-477A-B790-13C9B14DE43F"></a></p>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-05T21:50:00+08:00" data-updated="true" itemprop="datePublished">Mar 5<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gcd/'>GCD</a>, <a class='category' href='/blog/categories/ios/'>iOS</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/05/gcdhe-xin-hao-liang/" itemprop="url">GCD和信号量</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<h1>GCD</h1>
+
+<p>概念不多说，直接上代码。话说也不是什么高深的东东，不过极大简化了代码，一目了然。后面对信号量的记录也采用了相同的原理。</p>
+
+<pre><code>//抛出线程
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+
+    NSURL * url = [NSURL URLWithString:@"http://www.google.com"];
+    NSString * data = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+    if (data != nil) {
+        //抛出的线程执行完后，回到主线程处理界面逻辑。
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+        });
+    } else {
+
+    }
+});
+</code></pre>
+
+<h1>semaphore（信号量）</h1>
+
+<p>信号量主要是用在传说中的生产者消费者模式里面，当信号量为0时线程挂起，当信号量大于0时继续向下执行。以前研究过一次，不过没怎么搞懂，反而把界面给搞死了。这次，取相册里的图片，GCD加Semaphore，又折腾了一次，还好。不多说，继续上代码。</p>
+
+<pre><code>//这几段代码的大概意思是：抛一个线程出来，取相册里的group，再在取group中的线程中抛出线程，去取group中的result，最终到界面线程中去操作。
+//这里需要两个信号量，一个用来阻塞取group的线程，避免界面线程先于取group的线程运行完毕。另外一个用来阻塞取result中的线程，避免取result的
+//线程先于取group执行完毕。
+
+//抛出线程
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+
+    //创建信号量
+    dispatch_semaphore_t semaphore1 = dispatch_semaphore_create(0);
+    dispatch_semaphore_t semaphore2 = dispatch_semaphore_create(0);
+    ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
+
+        if (result == nil) {
+            //当某个group取完毕后，信号量加1，dispatch_semaphore_wait方法执行，信号量为0，程序循环，去取下一个group中的result
+            dispatch_semaphore_signal(semaphore2);
+
+        }else if ([[result valueForProperty:ALAssetPropertyType]isEqualToString:ALAssetTypePhoto]||[[result valueForProperty:ALAssetPropertyType]
+ isEqualToString:ALAssetTypeVideo]) {
+
+            FileNode *node = [[FileNode alloc] init];
+            node.m_name =  result.defaultRepresentation.filename;
+            node.m_path = [result.defaultRepresentation.url absoluteString];
+            [self.picList addObject:node];
+            NSLog(@"%@",node.m_name);
+            NSLog(@"%@",node.m_path);
+            [node release];
+
+        }
+    };
+
+
+    ALAssetsLibraryGroupsEnumerationResultsBlock libraryGroupsEnumeration = ^(ALAssetsGroup* group, BOOL* stop){
+
+        if (group!=nil)
+        {
+
+            [group enumerateAssetsUsingBlock:groupEnumerAtion];
+            dispatch_semaphore_wait(semaphore2, DISPATCH_TIME_FOREVER);
+
+        }else{
+            //当所有group取完后，信号量加1，程序不再阻塞，进入界面线程。
+            dispatch_semaphore_signal(semaphore1);
+        }
+
+    };
+
+    ALAssetsLibraryAccessFailureBlock failureblock = ^(NSError *error){
+
+
+        NSLog(@"failureblock:%@",error);
+    };
+
+
+    ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+    [library enumerateGroupsWithTypes:ALAssetsGroupAll
+                           usingBlock:libraryGroupsEnumeration
+                         failureBlock:failureblock];
+
+    dispatch_semaphore_wait(semaphore1, DISPATCH_TIME_FOREVER);
+    dispatch_release(semaphore1);
+    dispatch_release(semaphore2);
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        [self loadPicAtPage:self.currentPage];
+        [self loadPicAtPage:self.currentPage + 1];
+    });
+});
+</code></pre>
+
+		
+		
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-03T14:51:00+08:00" data-updated="true" itemprop="datePublished">Mar 3<span>rd</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/git/'>git</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/03/git-jian-yi-zhi-nan/" itemprop="url">Git 简易指南</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>以前看git文档，看的云里雾里的，没怎么看懂，后来在公司用了svn，对版本控制了解更深了些。最近看到了这篇《Git简易指南》彻底明白git是怎么回事了。以防此好文丢失，现转载如下：</p>
+
+<h1>创建新仓库</h1>
+
+<p>创建新文件夹，打开，然后执行</p>
+
+<pre><code>git init
+</code></pre>
+
+<p>以创建新的 git 仓库。</p>
+
+<h1>检出仓库</h1>
+
+<p>执行如下命令以创建一个本地仓库的克隆版本：</p>
+
+<pre><code>git clone /path/to/repository
+</code></pre>
+
+<p>如果是远端服务器上的仓库，你的命令会是这个样子：</p>
+
+<pre><code>git clone username@host:/path/to/repository
+</code></pre>
+
+<h1>工作流</h1>
+
+<p>你的本地仓库由 git 维护的三棵“树”组成。第一个是你的 <code>工作目录</code>，它持有实际文件；第二个是 <code>缓存区（Index）</code>，它像个缓存区域，临时保存你的改动；最后是 <code>HEAD</code>，指向你最近一次提交后的结果。</p>
+
+<p><a href="http://www.flickr.com/photos/tuchangwei/8523967294/" title="Flickr 上 涂 涂 的 git-trees"><img src="http://static.flickr.com/8088/8523967294_eed70782b4.jpg" width="500" height="178" alt="git-trees"></a></p>
+
+<h1>添加与提交</h1>
+
+<p>你可以计划改动（把它们添加到缓存区），使用如下命令：</p>
+
+<pre><code>git add &lt;filename&gt;
+git add *
+</code></pre>
+
+<p>这是 git 基本工作流程的第一步；使用如下命令以实际提交改动：</p>
+
+<pre><code>git commit -m "代码提交信息"
+</code></pre>
+
+<p>现在，你的改动已经提交到了 HEAD，但是还没到你的远端仓库。</p>
+
+<h1>推送改动</h1>
+
+<p>你的改动现在已经在本地仓库的 HEAD 中了。执行如下命令以将这些改动提交到远端仓库：</p>
+
+<pre><code>git push origin master
+</code></pre>
+
+<p>可以把 master 换成你想要推送的任何分支。
+如果你还没有克隆现有仓库，并欲将你的仓库连接到某个远程服务器，你可以使用如下命令添加：</p>
+
+<pre><code>git remote add origin &lt;server&gt;
+</code></pre>
+
+<p>如此你就能够将你的改动推送到所添加的服务器上去了。</p>
+
+<h1>分支</h1>
+
+<p>分支是用来将特性开发绝缘开来的。在你创建仓库的时候，master 是“默认的”。在其他分支上进行开发，完成后再将它们合并到主分支上。</p>
+
+<p><a href="http://www.flickr.com/photos/tuchangwei/8523448559/" title="Flickr 上 涂 涂 的 branches"><img src="http://static.flickr.com/8112/8523448559_b6123efc03.jpg" width="500" height="178" alt="branches"></a></p>
+
+<p>创建一个叫做“feature_x”的分支，并切换过去：</p>
+
+<pre><code>git checkout -b feature_x
+</code></pre>
+
+<p>切换回主分支：</p>
+
+<pre><code>git checkout master
+</code></pre>
+
+<p>再把新建的分支删掉：</p>
+
+<pre><code>git branch -d feature_x
+</code></pre>
+
+<p>除非你将分支推送到远端仓库，不然该分支就是 不为他人所见的：</p>
+
+<pre><code>git push origin &lt;branch&gt;
+</code></pre>
+
+<h1>更新与合并</h1>
+
+<p>要更新你的本地仓库至最新改动，执行：</p>
+
+<pre><code>git pull
+</code></pre>
+
+<p>以在你的工作目录中 获取（fetch） 并 合并（merge） 远端的改动。
+要合并其他分支到你的当前分支（例如 master），执行：</p>
+
+<pre><code>git merge &lt;branch&gt;
+</code></pre>
+
+<p>两种情况下，git 都会尝试去自动合并改动。不幸的是，自动合并并非次次都能成功，并可能导致 冲突（conflicts）。 这时候就需要你修改这些文件来人肉合并这些 冲突（conflicts） 了。改完之后，你需要执行如下命令以将它们标记为合并成功：</p>
+
+<pre><code>git add &lt;filename&gt;
+</code></pre>
+
+<p>在合并改动之前，也可以使用如下命令查看：</p>
+
+<pre><code>git diff &lt;source_branch&gt; &lt;target_branch&gt;
+</code></pre>
+
+<h1>标签</h1>
+
+<p>在软件发布时创建标签，是被推荐的。这是个旧有概念，在 SVN 中也有。可以执行如下命令以创建一个叫做 1.0.0 的标签：</p>
+
+<pre><code>git tag 1.0.0 1b2e1d63ff
+</code></pre>
+
+<p>1b2e1d63ff 是你想要标记的提交 ID 的前 10 位字符。使用如下命令获取提交 ID：</p>
+
+<pre><code>git log
+</code></pre>
+
+<p>你也可以用该提交 ID 的少一些的前几位，只要它是唯一的。</p>
+
+<h1>替换本地改动</h1>
+
+<p>假如你做错事（自然，这是不可能的），你可以使用如下命令替换掉本地改动：</p>
+
+<pre><code>git checkout -- &lt;filename&gt;
+</code></pre>
+
+<p>此命令会使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到缓存区的改动，以及新文件，都不受影响。</p>
+
+<p>假如你想要丢弃你所有的本地改动与提交，可以到服务器上获取最新的版本并将你本地主分支指向到它：</p>
+
+<pre><code>git fetch origin
+git reset --hard origin/master
+</code></pre>
+
+<h1>有用的贴士</h1>
+
+<p>内建的图形化 git：gitk</p>
+
+<p>彩色的 git 输出：</p>
+
+<pre><code>git config color.ui true
+</code></pre>
+
+<p>显示历史记录时，只显示一行注释信息：</p>
+
+<pre><code>git config format.pretty oneline
+</code></pre>
+
+<p>交互地添加文件至缓存区：</p>
+
+<pre><code>git add -i
+</code></pre>
+
+<hr />
+
+<p>转自：<a href="http://rogerdudler.github.com/git-guide/index.zh.html">http://rogerdudler.github.com/git-guide/index.zh.html</a>  <br/>
+  
+		
+		<a href="/blog/2013/03/03/git-jian-yi-zhi-nan/" class="more-link">Read on &rarr;</a>
+	</div>
+
+</article>
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-16T21:13:00+08:00" data-updated="true" itemprop="datePublished">Feb 16<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/life/'>life</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/02/16/2012nian-zong-jie-%2C2013nian-ji-hua/" itemprop="url">2012年总结，2013年计划</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>2012年经历了很多，辞职，回校答辩，找工作，结婚，拿毕业证，还有将要出生的涂这这同学，这一年过的好赶啊。</p>
+
+<p>2012年最想做的事就是辞职呆在家里做freelancer，结果因对自己信心不足而放弃。虽然如此，做一名优秀的freelancer还是我的梦想，2013年将继续努力，希望离这个梦想更近一点。2012年学习的时间少了很多，在新公司一大半的时间都在做维护工作，因为是oem的原因，所以很繁琐很累，每晚都九点十点才回家，周末也时常加班，没有时间搞学习，也没时间陪家人，这也是我最痛心的事。</p>
+
+<p>说说2013年的计划吧。</p>
+
+<ul>
+<li><p>锻炼身体。</p>
+
+<p>坚持每晚下班回家跑步，做仰卧起坐。身体很重要很重要！！！</p></li>
+<li><p>研究fmpeg，并做出全能播放器。</p>
+
+<p>  术业有专攻，就从视频编解码开始。</p></li>
+<li><p>学习c++，研究boost库。</p></li>
+<li><p>熟练运用blocks。</p></li>
+<li><p>熟悉android开发平台。</p></li>
+<li><p>学会弹几首吉他曲。</p></li>
+</ul>
+
+
+<hr />
+
+<p>一些补充（2013.3.30）：</p>
+
+<ul>
+<li>熟悉ARC</li>
+<li>OpenGL</li>
+<li>学习英语</li>
+<li>熟悉Ruby on Rails</li>
+</ul>
+
+
+<p>话说想到在公司工作我又想吐槽，本来想将多抽出一点时间陪家人作为新一年的计划，想想实际情况还是算了。公司的情况是无论你多么的高效，永远有做不完的事，就算没事早点回家领导也会有意见。不知道是公司特例还是普遍现象。也欢迎大家吐槽。</p>
+
+		
+		
+	</div>
+
+</article>
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/" class="prev">Prev</a>
+    
+    
+        <a href="/blog/page/3/" class="next">Next</a>
+    
+    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Vale T. -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a></footer>
+			<script src="/javascripts/slash.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tuchangwei';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

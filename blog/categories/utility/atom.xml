@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Utility | Vale's Blog]]></title>
+  <link href="http://tuchangwei.github.io/blog/categories/utility/atom.xml" rel="self"/>
+  <link href="http://tuchangwei.github.io/"/>
+  <updated>2013-08-15T22:35:14+08:00</updated>
+  <id>http://tuchangwei.github.io/</id>
+  <author>
+    <name><![CDATA[Vale T.]]></name>
+    <email><![CDATA[tcwliphone@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Use Command line to pack applications]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/03/30/use-command-line-to-pack-applications/"/>
+    <updated>2013-03-30T17:02:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/03/30/use-command-line-to-pack-applications</id>
+    <content type="html"><![CDATA[<p>All right. It is time for me to write something. My wife has stayed in her hometown about half a month. I miss her very much. It is dark out of the window.  You know, in summer, the rain is rich in ShenZhen. Sometimes, I am very anxious about doing something which is matter with opportunity and ability. Anyway, let us do something about work.</p>
+
+<p>Sometimes we need to build apps for many channels, we needn&rsquo;t change many codes but some configurations. As we all know, we use Xcode to build and run application. many channels many building. So boring! So let us see how to do it using command line.</p>
+
+<ul>
+<li><p>first shell, it is used for generating binary to upload AppStore.</p>
+
+<pre><code>  #!/bin/sh
+  target="Power7 MobileView"
+  distDir="/Users/tuchangwei/Documents/WorkSpace/Release/${factory}/${appName}_V${version}"
+  rm -rdf "$distDir"
+  mkdir "$distDir"
+
+  uploadDir="${distDir}/Upload AppStore"
+  rm -rdf "$uploadDir"
+  mkdir "$uploadDir"
+  /usr/bin/xcodebuild -target "$target" clean
+  echo "******************start build*********************"
+  /usr/bin/xcodebuild -target "$target" CODE_SIGN_IDENTITY="$distribution"
+  echo "******************start pick .ipa*********************"
+  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${uploadDir}/${appName}.ipa" --sign "$distribution"
+  echo "******************start pick test .ipa*********************"
+  codesign -f --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" build/Release-iphoneos/*.app
+  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${distDir}/${appName}_V${version}.ipa" --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" --embed "/Users/tuchangwei/Library/MobileDevice/Provisioning Profiles/D788EEA0-848E-4F5E-AA30-87D38154DA9B.mobileprovision"
+</code></pre></li>
+<li><p>second shell is used for generating test binary</p>
+
+<pre><code>  #!/bin/sh
+  target="Power7 MobileView"
+  distDir="/Users/tuchangwei/Desktop/Test"
+  rm -rdf "$distDir"
+  mkdir "$distDir"
+  /usr/bin/xcodebuild -target "$target" clean
+  echo "******************start build*********************"
+  /usr/bin/xcodebuild -target "$target" 
+  echo "******************start pick test .ipa*********************"
+  codesign -f --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" build/Release-iphoneos/*.app
+  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${distDir}/test.ipa" --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" --embed "/Users/tuchangwei/Library/MobileDevice/Provisioning Profiles/D788EEA0-848E-4F5E-AA30-87D38154DA9B.mobileprovision"
+</code></pre></li>
+<li><p>third shell is used for deleting .svn files in project.</p>
+
+<pre><code>  #!/bin/sh
+  echo "start delete .svn..."
+  find $PWD/ -name .svn -print0 | xargs -0 rm -rf
+  echo "finish delete .svn."
+</code></pre></li>
+</ul>
+
+
+<p>So, you know, i also use some shell to improve efficiency. See you,O(∩_∩)O~.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Terminal Shortcuts]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/03/30/terminal-shortcuts/"/>
+    <updated>2013-03-30T16:51:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/03/30/terminal-shortcuts</id>
+    <content type="html"><![CDATA[<h3>mac/linux终端光标的快捷键操作</h3>
+
+<h4>常用的快捷键：</h4>
+
+<ul>
+<li>Ctrl + d        删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）</li>
+<li>Ctrl + h        退格删除一个字符，相当于通常的Backspace键</li>
+<li>Ctrl + u        删除光标之前到行首的字符</li>
+<li>Ctrl + k        删除光标之前到行尾的字符</li>
+<li>Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break</li>
+<li>Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键</li>
+<li>Ctrl + e        光标移动到行尾（End of line）</li>
+<li>Ctrl + f        光标向前(Forward)移动一个字符位置</li>
+<li>Ctrl + b        光标往回(Backward)移动一个字符位置</li>
+<li>Ctrl + l        清屏，相当于执行clear命令</li>
+<li>Ctrl + p        调出命令历史中的前一条（Previous）命令，相当于通常的上箭头</li>
+<li>Ctrl + n        调出命令历史中的下一条（Next）命令，相当于通常的上箭头</li>
+<li>Ctrl + r        显示：号提示，根据用户输入查找相关历史命令（reverse-i-search）</li>
+</ul>
+
+
+<h4>次常用快捷键：</h4>
+
+<ul>
+<li>Alt + f         光标向前（Forward）移动到下一个单词</li>
+<li>Alt + b         光标往回（Backward）移动到前一个单词</li>
+<li>Ctrl + w        删除从光标位置前到当前所处单词（Word）的开头</li>
+<li>Alt + d         删除从光标位置到当前所处单词的末尾</li>
+<li>Ctrl + y        粘贴最后一次被删除的单词</li>
+</ul>
+
+
+<p>以上就是快捷键了，在这里我只想揭露一些事情，这些快捷键都是emacs的快捷键！熟悉终端的同学应该知道，终端里可以设置快捷键的类型是vim还是emacs。当然了大多数的终端都用的emacs，因为啥自己想去吧。</p>
+
+<p>在这里之所以又将这些东西提出来的原因是：mac os x虽然是图形界面，但是chrome，xcode啥的也支持这些快捷键！</p>
+
+<p>摘自：<a href="http://blog.cnrainbird.com/index.php/2012/03/23/mac_linux_zhong_duan_guang_biao_de_kuai_jie_jian_cao_zuo/">http://blog.cnrainbird.com/index.php/2012/03/23/mac_linux_zhong_duan_guang_biao_de_kuai_jie_jian_cao_zuo/</a></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,246 @@
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>How to export mp3 from ipod-library - Vale's Blog</title>
+	<meta name="author" content="Vale T.">
+
+	
+	<meta name="description" content="How to Export Mp3 From Ipod-library Someday, our leader let me export videos, music and photos from Video, Music and Photos in iPad or iPhone. After &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Vale's Blog" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tuchangwei.github.io/blog/2013/06/04/how-to-export-mp3-from-ipod-library/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<script src="/javascripts/md5.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("tcwliphone@gmail.com") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+		});
+	</script>
+</div>
+<hgroup>
+  <h1><a href="/">Vale's Blog</a></h1>
+  
+    <h2>iOS Developer, Dad, Freelancer.</h2>
+  
+</hgroup>
+
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    In the world, we play the role of Party A or Party B frequently, but the timeless thing is our sincerity given to others, in return, will be treat sincerely.
+  </p>
+</section>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/valetu1988" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/tuchangwei" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">How to Export Mp3 From Ipod-library</h1>
+	<div class="entry-content" itemprop="articleBody"><p>Someday, our leader let me export videos, music and photos from Video, Music and Photos in iPad or iPhone. After looked up some articles, I found it was difficult to export mp3.</p>
+
+<p>But, Nowadays, it came true to export mp3, so every format of ipod-library files can be exported.</p>
+
+<p>Now, See how to do it.</p>
+
+<ul>
+<li>first, import some frameworks, such as <code>MobileCoreServices.framework</code>,<code>MediaPlayer.framework</code>,<code>AVFoundation.framework</code></li>
+<li><p>second, query the media from ipod-library.</p>
+
+<pre><code>  //request videos and music come from system's Videos and Music 
+  NSNumber *videoTypeNum = [NSNumber numberWithInteger:MPMediaTypeAny];
+
+  MPMediaPropertyPredicate *videoPredicate = [MPMediaPropertyPredicate predicateWithValue:videoTypeNum forProperty:MPMediaItemPropertyMediaType];
+
+  MPMediaQuery *videoQuery = [[MPMediaQuery alloc] init];
+  [videoQuery addFilterPredicate: videoPredicate];
+  _mediaItems = [[videoQuery items] copy];
+</code></pre></li>
+</ul>
+
+
+<p>*third, convert MPMediaItem to AVURLAsset, generate file name and file extension, then start export,the format of exported file is &ldquo;MOV&rdquo;.Finally, i need use NSFileManager rename the mov to mp3.</p>
+
+<pre><code> MPMediaItem *mediaItem = [_mediaItems objectAtIndex:_count];
+
+ //get the name of the file.
+ NSString *songTitle = [mediaItem valueForProperty: MPMediaItemPropertyTitle];
+
+ //convert MPMediaItem to AVURLAsset.
+ AVURLAsset *sset = [AVURLAsset assetWithURL:[mediaItem valueForProperty:MPMediaItemPropertyAssetURL]];
+
+//get the extension of the file.
+NSString *fileType = [[[[sset.URL absoluteString] componentsSeparatedByString:@"?"] objectAtIndex:0] pathExtension];
+
+//init export, here you must set "presentName" argument to "AVAssetExportPresetPassthrough". If not, you will can't export mp3 correct.
+AVAssetExportSession *export = [[AVAssetExportSession alloc] initWithAsset:sset presetName:AVAssetExportPresetPassthrough];
+
+NSLog(@"export.supportedFileTypes : %@",export.supportedFileTypes);
+//export to mov format.
+export.outputFileType = @"com.apple.quicktime-movie";
+
+export.shouldOptimizeForNetworkUse = YES;
+
+NSString *extension = ( NSString *)UTTypeCopyPreferredTagWithClass(( CFStringRef)export.outputFileType, kUTTagClassFilenameExtension);
+
+NSLog(@"extension %@",extension);
+NSString *path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@.%@",songTitle,extension];
+
+NSURL *outputURL = [NSURL fileURLWithPath:path];
+export.outputURL = outputURL;
+[export exportAsynchronouslyWithCompletionHandler:^{
+
+   if (export.status == AVAssetExportSessionStatusCompleted)
+     {
+        //then rename mov format to the original format.
+         NSFileManager *manage = [NSFileManager defaultManager];
+
+         NSString *mp3Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@.%@",songTitle,fileType];
+
+         NSError *error = nil;
+
+         [manage moveItemAtPath:path toPath:mp3Path error:&amp;error];
+
+         NSLog(@"error %@",error);
+
+      }
+      else
+      {
+         NSLog(@"%@",export.error);
+      }
+
+}];
+</code></pre>
+
+<p>Some points you need notice:</p>
+
+<ul>
+<li>when you init AVAssetExportSession object, the &ldquo;presetName&rdquo; argument must be &ldquo;AVAssetExportPresetPassthrough&rdquo;.</li>
+<li>The &ldquo;outputFileType&rdquo; may be &ldquo;com.apple.quicktime-movie&rdquo;.</li>
+</ul>
+
+
+<p>So easy, doesn&rsquo;t it? Good night.</p>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Vale T. -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a></footer>
+			<script src="/javascripts/slash.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tuchangwei';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tuchangwei.github.io/blog/2013/06/04/how-to-export-mp3-from-ipod-library/';
+        var disqus_url = 'http://tuchangwei.github.io/blog/2013/06/04/how-to-export-mp3-from-ipod-library/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>
