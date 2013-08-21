@@ -122,5 +122,10 @@ categories: git
 	git add -i
 	
 ----
-转自：<http://rogerdudler.github.com/git-guide/index.zh.html>	
+#有用的图片
+<a href="http://www.flickr.com/photos/tuchangwei/9559884789/" title="Flickr 上 涂 涂 的 1352126739_7909"><img src="http://static.flickr.com/7301/9559884789_bee6b04c14.jpg" width="500" height="261" alt="1352126739_7909"></a>
+
+转自：<http://rogerdudler.github.com/git-guide/index.zh.html>
+
+	
   <!--more-->
