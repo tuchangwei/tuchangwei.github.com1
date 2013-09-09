@@ -9,7 +9,8 @@
 	<meta name="author" content="Vale T.">
 
 	
-	<meta name="description" content="Jun 4th, 2013 iOS, ipod-library How to Export Mp3 From Ipod-library Someday, our leader let me export videos, music and photos from Video, Music and &hellip;">
+	<meta name="description" content="Sep 9th, 2013 Activities, Online Sep 1-7,2013 All Activities if (typeof rtapi == 'undefined') var rtapi = {}; rtapi.keSu = {};
+rtapi.keSu.title = ' &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +92,75 @@
 			<div class="mid-col-container">
 				<div id="content" class="inner">
 <div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-09T08:49:00+08:00" data-updated="true" itemprop="datePublished">Sep 9<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/activities/'>Activities</a>, <a class='category' href='/blog/categories/online/'>Online</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/09/09/sep1-7/" itemprop="url">Sep 1-7,2013 All Activities</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<!-- configurable section -->
+
+
+<script type="text/javascript">
+if (typeof rtapi == 'undefined') var rtapi = {}; rtapi.keSu = {};
+rtapi.keSu.title = 'All Activities ';
+rtapi.keSu.kind = 'sidebar';
+rtapi.keSu.styling = { width:300, height:300 };
+</script>
+
+
+<!-- below is required -->
+
+
+<div id="rtdivkeSu"><p id="rtmsg">RescueTime: <a href="http://www.rescuetime.com/tour"> Project Time Tracking Software</a> 
+&amp; Team <a href="http://www.rescuetime.com">Time Management Software</a></p></div>
+
+
+<script src="https://www.rescuetime.com/anapi/js/embed/B63eSu_COao2zbuL22YAGJtRGAfydngMlhTrcaIY" type="text/javascript"></script>
+
+
+<script type='text/javascript'>RTAPI.render_all(rtapi);</script>
+
+
+<!-- a little how-to 
+- Paste this into your web page where you want the chart.
+- You may have multiple embedded charts on the same page.
+- You can change the title, width and height by editing the named properties.
+- You can opt for the more verbose full chart by setting .kind to 'default'.
+- If you want your own css control, you can add 'rtapi.my_css = true;' before the render function.
+- css class names are: 
+-   rtdiv : the whole container
+-   rttitle : the title, rtchart : the chart, rtfeed : the footer
+-->
+
+
+		
+		
+	</div>
+
+</article>
 
 
     <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
@@ -1035,66 +1105,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 <p>在这里之所以又将这些东西提出来的原因是：mac os x虽然是图形界面，但是chrome，xcode啥的也支持这些快捷键！</p>
 
 <p>摘自：<a href="http://blog.cnrainbird.com/index.php/2012/03/23/mac_linux_zhong_duan_guang_biao_de_kuai_jie_jian_cao_zuo/">http://blog.cnrainbird.com/index.php/2012/03/23/mac_linux_zhong_duan_guang_biao_de_kuai_jie_jian_cao_zuo/</a></p>
-
-		
-		
-	</div>
-
-</article>
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-26T00:30:00+08:00" data-updated="true" itemprop="datePublished">Mar 26<span>th</span>, 2013</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/nslog/'>NSLog</a>
-
-
-</div>
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2013/03/26/how-should-we-use-nslog/" itemprop="url">How Should We Use NSLog</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<p>As we all know, every programming language has a selector to print the value on the Console which we want to. This way to debug is too violence, too simple and underestimated by someone. Other way is setting breakpoints, after application runs, it will stop when meets a breakpoint. Someone like this way, he need not see the Console and restart the application again and again to print.</p>
-
-<p>But i want to say, unitl now, i really have been tend to print value. Because  when some mulitithreadings run at the same time, it is difficult to track the breakpoint. However other way is easy just as “History don&rsquo;t lie”. We can print the system time,the line of printing, the selector, the value of some object，the class as so on.</p>
-
-<p>So,let us see the follow codes.</p>
-
-<pre><code>#if DEBUG
-#define NSLog(FORMAT, ...) {\
-NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];\
-[dateFormatter setDateStyle:NSDateFormatterMediumStyle];\
-[dateFormatter setTimeStyle:NSDateFormatterShortStyle];\
-[dateFormatter setDateFormat:@"HH:mm:ss:SSSSSS"]; \
-NSString *str = [dateFormatter stringFromDate:[NSDate date]];\
-[dateFormatter release];\
-fprintf(stderr,"[--%s--]*[--%s--]*[--%s:%d--]\n",[str UTF8String],  [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String],[[[NSString  stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__);\
-}
-#else
-#define NSLog(FORMAT, ...) nil
-#endif 
-</code></pre>
-
-<p>This is a macro definition. You can copy this to your CommonHead.h file and import the  CommonHead.h to your .pch file so that you can use it at anywhere in your project. The macrodefinition is great, when you use debug mode to print value, you will find the value, the system time, the line and the object where the selector in, yet using the release mode, you will see nothing. The reason is as follow:</p>
-
-<p><a href="http://www.flickr.com/photos/tuchangwei/8590218136/" title="Flickr 上 涂 涂 的 0F804C40-EA0B-42C5-8058-7E3230E01A13"><img src="http://static.flickr.com/8108/8590218136_2798079941.jpg" width="500" height="237" alt="0F804C40-EA0B-42C5-8058-7E3230E01A13"></a></p>
-
-<p>Why we need print the line of the selector? Yes, you guess it, press &ldquo;cmd&rdquo; + &ldquo;i&rdquo; when using Xcode, you will find the selector right now!</p>
 
 		
 		
