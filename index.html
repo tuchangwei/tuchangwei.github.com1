@@ -9,8 +9,9 @@
 	<meta name="author" content="Vale T.">
 
 	
-	<meta name="description" content="Sep 9th, 2013 Activities Sep 1-7,2013 All Activities if (typeof rtapi == 'undefined') var rtapi = {}; rtapi.keSu = {};
-rtapi.keSu.title = 'All &hellip;">
+	<meta name="description" content="Sep 9th, 2013 Autolayout [译]在IB中实现自动布局 有关自动布局的其他文章： Autolayout
+Visual format language for autolayout
+Creating individual constraints 可怜的界面编辑器。 &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +65,11 @@ rtapi.keSu.title = 'All &hellip;">
 <nav id="sub-nav">
 	<div class="social">
 		
+				<a class="weibo" href="http://www.weibo.com/thankforyou" title="Weibo">Weibo</a>
+		
+		
+		<a class="facebook" href="http://www.facebook.com/tu.vale.75" title="Facebook">Facebook</a>
+		
 		
 		
 		<a class="twitter" href="http://twitter.com/valetu1988" title="Twitter">Twitter</a>
@@ -92,6 +98,142 @@ rtapi.keSu.title = 'All &hellip;">
 			<div class="mid-col-container">
 				<div id="content" class="inner">
 <div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-09T20:59:00+08:00" data-updated="true" itemprop="datePublished">Sep 9<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/autolayout/'>Autolayout</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/09/09/autolayout-in-interface-builder/" itemprop="url">[译]在IB中实现自动布局</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>有关自动布局的其他文章：</p>
+
+<ul>
+<li><a href="http://commandshift.co.uk/blog/2013/01/13/autolayout/">Autolayout</a></li>
+<li><a href="http://commandshift.co.uk/blog/2013/01/31/visual-format-language-for-autolayout/">Visual format language for autolayout</a></li>
+<li><a href="http://commandshift.co.uk/blog/2013/02/20/creating-individual-layout-constraints/">Creating individual constraints</a></li>
+</ul>
+
+
+<p>可怜的界面编辑器。它只能服从命令。苹果告诉它，它必须创建最简单的约束集并且简明的传递给你通过拖拽和调整控件大小所形成的布局中。系统约束集留给你的可能是这样的：</p>
+
+<p><img src="http://static.flickr.com/7422/9710436440_4feab8c718.jpg" width="500" height="205" alt="autolayout_nightmare"></p>
+
+<p>它也不一定非是上面的节奏。</p>
+
+<p>在界面编辑器中快乐写约束的秘密其实很简单：告诉它你想要什么。只是拖拽控件是不够的。</p>
+
+<p>创建一个包含空View的.xib文件(File —> New File —> User Interface —> View)，拖一个label放在View左上方的某个地方。IB将会为你创建一些约束：</p>
+
+<p><img src="http://static.flickr.com/7429/9711179916_c26ce7fea7.jpg" width="500" height="147" alt="label_top_left"></p>
+
+<p>现在，把这个label移动到右下方：</p>
+
+<p><img src="http://static.flickr.com/7336/9707197253_d1a4987a28.jpg" width="500" height="430" alt="label_bottom_right"></p>
+
+<p>IB已经丢掉了之前自动创建的约束，重新创建了一组新约束。这个label现在会有不同的表现——比如说，在3.4寸和4寸iPhone屏上，它将会和屏幕底部保持相同的距离，而不是和屏幕顶部。这可能不是你想要的。</p>
+
+<p>再次将label移回到左上角，开始给IB一些帮助。选择这个label，然后点击右边的“size inspector”图标：</p>
+
+<p><img src="http://farm3.staticflickr.com/2890/9710436938_fe60560e80.jpg" width="500" height="350" alt="size_inspector"></p>
+
+<p>这些影响label的约束出现了。点击这个“Top space to: Superview”约束上的设置图标，选择“Promote to user constraint”。它会改变颜色。兴奋之余，选择同一面板上的“Select and Edit”，把这个固定值改为比如400。这个label将会移动到屏幕底部，但是此时它的位置是相对于View顶部的，而不是底部。</p>
+
+<p>然而，如果你再次拖拽这个label，IB认为你并不关心这个布局，它将会再次为你编造它自己的约束。</p>
+
+<blockquote><p>不要拖拽视图去调整布局，而是创建适当的约束。</p></blockquote>
+
+
+<p>被你提升或者说编辑的约束叫做用户约束，它在文档浏览器里会显示成蓝色，并且会比较粗。通过拖拽被IB自动增加的约束叫做系统约束，比较细一点。这里你能看出两种不同约束的区别：</p>
+
+<p><img src="http://static.flickr.com/2824/9707197725_e823c0353a.jpg" width="494" height="228" alt="user_and_system_constraints"></p>
+
+<p>拖拽的方法是创建约束的一种方式，但是是最坏的一种方式。因为我们依赖IB为我们做出正确的猜想，什么才是我们想要的。你完全可以控制所有的约束的创建通过“Alignment and Pinning”面板：</p>
+
+<p><img class="left" src="http://static.flickr.com/7404/9710437404_b401a3e7ba.jpg"></p>
+
+<p>在这个Alignment面板中，如果你在编辑器中没有选择多个视图，那除了最下面的两个选项外，其他的选项都是不可选的。注意在每一种约束前面的小图标，这些小图标很好的描叙了对应约束的作用，它们在查看复杂布局的适合很有用。</p>
+
+<p><img class="right" src="http://static.flickr.com/5499/9710437638_02a608ab37.jpg"></p>
+
+<p>在这个“Pinning”面板中，这些“Horizontal”，“Vertical Spacing”，“Widths Equally“和“Heights Equally”选项仅仅在选择多个视图的情况下才可使用。再一次，请注意这些描叙性的图标。</p>
+
+<p>“Pinning”和“Alignment”面板创建的约束相对于拖拽得到的约束，给了你更多的控制权。</p>
+
+<p>对于复杂的布局，确保你在早期有一个清晰的想法将是成功的关键。不如说，你有一组label，你想让它们左边界对齐，并且距离父视图有十个像素点。拖拽将会给你正确的布局，但是不会创建对齐的约束：</p>
+
+<p><img src="http://static.flickr.com/3742/9707198407_af54f82b23.jpg" width="500" height="234" alt="aligned_labels_1"></p>
+
+<p>所有的水平位置的约束都是相对于父视图的。如果你想一起移动这些label，不管是在IB中还是在程序运行中，你都需要改变每一个label的约束。当然，你也可以通过全选这些label，通过这个面板对齐它们的左边界。</p>
+
+<p><img src="http://static.flickr.com/2865/9710438118_606077a97f.jpg"" title="" ></p>
+
+<p>现在有一个单独的间隔约束指向父视图的左边界。编辑这个约束将会移动所有label的位置。</p>
+
+<blockquote><p>对于有清晰想法的布局，要通过“alignment and pinning”面板创建约束，而不是通过拖拽创建。</p></blockquote>
+
+
+<p>正如我们清楚我们想要什么，我们也必须清楚哪些是我们不想要的。在创建或者提升那些我们关心的约束之后，我们要迅速的移除那些剩余的约束。IB会帮你移除一些，但是你的目的是全部使用你自己创建或提升的用户约束，而不留下系统约束。如果你不这样做，当视图在程序运行中改变，将会因为布局管理器使用那些多余的约束而产生不必要的影响。</p>
+
+<blockquote><p>为了达到100%的用户约束——在你布局中用到的每一个约束，都要保证是你想要的且理解的那个。</p></blockquote>
+
+
+<p>选择，编辑和删除约束可以在三个不同的地方操作：</p>
+
+<ol>
+<li><p>在文档导航里</p>
+
+<p> 在这里，将你的视图命名是非常有帮助的。约束可以在它应用的视图下面找到。注意，一个视图的位置是一个在它父视图上面约束（因为这个约束影响frame），视图的大小则是一个在它自身上面的约束（因为这个约束影响bounds）。</p>
+
+<p> <blockquote><p>在IB中将视图命名对于约束很有帮助。也可以在“identity inspector”中的“Label”处命名。</p></blockquote></p></li>
+<li><p>在布局中</p>
+
+<p> 这需要技巧，依赖于展示约束的数量。首先，点击你感兴趣的视图，然后点击那一两个像素宽的指示器。</p></li>
+<li><p>在“size inspector”中指定的部分</p>
+
+<p> 这一列包含大小约束和位置约束。“Select and edit”选项和在其他地方选择约束，打开其“attributes inspector”一样。</p>
+
+<p> 在约束的“attributes inspector”选项中，你能够编辑它的优先级。对于大小约束和间隔约束，有小于等于，等于，大于等于和常量等关系。</p></li>
+</ol>
+
+
+<p>通过按照我在文章中突出强调的关键点，你现在应该能够通过IB管理你的约束了。作为总结：</p>
+
+<ul>
+<li>不要通过拖拽视图去调整布局，而是编辑合适的约束。</li>
+<li>有清晰的目的，使用“alignment and pinning”面板去创建约束而不是通过拖拽。</li>
+<li>为了达到100%的用户约束——在你布局中用到的每一个约束，都要保证是你想要的且理解的那个。</li>
+<li>在IB中将视图命名对于约束很有帮助。也可以在“identity inspector”中的“Label”处命名。</li>
+</ul>
+
+
+<p>翻译出处：<a href="http://commandshift.co.uk/blog/2013/01/18/autolayout-in-interface-builder/">Autolayout in Interface Builder</a></p>
+
+		
+		
+	</div>
+
+</article>
 
 
     <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
@@ -1034,77 +1176,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 
 <p>So, you know, i also use some shell to improve efficiency. See you,O(∩_∩)O~.</p>
-
-		
-		
-	</div>
-
-</article>
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-30T16:51:00+08:00" data-updated="true" itemprop="datePublished">Mar 30<span>th</span>, 2013</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/utility/'>Utility</a>
-
-
-</div>
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2013/03/30/terminal-shortcuts/" itemprop="url">Terminal Shortcuts</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<h3>mac/linux终端光标的快捷键操作</h3>
-
-<h4>常用的快捷键：</h4>
-
-<ul>
-<li>Ctrl + d        删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）</li>
-<li>Ctrl + h        退格删除一个字符，相当于通常的Backspace键</li>
-<li>Ctrl + u        删除光标之前到行首的字符</li>
-<li>Ctrl + k        删除光标之前到行尾的字符</li>
-<li>Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break</li>
-<li>Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键</li>
-<li>Ctrl + e        光标移动到行尾（End of line）</li>
-<li>Ctrl + f        光标向前(Forward)移动一个字符位置</li>
-<li>Ctrl + b        光标往回(Backward)移动一个字符位置</li>
-<li>Ctrl + l        清屏，相当于执行clear命令</li>
-<li>Ctrl + p        调出命令历史中的前一条（Previous）命令，相当于通常的上箭头</li>
-<li>Ctrl + n        调出命令历史中的下一条（Next）命令，相当于通常的上箭头</li>
-<li>Ctrl + r        显示：号提示，根据用户输入查找相关历史命令（reverse-i-search）</li>
-</ul>
-
-
-<h4>次常用快捷键：</h4>
-
-<ul>
-<li>Alt + f         光标向前（Forward）移动到下一个单词</li>
-<li>Alt + b         光标往回（Backward）移动到前一个单词</li>
-<li>Ctrl + w        删除从光标位置前到当前所处单词（Word）的开头</li>
-<li>Alt + d         删除从光标位置到当前所处单词的末尾</li>
-<li>Ctrl + y        粘贴最后一次被删除的单词</li>
-</ul>
-
-
-<p>以上就是快捷键了，在这里我只想揭露一些事情，这些快捷键都是emacs的快捷键！熟悉终端的同学应该知道，终端里可以设置快捷键的类型是vim还是emacs。当然了大多数的终端都用的emacs，因为啥自己想去吧。</p>
-
-<p>在这里之所以又将这些东西提出来的原因是：mac os x虽然是图形界面，但是chrome，xcode啥的也支持这些快捷键！</p>
-
-<p>摘自：<a href="http://blog.cnrainbird.com/index.php/2012/03/23/mac_linux_zhong_duan_guang_biao_de_kuai_jie_jian_cao_zuo/">http://blog.cnrainbird.com/index.php/2012/03/23/mac_linux_zhong_duan_guang_biao_de_kuai_jie_jian_cao_zuo/</a></p>
 
 		
 		

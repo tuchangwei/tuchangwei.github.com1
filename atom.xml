@@ -4,7 +4,7 @@
   <title><![CDATA[Vale's Blog]]></title>
   <link href="http://tuchangwei.github.io/atom.xml" rel="self"/>
   <link href="http://tuchangwei.github.io/"/>
-  <updated>2013-09-09T08:59:22+08:00</updated>
+  <updated>2013-09-10T18:14:38+08:00</updated>
   <id>http://tuchangwei.github.io/</id>
   <author>
     <name><![CDATA[Vale T.]]></name>
@@ -12,6 +12,116 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[译]在IB中实现自动布局]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/09/09/autolayout-in-interface-builder/"/>
+    <updated>2013-09-09T20:59:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/09/09/autolayout-in-interface-builder</id>
+    <content type="html"><![CDATA[<p>有关自动布局的其他文章：</p>
+
+<ul>
+<li><a href="http://commandshift.co.uk/blog/2013/01/13/autolayout/">Autolayout</a></li>
+<li><a href="http://commandshift.co.uk/blog/2013/01/31/visual-format-language-for-autolayout/">Visual format language for autolayout</a></li>
+<li><a href="http://commandshift.co.uk/blog/2013/02/20/creating-individual-layout-constraints/">Creating individual constraints</a></li>
+</ul>
+
+
+<p>可怜的界面编辑器。它只能服从命令。苹果告诉它，它必须创建最简单的约束集并且简明的传递给你通过拖拽和调整控件大小所形成的布局中。系统约束集留给你的可能是这样的：</p>
+
+<p><img src="http://static.flickr.com/7422/9710436440_4feab8c718.jpg" width="500" height="205" alt="autolayout_nightmare"></p>
+
+<p>它也不一定非是上面的节奏。</p>
+
+<p>在界面编辑器中快乐写约束的秘密其实很简单：告诉它你想要什么。只是拖拽控件是不够的。</p>
+
+<p>创建一个包含空View的.xib文件(File —> New File —> User Interface —> View)，拖一个label放在View左上方的某个地方。IB将会为你创建一些约束：</p>
+
+<p><img src="http://static.flickr.com/7429/9711179916_c26ce7fea7.jpg" width="500" height="147" alt="label_top_left"></p>
+
+<p>现在，把这个label移动到右下方：</p>
+
+<p><img src="http://static.flickr.com/7336/9707197253_d1a4987a28.jpg" width="500" height="430" alt="label_bottom_right"></p>
+
+<p>IB已经丢掉了之前自动创建的约束，重新创建了一组新约束。这个label现在会有不同的表现——比如说，在3.4寸和4寸iPhone屏上，它将会和屏幕底部保持相同的距离，而不是和屏幕顶部。这可能不是你想要的。</p>
+
+<p>再次将label移回到左上角，开始给IB一些帮助。选择这个label，然后点击右边的“size inspector”图标：</p>
+
+<p><img src="http://farm3.staticflickr.com/2890/9710436938_fe60560e80.jpg" width="500" height="350" alt="size_inspector"></p>
+
+<p>这些影响label的约束出现了。点击这个“Top space to: Superview”约束上的设置图标，选择“Promote to user constraint”。它会改变颜色。兴奋之余，选择同一面板上的“Select and Edit”，把这个固定值改为比如400。这个label将会移动到屏幕底部，但是此时它的位置是相对于View顶部的，而不是底部。</p>
+
+<p>然而，如果你再次拖拽这个label，IB认为你并不关心这个布局，它将会再次为你编造它自己的约束。</p>
+
+<blockquote><p>不要拖拽视图去调整布局，而是创建适当的约束。</p></blockquote>
+
+
+<p>被你提升或者说编辑的约束叫做用户约束，它在文档浏览器里会显示成蓝色，并且会比较粗。通过拖拽被IB自动增加的约束叫做系统约束，比较细一点。这里你能看出两种不同约束的区别：</p>
+
+<p><img src="http://static.flickr.com/2824/9707197725_e823c0353a.jpg" width="494" height="228" alt="user_and_system_constraints"></p>
+
+<p>拖拽的方法是创建约束的一种方式，但是是最坏的一种方式。因为我们依赖IB为我们做出正确的猜想，什么才是我们想要的。你完全可以控制所有的约束的创建通过“Alignment and Pinning”面板：</p>
+
+<p><img class="left" src="http://static.flickr.com/7404/9710437404_b401a3e7ba.jpg"></p>
+
+<p>在这个Alignment面板中，如果你在编辑器中没有选择多个视图，那除了最下面的两个选项外，其他的选项都是不可选的。注意在每一种约束前面的小图标，这些小图标很好的描叙了对应约束的作用，它们在查看复杂布局的适合很有用。</p>
+
+<p><img class="right" src="http://static.flickr.com/5499/9710437638_02a608ab37.jpg"></p>
+
+<p>在这个“Pinning”面板中，这些“Horizontal”，“Vertical Spacing”，“Widths Equally“和“Heights Equally”选项仅仅在选择多个视图的情况下才可使用。再一次，请注意这些描叙性的图标。</p>
+
+<p>“Pinning”和“Alignment”面板创建的约束相对于拖拽得到的约束，给了你更多的控制权。</p>
+
+<p>对于复杂的布局，确保你在早期有一个清晰的想法将是成功的关键。不如说，你有一组label，你想让它们左边界对齐，并且距离父视图有十个像素点。拖拽将会给你正确的布局，但是不会创建对齐的约束：</p>
+
+<p><img src="http://static.flickr.com/3742/9707198407_af54f82b23.jpg" width="500" height="234" alt="aligned_labels_1"></p>
+
+<p>所有的水平位置的约束都是相对于父视图的。如果你想一起移动这些label，不管是在IB中还是在程序运行中，你都需要改变每一个label的约束。当然，你也可以通过全选这些label，通过这个面板对齐它们的左边界。</p>
+
+<p><img src="http://static.flickr.com/2865/9710438118_606077a97f.jpg"" title="" ></p>
+
+<p>现在有一个单独的间隔约束指向父视图的左边界。编辑这个约束将会移动所有label的位置。</p>
+
+<blockquote><p>对于有清晰想法的布局，要通过“alignment and pinning”面板创建约束，而不是通过拖拽创建。</p></blockquote>
+
+
+<p>正如我们清楚我们想要什么，我们也必须清楚哪些是我们不想要的。在创建或者提升那些我们关心的约束之后，我们要迅速的移除那些剩余的约束。IB会帮你移除一些，但是你的目的是全部使用你自己创建或提升的用户约束，而不留下系统约束。如果你不这样做，当视图在程序运行中改变，将会因为布局管理器使用那些多余的约束而产生不必要的影响。</p>
+
+<blockquote><p>为了达到100%的用户约束——在你布局中用到的每一个约束，都要保证是你想要的且理解的那个。</p></blockquote>
+
+
+<p>选择，编辑和删除约束可以在三个不同的地方操作：</p>
+
+<ol>
+<li><p>在文档导航里</p>
+
+<p> 在这里，将你的视图命名是非常有帮助的。约束可以在它应用的视图下面找到。注意，一个视图的位置是一个在它父视图上面约束（因为这个约束影响frame），视图的大小则是一个在它自身上面的约束（因为这个约束影响bounds）。</p>
+
+<p> <blockquote><p>在IB中将视图命名对于约束很有帮助。也可以在“identity inspector”中的“Label”处命名。</p></blockquote></p></li>
+<li><p>在布局中</p>
+
+<p> 这需要技巧，依赖于展示约束的数量。首先，点击你感兴趣的视图，然后点击那一两个像素宽的指示器。</p></li>
+<li><p>在“size inspector”中指定的部分</p>
+
+<p> 这一列包含大小约束和位置约束。“Select and edit”选项和在其他地方选择约束，打开其“attributes inspector”一样。</p>
+
+<p> 在约束的“attributes inspector”选项中，你能够编辑它的优先级。对于大小约束和间隔约束，有小于等于，等于，大于等于和常量等关系。</p></li>
+</ol>
+
+
+<p>通过按照我在文章中突出强调的关键点，你现在应该能够通过IB管理你的约束了。作为总结：</p>
+
+<ul>
+<li>不要通过拖拽视图去调整布局，而是编辑合适的约束。</li>
+<li>有清晰的目的，使用“alignment and pinning”面板去创建约束而不是通过拖拽。</li>
+<li>为了达到100%的用户约束——在你布局中用到的每一个约束，都要保证是你想要的且理解的那个。</li>
+<li>在IB中将视图命名对于约束很有帮助。也可以在“identity inspector”中的“Label”处命名。</li>
+</ul>
+
+
+<p>翻译出处：<a href="http://commandshift.co.uk/blog/2013/01/18/autolayout-in-interface-builder/">Autolayout in Interface Builder</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sep 1-7,2013 All Activities]]></title>
@@ -1141,179 +1251,6 @@ dispatch_async(dispatch_get_global_queue(0, 0), ^{
     });
 });
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[git 简易指南]]></title>
-    <link href="http://tuchangwei.github.io/blog/2013/03/03/git-jian-yi-zhi-nan/"/>
-    <updated>2013-03-03T14:51:00+08:00</updated>
-    <id>http://tuchangwei.github.io/blog/2013/03/03/git-jian-yi-zhi-nan</id>
-    <content type="html"><![CDATA[<p>以前看git文档，看的云里雾里的，没怎么看懂，后来在公司用了svn，对版本控制了解更深了些。最近看到了这篇《Git简易指南》彻底明白git是怎么回事了。以防此好文丢失，现转载如下：</p>
-
-<h1>创建新仓库</h1>
-
-<p>创建新文件夹，打开，然后执行</p>
-
-<pre><code>git init
-</code></pre>
-
-<p>以创建新的 git 仓库。</p>
-
-<h1>检出仓库</h1>
-
-<p>执行如下命令以创建一个本地仓库的克隆版本：</p>
-
-<pre><code>git clone /path/to/repository
-</code></pre>
-
-<p>如果是远端服务器上的仓库，你的命令会是这个样子：</p>
-
-<pre><code>git clone username@host:/path/to/repository
-</code></pre>
-
-<h1>工作流</h1>
-
-<p>你的本地仓库由 git 维护的三棵“树”组成。第一个是你的 <code>工作目录</code>，它持有实际文件；第二个是 <code>缓存区（Index）</code>，它像个缓存区域，临时保存你的改动；最后是 <code>HEAD</code>，指向你最近一次提交后的结果。</p>
-
-<p><a href="http://www.flickr.com/photos/tuchangwei/8523967294/" title="Flickr 上 涂 涂 的 git-trees"><img src="http://static.flickr.com/8088/8523967294_eed70782b4.jpg" width="500" height="178" alt="git-trees"></a></p>
-
-<h1>添加与提交</h1>
-
-<p>你可以计划改动（把它们添加到缓存区），使用如下命令：</p>
-
-<pre><code>git add &lt;filename&gt;
-git add *
-</code></pre>
-
-<p>这是 git 基本工作流程的第一步；使用如下命令以实际提交改动：</p>
-
-<pre><code>git commit -m "代码提交信息"
-</code></pre>
-
-<p>现在，你的改动已经提交到了 HEAD，但是还没到你的远端仓库。</p>
-
-<h1>推送改动</h1>
-
-<p>你的改动现在已经在本地仓库的 HEAD 中了。执行如下命令以将这些改动提交到远端仓库：</p>
-
-<pre><code>git push origin master
-</code></pre>
-
-<p>可以把 master 换成你想要推送的任何分支。
-如果你还没有克隆现有仓库，并欲将你的仓库连接到某个远程服务器，你可以使用如下命令添加：</p>
-
-<pre><code>git remote add origin &lt;server&gt;
-</code></pre>
-
-<p>如此你就能够将你的改动推送到所添加的服务器上去了。</p>
-
-<h1>分支</h1>
-
-<p>分支是用来将特性开发绝缘开来的。在你创建仓库的时候，master 是“默认的”。在其他分支上进行开发，完成后再将它们合并到主分支上。</p>
-
-<p><a href="http://www.flickr.com/photos/tuchangwei/8523448559/" title="Flickr 上 涂 涂 的 branches"><img src="http://static.flickr.com/8112/8523448559_b6123efc03.jpg" width="500" height="178" alt="branches"></a></p>
-
-<p>创建一个叫做“feature_x”的分支，并切换过去：</p>
-
-<pre><code>git checkout -b feature_x
-</code></pre>
-
-<p>切换回主分支：</p>
-
-<pre><code>git checkout master
-</code></pre>
-
-<p>再把新建的分支删掉：</p>
-
-<pre><code>git branch -d feature_x
-</code></pre>
-
-<p>除非你将分支推送到远端仓库，不然该分支就是 不为他人所见的：</p>
-
-<pre><code>git push origin &lt;branch&gt;
-</code></pre>
-
-<h1>更新与合并</h1>
-
-<p>要更新你的本地仓库至最新改动，执行：</p>
-
-<pre><code>git pull
-</code></pre>
-
-<p>以在你的工作目录中 获取（fetch） 并 合并（merge） 远端的改动。
-要合并其他分支到你的当前分支（例如 master），执行：</p>
-
-<pre><code>git merge &lt;branch&gt;
-</code></pre>
-
-<p>两种情况下，git 都会尝试去自动合并改动。不幸的是，自动合并并非次次都能成功，并可能导致 冲突（conflicts）。 这时候就需要你修改这些文件来人肉合并这些 冲突（conflicts） 了。改完之后，你需要执行如下命令以将它们标记为合并成功：</p>
-
-<pre><code>git add &lt;filename&gt;
-</code></pre>
-
-<p>在合并改动之前，也可以使用如下命令查看：</p>
-
-<pre><code>git diff &lt;source_branch&gt; &lt;target_branch&gt;
-</code></pre>
-
-<h1>标签</h1>
-
-<p>在软件发布时创建标签，是被推荐的。这是个旧有概念，在 SVN 中也有。可以执行如下命令以创建一个叫做 1.0.0 的标签：</p>
-
-<pre><code>git tag 1.0.0 1b2e1d63ff
-</code></pre>
-
-<p>1b2e1d63ff 是你想要标记的提交 ID 的前 10 位字符。使用如下命令获取提交 ID：</p>
-
-<pre><code>git log
-</code></pre>
-
-<p>你也可以用该提交 ID 的少一些的前几位，只要它是唯一的。</p>
-
-<h1>替换本地改动</h1>
-
-<p>假如你做错事（自然，这是不可能的），你可以使用如下命令替换掉本地改动：</p>
-
-<pre><code>git checkout -- &lt;filename&gt;
-</code></pre>
-
-<p>此命令会使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到缓存区的改动，以及新文件，都不受影响。</p>
-
-<p>假如你想要丢弃你所有的本地改动与提交，可以到服务器上获取最新的版本并将你本地主分支指向到它：</p>
-
-<pre><code>git fetch origin
-git reset --hard origin/master
-</code></pre>
-
-<h1>有用的贴士</h1>
-
-<p>内建的图形化 git：gitk</p>
-
-<p>彩色的 git 输出：</p>
-
-<pre><code>git config color.ui true
-</code></pre>
-
-<p>显示历史记录时，只显示一行注释信息：</p>
-
-<pre><code>git config format.pretty oneline
-</code></pre>
-
-<p>交互地添加文件至缓存区：</p>
-
-<pre><code>git add -i
-</code></pre>
-
-<hr />
-
-<h1>有用的图片</h1>
-
-<p><a href="http://www.flickr.com/photos/tuchangwei/9559884789/" title="Flickr 上 涂 涂 的 1352126739_7909"><img src="http://static.flickr.com/7301/9559884789_bee6b04c14.jpg" width="500" height="261" alt="1352126739_7909"></a></p>
-
-<p>转自：<a href="http://rogerdudler.github.com/git-guide/index.zh.html">http://rogerdudler.github.com/git-guide/index.zh.html</a></p>
-
-<p>  <!--more--></p>
 ]]></content>
   </entry>
   
