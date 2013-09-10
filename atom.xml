@@ -4,7 +4,7 @@
   <title><![CDATA[Vale's Blog]]></title>
   <link href="http://tuchangwei.github.io/atom.xml" rel="self"/>
   <link href="http://tuchangwei.github.io/"/>
-  <updated>2013-09-10T18:14:38+08:00</updated>
+  <updated>2013-09-10T22:02:07+08:00</updated>
   <id>http://tuchangwei.github.io/</id>
   <author>
     <name><![CDATA[Vale T.]]></name>
@@ -12,6 +12,127 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Add Sina Weibo Support for Greyshade theme of Octopress]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/09/10/add-sina-weibo-support-for-greyshade-theme-of-octopress/"/>
+    <updated>2013-09-10T21:07:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/09/10/add-sina-weibo-support-for-greyshade-theme-of-octopress</id>
+    <content type="html"><![CDATA[<p>I am not familiar with CSS and ROR until now. It is not easy for me to add Sina Weibo support as the slidebar shows. So let me note it.</p>
+
+<ul>
+<li>Firstly, add the following code to &ldquo;octopress/_config.yml&rdquo; file. Note that the weibo_user should be your weibo id, not your nickname.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Weibo link
+</span><span class='line'>weibo_user: thankforyou</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Behind of the following code:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># ----------------------- #
+</span><span class='line'>#   3rd Party Settings    #
+</span><span class='line'># ----------------------- #</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Secondly, add the &ldquo;weibo.png&rdquo; to &ldquo;octopress/source/images/social&rdquo; dirctory.</li>
+<li>Thirdly, add the following code to &ldquo;octopress/sass/parts/_header.scss&rdquo; file.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&.weibo{
+</span><span class='line'>  background: image-url('social/weibo.png') center no-repeat #e32529;
+</span><span class='line'>  border: 1px solid #e32529;
+</span><span class='line'>  &:hover{
+</span><span class='line'>      border: 1px solid darken(#e32529, 10%);
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In front of the following code:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&.facebook{
+</span><span class='line'>  background: image-url('social/facebook.png') center no-repeat #3B5998;
+</span><span class='line'>  border: 1px solid #3B5998;
+</span><span class='line'>  &:hover{
+</span><span class='line'>      border: 1px solid darken(#3B5998, 10%);
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>&.google{
+</span><span class='line'>  background: image-url('social/google.png') center no-repeat #C83D20;
+</span><span class='line'>  border: 1px solid #C83D20;
+</span><span class='line'>  &:hover{
+</span><span class='line'>      border: 1px solid darken(#C83D20, 10%);
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>&.twitter{
+</span><span class='line'>  background: image-url('social/twitter.png') center no-repeat #55CFF8;
+</span><span class='line'>  border: 1px solid #55CFF8;
+</span><span class='line'>  &:hover{
+</span><span class='line'>      border: 1px solid darken(#55CFF8, 10%);
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>……</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Fourthly, add the following code to &ldquo;octopress/source/_includes/header.html&rdquo; file.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;a class="weibo" href="http://www.weibo.com/thankforyou" title="Weibo">Weibo&lt;/a></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Behind of the following code:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>……
+</span><span class='line'>&lt;nav id="sub-nav">
+</span><span class='line'>  &lt;div class="social"></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ok, have done.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[译]在IB中实现自动布局]]></title>
@@ -1151,106 +1272,6 @@ UserQueue = dispatch_queue_create("use for storing image to disk", nil);
 <p>更多优点使用之后再和大家分享。</p>
 
 <p><a href="http://www.flickr.com/photos/tuchangwei/8540600027/" title="Flickr 上 涂 涂 的 DEE758DA-B46C-477A-B790-13C9B14DE43F"><img src="http://static.flickr.com/8106/8540600027_a9a942a4ba.jpg" width="500" height="325" alt="DEE758DA-B46C-477A-B790-13C9B14DE43F"></a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[GCD和信号量]]></title>
-    <link href="http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang/"/>
-    <updated>2013-03-05T21:50:00+08:00</updated>
-    <id>http://tuchangwei.github.io/blog/2013/03/05/gcdhe-xin-hao-liang</id>
-    <content type="html"><![CDATA[<h1>GCD</h1>
-
-<p>概念不多说，直接上代码。话说也不是什么高深的东东，不过极大简化了代码，一目了然。后面对信号量的记录也采用了相同的原理。</p>
-
-<pre><code>//抛出线程
-dispatch_async(dispatch_get_global_queue(0, 0), ^{
-
-    NSURL * url = [NSURL URLWithString:@"http://www.google.com"];
-    NSString * data = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
-    if (data != nil) {
-        //抛出的线程执行完后，回到主线程处理界面逻辑。
-        dispatch_async(dispatch_get_main_queue(), ^{
-
-        });
-    } else {
-
-    }
-});
-</code></pre>
-
-<h1>semaphore（信号量）</h1>
-
-<p>信号量主要是用在传说中的生产者消费者模式里面，当信号量为0时线程挂起，当信号量大于0时继续向下执行。以前研究过一次，不过没怎么搞懂，反而把界面给搞死了。这次，取相册里的图片，GCD加Semaphore，又折腾了一次，还好。不多说，继续上代码。</p>
-
-<pre><code>//这几段代码的大概意思是：抛一个线程出来，取相册里的group，再在取group中的线程中抛出线程，去取group中的result，最终到界面线程中去操作。
-//这里需要两个信号量，一个用来阻塞取group的线程，避免界面线程先于取group的线程运行完毕。另外一个用来阻塞取result中的线程，避免取result的
-//线程先于取group执行完毕。
-
-//抛出线程
-dispatch_async(dispatch_get_global_queue(0, 0), ^{
-
-    //创建信号量
-    dispatch_semaphore_t semaphore1 = dispatch_semaphore_create(0);
-    dispatch_semaphore_t semaphore2 = dispatch_semaphore_create(0);
-    ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
-
-        if (result == nil) {
-            //当某个group取完毕后，信号量加1，dispatch_semaphore_wait方法执行，信号量为0，程序循环，去取下一个group中的result
-            dispatch_semaphore_signal(semaphore2);
-
-        }else if ([[result valueForProperty:ALAssetPropertyType]isEqualToString:ALAssetTypePhoto]||[[result valueForProperty:ALAssetPropertyType]
- isEqualToString:ALAssetTypeVideo]) {
-
-            FileNode *node = [[FileNode alloc] init];
-            node.m_name =  result.defaultRepresentation.filename;
-            node.m_path = [result.defaultRepresentation.url absoluteString];
-            [self.picList addObject:node];
-            NSLog(@"%@",node.m_name);
-            NSLog(@"%@",node.m_path);
-            [node release];
-
-        }
-    };
-
-
-    ALAssetsLibraryGroupsEnumerationResultsBlock libraryGroupsEnumeration = ^(ALAssetsGroup* group, BOOL* stop){
-
-        if (group!=nil)
-        {
-
-            [group enumerateAssetsUsingBlock:groupEnumerAtion];
-            dispatch_semaphore_wait(semaphore2, DISPATCH_TIME_FOREVER);
-
-        }else{
-            //当所有group取完后，信号量加1，程序不再阻塞，进入界面线程。
-            dispatch_semaphore_signal(semaphore1);
-        }
-
-    };
-
-    ALAssetsLibraryAccessFailureBlock failureblock = ^(NSError *error){
-
-
-        NSLog(@"failureblock:%@",error);
-    };
-
-
-    ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
-    [library enumerateGroupsWithTypes:ALAssetsGroupAll
-                           usingBlock:libraryGroupsEnumeration
-                         failureBlock:failureblock];
-
-    dispatch_semaphore_wait(semaphore1, DISPATCH_TIME_FOREVER);
-    dispatch_release(semaphore1);
-    dispatch_release(semaphore2);
-    dispatch_async(dispatch_get_main_queue(), ^{
-
-        [self loadPicAtPage:self.currentPage];
-        [self loadPicAtPage:self.currentPage + 1];
-    });
-});
-</code></pre>
 ]]></content>
   </entry>
   

@@ -9,8 +9,7 @@
 	<meta name="author" content="Vale T.">
 
 	
-	<meta name="description" content="Mar 30th, 2013 Utility Terminal Shortcuts mac/linux终端光标的快捷键操作 常用的快捷键： Ctrl + d 删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）
-Ctrl + h &hellip;">
+	<meta name="description" content="Mar 30th, 2013 Utility Use Command Line to Pack Applications All right. It is time for me to write something. My wife has stayed in her hometown &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -97,6 +96,90 @@ Ctrl + h &hellip;">
 			<div class="mid-col-container">
 				<div id="content" class="inner">
 <div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-30T17:02:00+08:00" data-updated="true" itemprop="datePublished">Mar 30<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/utility/'>Utility</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/30/use-command-line-to-pack-applications/" itemprop="url">Use Command Line to Pack Applications</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>All right. It is time for me to write something. My wife has stayed in her hometown about half a month. I miss her very much. It is dark out of the window.  You know, in summer, the rain is rich in ShenZhen. Sometimes, I am very anxious about doing something which is matter with opportunity and ability. Anyway, let us do something about work.</p>
+
+<p>Sometimes we need to build apps for many channels, we needn&rsquo;t change many codes but some configurations. As we all know, we use Xcode to build and run application. many channels many building. So boring! So let us see how to do it using command line.</p>
+
+<ul>
+<li><p>first shell, it is used for generating binary to upload AppStore.</p>
+
+<pre><code>  #!/bin/sh
+  target="Power7 MobileView"
+  distDir="/Users/tuchangwei/Documents/WorkSpace/Release/${factory}/${appName}_V${version}"
+  rm -rdf "$distDir"
+  mkdir "$distDir"
+
+  uploadDir="${distDir}/Upload AppStore"
+  rm -rdf "$uploadDir"
+  mkdir "$uploadDir"
+  /usr/bin/xcodebuild -target "$target" clean
+  echo "******************start build*********************"
+  /usr/bin/xcodebuild -target "$target" CODE_SIGN_IDENTITY="$distribution"
+  echo "******************start pick .ipa*********************"
+  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${uploadDir}/${appName}.ipa" --sign "$distribution"
+  echo "******************start pick test .ipa*********************"
+  codesign -f --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" build/Release-iphoneos/*.app
+  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${distDir}/${appName}_V${version}.ipa" --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" --embed "/Users/tuchangwei/Library/MobileDevice/Provisioning Profiles/D788EEA0-848E-4F5E-AA30-87D38154DA9B.mobileprovision"
+</code></pre></li>
+<li><p>second shell is used for generating test binary</p>
+
+<pre><code>  #!/bin/sh
+  target="Power7 MobileView"
+  distDir="/Users/tuchangwei/Desktop/Test"
+  rm -rdf "$distDir"
+  mkdir "$distDir"
+  /usr/bin/xcodebuild -target "$target" clean
+  echo "******************start build*********************"
+  /usr/bin/xcodebuild -target "$target" 
+  echo "******************start pick test .ipa*********************"
+  codesign -f --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" build/Release-iphoneos/*.app
+  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${distDir}/test.ipa" --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" --embed "/Users/tuchangwei/Library/MobileDevice/Provisioning Profiles/D788EEA0-848E-4F5E-AA30-87D38154DA9B.mobileprovision"
+</code></pre></li>
+<li><p>third shell is used for deleting .svn files in project.</p>
+
+<pre><code>  #!/bin/sh
+  echo "start delete .svn..."
+  find $PWD/ -name .svn -print0 | xargs -0 rm -rf
+  echo "finish delete .svn."
+</code></pre></li>
+</ul>
+
+
+<p>So, you know, i also use some shell to improve efficiency. See you,O(∩_∩)O~.</p>
+
+		
+		
+	</div>
+
+</article>
 
 
     <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
@@ -642,132 +725,6 @@ UserQueue = dispatch_queue_create("use for storing image to disk", nil);
 <p>更多优点使用之后再和大家分享。</p>
 
 <p><a href="http://www.flickr.com/photos/tuchangwei/8540600027/" title="Flickr 上 涂 涂 的 DEE758DA-B46C-477A-B790-13C9B14DE43F"><img src="http://static.flickr.com/8106/8540600027_a9a942a4ba.jpg" width="500" height="325" alt="DEE758DA-B46C-477A-B790-13C9B14DE43F"></a></p>
-
-		
-		
-	</div>
-
-</article>
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-05T21:50:00+08:00" data-updated="true" itemprop="datePublished">Mar 5<span>th</span>, 2013</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/gcd/'>GCD</a>, <a class='category' href='/blog/categories/ios/'>iOS</a>
-
-
-</div>
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2013/03/05/gcdhe-xin-hao-liang/" itemprop="url">GCD和信号量</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<h1>GCD</h1>
-
-<p>概念不多说，直接上代码。话说也不是什么高深的东东，不过极大简化了代码，一目了然。后面对信号量的记录也采用了相同的原理。</p>
-
-<pre><code>//抛出线程
-dispatch_async(dispatch_get_global_queue(0, 0), ^{
-
-    NSURL * url = [NSURL URLWithString:@"http://www.google.com"];
-    NSString * data = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
-    if (data != nil) {
-        //抛出的线程执行完后，回到主线程处理界面逻辑。
-        dispatch_async(dispatch_get_main_queue(), ^{
-
-        });
-    } else {
-
-    }
-});
-</code></pre>
-
-<h1>semaphore（信号量）</h1>
-
-<p>信号量主要是用在传说中的生产者消费者模式里面，当信号量为0时线程挂起，当信号量大于0时继续向下执行。以前研究过一次，不过没怎么搞懂，反而把界面给搞死了。这次，取相册里的图片，GCD加Semaphore，又折腾了一次，还好。不多说，继续上代码。</p>
-
-<pre><code>//这几段代码的大概意思是：抛一个线程出来，取相册里的group，再在取group中的线程中抛出线程，去取group中的result，最终到界面线程中去操作。
-//这里需要两个信号量，一个用来阻塞取group的线程，避免界面线程先于取group的线程运行完毕。另外一个用来阻塞取result中的线程，避免取result的
-//线程先于取group执行完毕。
-
-//抛出线程
-dispatch_async(dispatch_get_global_queue(0, 0), ^{
-
-    //创建信号量
-    dispatch_semaphore_t semaphore1 = dispatch_semaphore_create(0);
-    dispatch_semaphore_t semaphore2 = dispatch_semaphore_create(0);
-    ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
-
-        if (result == nil) {
-            //当某个group取完毕后，信号量加1，dispatch_semaphore_wait方法执行，信号量为0，程序循环，去取下一个group中的result
-            dispatch_semaphore_signal(semaphore2);
-
-        }else if ([[result valueForProperty:ALAssetPropertyType]isEqualToString:ALAssetTypePhoto]||[[result valueForProperty:ALAssetPropertyType]
- isEqualToString:ALAssetTypeVideo]) {
-
-            FileNode *node = [[FileNode alloc] init];
-            node.m_name =  result.defaultRepresentation.filename;
-            node.m_path = [result.defaultRepresentation.url absoluteString];
-            [self.picList addObject:node];
-            NSLog(@"%@",node.m_name);
-            NSLog(@"%@",node.m_path);
-            [node release];
-
-        }
-    };
-
-
-    ALAssetsLibraryGroupsEnumerationResultsBlock libraryGroupsEnumeration = ^(ALAssetsGroup* group, BOOL* stop){
-
-        if (group!=nil)
-        {
-
-            [group enumerateAssetsUsingBlock:groupEnumerAtion];
-            dispatch_semaphore_wait(semaphore2, DISPATCH_TIME_FOREVER);
-
-        }else{
-            //当所有group取完后，信号量加1，程序不再阻塞，进入界面线程。
-            dispatch_semaphore_signal(semaphore1);
-        }
-
-    };
-
-    ALAssetsLibraryAccessFailureBlock failureblock = ^(NSError *error){
-
-
-        NSLog(@"failureblock:%@",error);
-    };
-
-
-    ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
-    [library enumerateGroupsWithTypes:ALAssetsGroupAll
-                           usingBlock:libraryGroupsEnumeration
-                         failureBlock:failureblock];
-
-    dispatch_semaphore_wait(semaphore1, DISPATCH_TIME_FOREVER);
-    dispatch_release(semaphore1);
-    dispatch_release(semaphore2);
-    dispatch_async(dispatch_get_main_queue(), ^{
-
-        [self loadPicAtPage:self.currentPage];
-        [self loadPicAtPage:self.currentPage + 1];
-    });
-});
-</code></pre>
 
 		
 		

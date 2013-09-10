@@ -9,9 +9,7 @@
 	<meta name="author" content="Vale T.">
 
 	
-	<meta name="description" content="Sep 9th, 2013 Autolayout [译]在IB中实现自动布局 有关自动布局的其他文章： Autolayout
-Visual format language for autolayout
-Creating individual constraints 可怜的界面编辑器。 &hellip;">
+	<meta name="description" content="Sep 10th, 2013 Octopress Add Sina Weibo Support for Greyshade Theme of Octopress I am not familiar with CSS and ROR until now. It is not easy for me &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -98,6 +96,153 @@ Creating individual constraints 可怜的界面编辑器。 &hellip;">
 			<div class="mid-col-container">
 				<div id="content" class="inner">
 <div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-10T21:07:00+08:00" data-updated="true" itemprop="datePublished">Sep 10<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/octopress/'>Octopress</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/09/10/add-sina-weibo-support-for-greyshade-theme-of-octopress/" itemprop="url">Add Sina Weibo Support for Greyshade Theme of Octopress</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>I am not familiar with CSS and ROR until now. It is not easy for me to add Sina Weibo support as the slidebar shows. So let me note it.</p>
+
+<ul>
+<li>Firstly, add the following code to &ldquo;octopress/_config.yml&rdquo; file. Note that the weibo_user should be your weibo id, not your nickname.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Weibo link
+</span><span class='line'>weibo_user: thankforyou</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Behind of the following code:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># ----------------------- #
+</span><span class='line'>#   3rd Party Settings    #
+</span><span class='line'># ----------------------- #</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Secondly, add the &ldquo;weibo.png&rdquo; to &ldquo;octopress/source/images/social&rdquo; dirctory.</li>
+<li>Thirdly, add the following code to &ldquo;octopress/sass/parts/_header.scss&rdquo; file.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&.weibo{
+</span><span class='line'>  background: image-url('social/weibo.png') center no-repeat #e32529;
+</span><span class='line'>  border: 1px solid #e32529;
+</span><span class='line'>  &:hover{
+</span><span class='line'>      border: 1px solid darken(#e32529, 10%);
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In front of the following code:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&.facebook{
+</span><span class='line'>  background: image-url('social/facebook.png') center no-repeat #3B5998;
+</span><span class='line'>  border: 1px solid #3B5998;
+</span><span class='line'>  &:hover{
+</span><span class='line'>      border: 1px solid darken(#3B5998, 10%);
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>&.google{
+</span><span class='line'>  background: image-url('social/google.png') center no-repeat #C83D20;
+</span><span class='line'>  border: 1px solid #C83D20;
+</span><span class='line'>  &:hover{
+</span><span class='line'>      border: 1px solid darken(#C83D20, 10%);
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>&.twitter{
+</span><span class='line'>  background: image-url('social/twitter.png') center no-repeat #55CFF8;
+</span><span class='line'>  border: 1px solid #55CFF8;
+</span><span class='line'>  &:hover{
+</span><span class='line'>      border: 1px solid darken(#55CFF8, 10%);
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>……</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Fourthly, add the following code to &ldquo;octopress/source/_includes/header.html&rdquo; file.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;a class="weibo" href="http://www.weibo.com/thankforyou" title="Weibo">Weibo&lt;/a></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Behind of the following code:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>……
+</span><span class='line'>&lt;nav id="sub-nav">
+</span><span class='line'>  &lt;div class="social"></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ok, have done.</p>
+
+		
+		
+	</div>
+
+</article>
 
 
     <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
@@ -1092,90 +1237,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 <p> Change ownership from Objective-C to Core Foundation, use CFBridgingRetain().</p>
 
 <p> Want to use one type temporarily as if it were another without owership change, use __bridge.</p>
-
-		
-		
-	</div>
-
-</article>
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-30T17:02:00+08:00" data-updated="true" itemprop="datePublished">Mar 30<span>th</span>, 2013</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/utility/'>Utility</a>
-
-
-</div>
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2013/03/30/use-command-line-to-pack-applications/" itemprop="url">Use Command Line to Pack Applications</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<p>All right. It is time for me to write something. My wife has stayed in her hometown about half a month. I miss her very much. It is dark out of the window.  You know, in summer, the rain is rich in ShenZhen. Sometimes, I am very anxious about doing something which is matter with opportunity and ability. Anyway, let us do something about work.</p>
-
-<p>Sometimes we need to build apps for many channels, we needn&rsquo;t change many codes but some configurations. As we all know, we use Xcode to build and run application. many channels many building. So boring! So let us see how to do it using command line.</p>
-
-<ul>
-<li><p>first shell, it is used for generating binary to upload AppStore.</p>
-
-<pre><code>  #!/bin/sh
-  target="Power7 MobileView"
-  distDir="/Users/tuchangwei/Documents/WorkSpace/Release/${factory}/${appName}_V${version}"
-  rm -rdf "$distDir"
-  mkdir "$distDir"
-
-  uploadDir="${distDir}/Upload AppStore"
-  rm -rdf "$uploadDir"
-  mkdir "$uploadDir"
-  /usr/bin/xcodebuild -target "$target" clean
-  echo "******************start build*********************"
-  /usr/bin/xcodebuild -target "$target" CODE_SIGN_IDENTITY="$distribution"
-  echo "******************start pick .ipa*********************"
-  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${uploadDir}/${appName}.ipa" --sign "$distribution"
-  echo "******************start pick test .ipa*********************"
-  codesign -f --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" build/Release-iphoneos/*.app
-  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${distDir}/${appName}_V${version}.ipa" --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" --embed "/Users/tuchangwei/Library/MobileDevice/Provisioning Profiles/D788EEA0-848E-4F5E-AA30-87D38154DA9B.mobileprovision"
-</code></pre></li>
-<li><p>second shell is used for generating test binary</p>
-
-<pre><code>  #!/bin/sh
-  target="Power7 MobileView"
-  distDir="/Users/tuchangwei/Desktop/Test"
-  rm -rdf "$distDir"
-  mkdir "$distDir"
-  /usr/bin/xcodebuild -target "$target" clean
-  echo "******************start build*********************"
-  /usr/bin/xcodebuild -target "$target" 
-  echo "******************start pick test .ipa*********************"
-  codesign -f --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" build/Release-iphoneos/*.app
-  /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/Release-iphoneos/*.app -o "${distDir}/test.ipa" --sign "iPhone Developer: Nelson Chen (JPMGJWJFAQ)" --embed "/Users/tuchangwei/Library/MobileDevice/Provisioning Profiles/D788EEA0-848E-4F5E-AA30-87D38154DA9B.mobileprovision"
-</code></pre></li>
-<li><p>third shell is used for deleting .svn files in project.</p>
-
-<pre><code>  #!/bin/sh
-  echo "start delete .svn..."
-  find $PWD/ -name .svn -print0 | xargs -0 rm -rf
-  echo "finish delete .svn."
-</code></pre></li>
-</ul>
-
-
-<p>So, you know, i also use some shell to improve efficiency. See you,O(∩_∩)O~.</p>
 
 		
 		

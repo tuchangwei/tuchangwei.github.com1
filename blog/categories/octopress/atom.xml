@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: octopress | Vale's Blog]]></title>
+  <title><![CDATA[Category: Octopress | Vale's Blog]]></title>
   <link href="http://tuchangwei.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://tuchangwei.github.io/"/>
-  <updated>2013-09-10T18:14:38+08:00</updated>
+  <updated>2013-09-10T22:02:07+08:00</updated>
   <id>http://tuchangwei.github.io/</id>
   <author>
     <name><![CDATA[Vale T.]]></name>
@@ -14,112 +14,209 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Octopress怎么增加导航栏标签]]></title>
-    <link href="http://tuchangwei.github.io/blog/2013/02/16/octopresszen-yao-zeng-jia-dao-hang-lan-biao-qian/"/>
-    <updated>2013-02-16T13:24:00+08:00</updated>
-    <id>http://tuchangwei.github.io/blog/2013/02/16/octopresszen-yao-zeng-jia-dao-hang-lan-biao-qian</id>
-    <content type="html"><![CDATA[<p>多年前学习的html知识都又还回去了，再加上不懂ruby，对博客样式的修改觉得还很吃力。几经摸索，找到增加导航栏标签的方法如下：</p>
-
-<h3>用命令行增加新页面</h3>
-
-<pre><code>tumatoMac-mini:octopress tuchangwei$ rake new_page[你要添加的标签]
-mkdir -p source/你要添加的标签
-Creating new page: source/你要添加的标签/index.markdown 
-</code></pre>
-
-<h3>在source/_includes/custom/navigation.html中添加如下代码</h3>
-
-<pre><code>&lt;li&gt;&lt;a href="/你要添加的标签"&gt;你要添加的标签名&lt;/a&gt;&lt;/li&gt;
-</code></pre>
-
-<p>那么剩下的操作就是在新的标签页的index.markdown文件中写博文了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress 怎么添加分类]]></title>
-    <link href="http://tuchangwei.github.io/blog/2013/02/16/zen-yao-tian-jia-fen-lei/"/>
-    <updated>2013-02-16T11:07:00+08:00</updated>
-    <id>http://tuchangwei.github.io/blog/2013/02/16/zen-yao-tian-jia-fen-lei</id>
-    <content type="html"><![CDATA[<p>大致步骤为：</p>
-
-<h3>增加category_list插件</h3>
-
-<p>保存以下代码到plugins/category_list_tag.rb：</p>
-
-<pre><code>module Jekyll
-  class CategoryListTag &lt; Liquid::Tag
-    def render(context)
-      html = ""
-      categories = context.registers[:site].categories.keys
-      categories.sort.each do |category|
-        posts_in_category = context.registers[:site].categories[category].size
-        category_dir = context.registers[:site].config['category_dir']
-        category_url = File.join(category_dir, category.gsub(/_|\P{Word}/, '-').gsub(/-{2,}/, '-').downcase)
-        html &lt;&lt; "&lt;li class='category'&gt;&lt;a href='http://tuchangwei.github.io/#{category_url}/'&gt;#{category} (#{posts_in_category})&lt;/a&gt;&lt;/li&gt;\n"
-      end
-      html
-    end
-  end
-end
-
-Liquid::Template.register_tag('category_list', Jekyll::CategoryListTag)
-</code></pre>
-
-<p>这个插件会向liquid注册一个名为category_list的tag，该tag就是以li的形式将站点所有的category组织起来。如果要将category加入到侧边导航栏，需要增加一个aside。</p>
-
-<h3>增加aside</h3>
-
-<p>复制以下代码到source/_includes/asides/category_list.html。(请将下面的$号换成%号)</p>
-
-<pre><code>&lt;section&gt;
-  &lt;h1&gt;Categories&lt;/h1&gt;
-  &lt;ul id="categories"&gt;    
-    {$ category_list $}     
-  &lt;/ul&gt;
-&lt;/section&gt;
-</code></pre>
-
-<p>配置侧边栏需要修改_config.yml文件，修改其default_asides项：</p>
-
-<pre><code>default_asides: [asides/category_list.html, asides/recent_posts.html]
-</code></pre>
-
-<h3>使用</h3>
-
-<p>当新建markdown文件时，顶部会自动显示：“categories:”，在其后写上自己的分类名即可。</p>
-
-<h3>参考</h3>
-
-<p><a href="http://codemacro.com/2012/07/18/add-category-list-to-octopress/">http://codemacro.com/2012/07/18/add-category-list-to-octopress/</a></p>
-
-<p>  <!--more--></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[终于有自己的博客了]]></title>
-    <link href="http://tuchangwei.github.io/blog/2013/02/15/zhong-yu-you-zi-ji-de-bo-ke-liao/"/>
-    <updated>2013-02-15T13:53:00+08:00</updated>
-    <id>http://tuchangwei.github.io/blog/2013/02/15/zhong-yu-you-zi-ji-de-bo-ke-liao</id>
-    <content type="html"><![CDATA[<p>将octopress搭建在github上,我终于有了自己的第一个博客。
-昨天在网上瞎逛，看到唐巧的博客，说自己的博客是建立在github上，前段时间因为12306的关系，github无法访问。于是搜索资料，开始搭建自己的第一个博客，由于中间安装ruby以及配置SSH key的关系，到目前为止才搭建完毕。</p>
-
-<h4>参考</h4>
+    <title type="html"><![CDATA[Add Sina Weibo Support for Greyshade theme of Octopress]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/09/10/add-sina-weibo-support-for-greyshade-theme-of-octopress/"/>
+    <updated>2013-09-10T21:07:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/09/10/add-sina-weibo-support-for-greyshade-theme-of-octopress</id>
+    <content type="html"><![CDATA[<p>I am not familiar with CSS and ROR until now. It is not easy for me to add Sina Weibo support as the slidebar shows. So let me note it.</p>
 
 <ul>
-<li><a href="http://blog.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">http://blog.devtang.com/blog/2012/02/10/setup-blog-based-on-github/</a></li>
-<li><a href="http://easypi.github.com/blog/2013/01/05/using-octopress-to-setup-blog-on-github/">http://easypi.github.com/blog/2013/01/05/using-octopress-to-setup-blog-on-github/</a></li>
-<li><a href="http://sharecore.info/blog/2012/12/25/octopress-plus-github/">http://sharecore.info/blog/2012/12/25/octopress-plus-github/</a></li>
+<li>Firstly, add the following code to &ldquo;octopress/_config.yml&rdquo; file. Note that the weibo_user should be your weibo id, not your nickname.</li>
 </ul>
 
 
-<h4>博文发布工具</h4>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Weibo link&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>weibo_user: thankforyou&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Behind of the following code:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>3rd Party Settings&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <ul>
-<li><a href="http://mouapp.com/">http://mouapp.com/</a></li>
+<li>Secondly, add the &ldquo;weibo.png&rdquo; to &ldquo;octopress/source/images/social&rdquo; dirctory.</li>
+<li>Thirdly, add the following code to &ldquo;octopress/sass/parts/_header.scss&rdquo; file.</li>
 </ul>
 
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&amp;.weibo{&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>background: image-url('social/weibo.png') center no-repeat #e32529;
+</span><span class='line'>border: 1px solid #e32529;
+</span><span class='line'>&amp;:hover{
+</span><span class='line'>    border: 1px solid darken(#e32529, 10%);
+</span><span class='line'>}
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>}&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>In front of the following code:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&amp;.facebook{&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>background: image-url('social/facebook.png') center no-repeat #3B5998;
+</span><span class='line'>border: 1px solid #3B5998;
+</span><span class='line'>&amp;:hover{
+</span><span class='line'>    border: 1px solid darken(#3B5998, 10%);
+</span><span class='line'>}
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>}
+</span><span class='line'>&amp;.google{&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>background: image-url('social/google.png') center no-repeat #C83D20;
+</span><span class='line'>border: 1px solid #C83D20;
+</span><span class='line'>&amp;:hover{
+</span><span class='line'>    border: 1px solid darken(#C83D20, 10%);
+</span><span class='line'>}
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>}
+</span><span class='line'>&amp;.twitter{&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>background: image-url('social/twitter.png') center no-repeat #55CFF8;
+</span><span class='line'>border: 1px solid #55CFF8;
+</span><span class='line'>&amp;:hover{
+</span><span class='line'>    border: 1px solid darken(#55CFF8, 10%);
+</span><span class='line'>}
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>}
+</span><span class='line'>……&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>Fourthly, add the following code to &ldquo;octopress/source/_includes/header.html&rdquo; file.</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>&lt;a class="weibo" href="http://www.weibo.com/thankforyou" title="Weibo"&gt;Weibo&lt;/a&gt;
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Behind of the following code:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>……
+</span><span class='line'>&lt;nav id="sub-nav">&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>&lt;div class="social"&gt;
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Ok, have done.</p>
 ]]></content>
   </entry>
   
