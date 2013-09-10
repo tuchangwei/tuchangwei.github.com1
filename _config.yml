@@ -62,6 +62,12 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 #   3rd Party Settings    #
 # ----------------------- #
 
+# Weibo link
+weibo_user: thankforyou
+
+# Facebook link
+facebook_user: tu.vale.75
+
 # Github repositories
 github_user: tuchangwei
 github_repo_count: 0
