@@ -4,7 +4,7 @@
   <title><![CDATA[Vale's Blog]]></title>
   <link href="http://tuchangwei.github.io/atom.xml" rel="self"/>
   <link href="http://tuchangwei.github.io/"/>
-  <updated>2013-09-10T22:02:07+08:00</updated>
+  <updated>2013-09-15T10:09:10+08:00</updated>
   <id>http://tuchangwei.github.io/</id>
   <author>
     <name><![CDATA[Vale T.]]></name>
@@ -12,6 +12,61 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Some git commands]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/09/15/some-git-commands/"/>
+    <updated>2013-09-15T09:43:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/09/15/some-git-commands</id>
+    <content type="html"><![CDATA[
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> 
+</span><span class='line'><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">global</span> <span class="n">color</span><span class="p">.</span><span class="n">ui</span> <span class="n">true</span> <span class="err">#</span> <span class="n">support</span> <span class="n">color</span> <span class="n">global</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="mi">89428</span><span class="n">ab23e4bd3028c95b4b4064075b3901654a3</span> <span class="err">#</span> <span class="n">reset</span> <span class="n">HEAD</span><span class="p">,</span> <span class="n">index</span> <span class="n">and</span> <span class="n">working</span> <span class="n">tree</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">a</span> <span class="err">#</span> <span class="n">List</span> <span class="n">both</span> <span class="n">remote</span><span class="o">-</span><span class="n">tracking</span> <span class="n">branches</span> <span class="n">and</span> <span class="n">local</span> <span class="n">branches</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">branch</span> <span class="n">backups</span> <span class="err">#</span> <span class="n">new</span> <span class="n">branch</span> <span class="n">backups</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="nl">backups:</span><span class="n">backups</span> <span class="err">#</span> <span class="n">push</span> <span class="n">local</span> <span class="n">branch</span> <span class="n">to</span> <span class="n">remote</span> <span class="n">branch</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="o">:</span><span class="n">backups</span> <span class="err">#</span> <span class="n">delete</span> <span class="n">remote</span> <span class="n">branch</span> <span class="n">backups</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">d</span> <span class="n">backups</span> <span class="err">#</span> <span class="n">delete</span> <span class="n">local</span> <span class="n">branch</span> <span class="n">backups</span><span class="p">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="err">&#39;</span><span class="n">commit</span> <span class="n">data</span><span class="err">&#39;</span> <span class="err">#</span><span class="n">forgin</span> <span class="n">a</span> <span class="n">file</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">add</span> <span class="n">another_file</span> <span class="err">#</span> <span class="n">add</span> <span class="n">the</span> <span class="n">file</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">commit</span> <span class="o">--</span><span class="n">amend</span> <span class="err">#</span> <span class="n">commit</span> <span class="n">again</span><span class="p">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Add Sina Weibo Support for Greyshade theme of Octopress]]></title>
@@ -1255,23 +1310,6 @@ UserQueue = dispatch_queue_create("use for storing image to disk", nil);
 
 
 <p>那么，希望各位能在一个开放自由的互联网环境中学习，成长。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Crashlytics 调试利器]]></title>
-    <link href="http://tuchangwei.github.io/blog/2013/03/09/crashlytics-diao-shi-li-qi/"/>
-    <updated>2013-03-09T17:23:00+08:00</updated>
-    <id>http://tuchangwei.github.io/blog/2013/03/09/crashlytics-diao-shi-li-qi</id>
-    <content type="html"><![CDATA[<p>今天收到Crashlytics员工发来的邮件，说他收到很多我发的重复请求，如果已收到邀请，请及时回复。话说他这个注册还挺麻烦，先发一个邮件地址过去，要等一天的样子，然后会收到一个邮件说你是否通过验证，通过验证才能注册。不知道要等那么久，以为是邮箱的关系，就不断的请求请求。哈。不管怎样，总算可以注册了。</p>
-
-<p>说一下Crashlytics吧。</p>
-
-<p>了解的不多，大概是将它的sdk加入到工程中可以随时监控iOS的崩溃情况，甚至可以定位到代码行级别。这个比iOS的崩溃日志强多了。</p>
-
-<p>更多优点使用之后再和大家分享。</p>
-
-<p><a href="http://www.flickr.com/photos/tuchangwei/8540600027/" title="Flickr 上 涂 涂 的 DEE758DA-B46C-477A-B790-13C9B14DE43F"><img src="http://static.flickr.com/8106/8540600027_a9a942a4ba.jpg" width="500" height="325" alt="DEE758DA-B46C-477A-B790-13C9B14DE43F"></a></p>
 ]]></content>
   </entry>
   

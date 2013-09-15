@@ -9,7 +9,20 @@
 	<meta name="author" content="Vale T.">
 
 	
-	<meta name="description" content="Sep 10th, 2013 Octopress Add Sina Weibo Support for Greyshade Theme of Octopress I am not familiar with CSS and ROR until now. It is not easy for me &hellip;">
+	<meta name="description" content="Sep 15th, 2013 Git Some Git Commands 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14 git config --global color.ui true # support color global. git reset --hard &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -96,6 +109,87 @@
 			<div class="mid-col-container">
 				<div id="content" class="inner">
 <div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-15T09:43:00+08:00" data-updated="true" itemprop="datePublished">Sep 15<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/git/'>Git</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/09/15/some-git-commands/" itemprop="url">Some Git Commands</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> 
+</span><span class='line'><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">global</span> <span class="n">color</span><span class="p">.</span><span class="n">ui</span> <span class="n">true</span> <span class="err">#</span> <span class="n">support</span> <span class="n">color</span> <span class="n">global</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="mi">89428</span><span class="n">ab23e4bd3028c95b4b4064075b3901654a3</span> <span class="err">#</span> <span class="n">reset</span> <span class="n">HEAD</span><span class="p">,</span> <span class="n">index</span> <span class="n">and</span> <span class="n">working</span> <span class="n">tree</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">a</span> <span class="err">#</span> <span class="n">List</span> <span class="n">both</span> <span class="n">remote</span><span class="o">-</span><span class="n">tracking</span> <span class="n">branches</span> <span class="n">and</span> <span class="n">local</span> <span class="n">branches</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">branch</span> <span class="n">backups</span> <span class="err">#</span> <span class="n">new</span> <span class="n">branch</span> <span class="n">backups</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="nl">backups:</span><span class="n">backups</span> <span class="err">#</span> <span class="n">push</span> <span class="n">local</span> <span class="n">branch</span> <span class="n">to</span> <span class="n">remote</span> <span class="n">branch</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="o">:</span><span class="n">backups</span> <span class="err">#</span> <span class="n">delete</span> <span class="n">remote</span> <span class="n">branch</span> <span class="n">backups</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">d</span> <span class="n">backups</span> <span class="err">#</span> <span class="n">delete</span> <span class="n">local</span> <span class="n">branch</span> <span class="n">backups</span><span class="p">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="err">&#39;</span><span class="n">commit</span> <span class="n">data</span><span class="err">&#39;</span> <span class="err">#</span><span class="n">forgin</span> <span class="n">a</span> <span class="n">file</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">add</span> <span class="n">another_file</span> <span class="err">#</span> <span class="n">add</span> <span class="n">the</span> <span class="n">file</span><span class="p">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">commit</span> <span class="o">--</span><span class="n">amend</span> <span class="err">#</span> <span class="n">commit</span> <span class="n">again</span><span class="p">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+</article>
 
 
     <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
@@ -1142,101 +1236,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 <p>领会大师的意境，</p>
 
 <p>成为真正的大师。</p>
-
-		
-		
-	</div>
-
-</article>
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-31T21:46:00+08:00" data-updated="true" itemprop="datePublished">Mar 31<span>st</span>, 2013</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/arc/'>ARC</a>
-
-
-</div>
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2013/03/31/some-advice-about-using-arc/" itemprop="url">Some Advice About Using ARC</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<ol>
-<li>As long as there is a variable pointing to an object, that object stay in memory. When the pointer gets a new value or ceases to exist, the associated object is released.This is true for all variables:instance variables,synthesized properties, adn even local variables.</li>
-<li>&ldquo;weak&rdquo; pointer. Variables that are weak can still point to objects but they do not become owners.</li>
-<li>Please change the <code>Complier for C/C++/Object-c</code> option to <code>Apple LLVM compiler 3.0</code>.</li>
-<li>Please set <code>Other Waring Flags</code> option to <code>-Wall</code>.</li>
-<li>Please set <code>Run Static Analyzer</code> option to <code>Yes</code>.</li>
-<li>Please set <code>Objective-c Automatic Reference Counting</code> option to <code>Yes</code>.</li>
-<li>Some files needn&rsquo;t to convert to ARC support, use the <code>-fno-objc-arc</code> flag.</li>
-<li><p>You will get this error when your code does the following:</p>
-
-<pre><code> switch (X)
- {   
-     case Y:
-         NSString *s = ...;
-         break;
- }
-</code></pre>
-
-<p> you need do this:</p>
-
-<pre><code> switch (X)
- {   
-    case Y:
-    {
-        NSString *s = ...;
-        break;
-    }
- }
-</code></pre></li>
-<li><p>If instace variables are a part of the internals of your class and not something you want expose in its public interface. you can move the instace variables from interface section to implementation section. some codes from .h file as following:</p>
-
-<pre><code> #import &lt;UIKit/UIKit.h&gt;
-
- @interface MainViewController : UIViewController 
-   &lt;UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, 
-   NSXMLParserDelegate&gt;
-
- @property (nonatomic, retain) IBOutlet UITableView *tableView;
- @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
-
- @end
-</code></pre>
-
-<p> move the instace variables to implementation section as following:</p>
-
-<pre><code> @implementation MainViewController
- {
-     NSOperationQueue *queue;
-     NSMutableString *currentStringValue;
- }
-</code></pre></li>
-<li><p>Generally, dealloc method isn&rsquo;t need.The only reason for keeping a dealloc method around is when you need to free certain resources that do not fall under ARC’s umbrella. Examples of this are calling CFRelease() on Core Foundation objects, calling free() on memory that you allocated with malloc(), unregistering for notifications, invalidating a timer, and so on.</p></li>
-<li>Toll-Free Bridging</li>
-</ol>
-
-
-<p> Change ownership from Core Foundation to Objecttive-C, use CFBridgingRelease().</p>
-
-<p> Change ownership from Objective-C to Core Foundation, use CFBridgingRetain().</p>
-
-<p> Want to use one type temporarily as if it were another without owership change, use __bridge.</p>
 
 		
 		

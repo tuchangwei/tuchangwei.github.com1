@@ -9,7 +9,7 @@
 	<meta name="author" content="Vale T.">
 
 	
-	<meta name="description" content="Mar 30th, 2013 Utility Use Command Line to Pack Applications All right. It is time for me to write something. My wife has stayed in her hometown &hellip;">
+	<meta name="description" content="Mar 31st, 2013 ARC Some Advice About Using ARC As long as there is a variable pointing to an object, that object stay in memory. When the pointer &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -96,6 +96,101 @@
 			<div class="mid-col-container">
 				<div id="content" class="inner">
 <div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-31T21:46:00+08:00" data-updated="true" itemprop="datePublished">Mar 31<span>st</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/arc/'>ARC</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/31/some-advice-about-using-arc/" itemprop="url">Some Advice About Using ARC</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<ol>
+<li>As long as there is a variable pointing to an object, that object stay in memory. When the pointer gets a new value or ceases to exist, the associated object is released.This is true for all variables:instance variables,synthesized properties, adn even local variables.</li>
+<li>&ldquo;weak&rdquo; pointer. Variables that are weak can still point to objects but they do not become owners.</li>
+<li>Please change the <code>Complier for C/C++/Object-c</code> option to <code>Apple LLVM compiler 3.0</code>.</li>
+<li>Please set <code>Other Waring Flags</code> option to <code>-Wall</code>.</li>
+<li>Please set <code>Run Static Analyzer</code> option to <code>Yes</code>.</li>
+<li>Please set <code>Objective-c Automatic Reference Counting</code> option to <code>Yes</code>.</li>
+<li>Some files needn&rsquo;t to convert to ARC support, use the <code>-fno-objc-arc</code> flag.</li>
+<li><p>You will get this error when your code does the following:</p>
+
+<pre><code> switch (X)
+ {   
+     case Y:
+         NSString *s = ...;
+         break;
+ }
+</code></pre>
+
+<p> you need do this:</p>
+
+<pre><code> switch (X)
+ {   
+    case Y:
+    {
+        NSString *s = ...;
+        break;
+    }
+ }
+</code></pre></li>
+<li><p>If instace variables are a part of the internals of your class and not something you want expose in its public interface. you can move the instace variables from interface section to implementation section. some codes from .h file as following:</p>
+
+<pre><code> #import &lt;UIKit/UIKit.h&gt;
+
+ @interface MainViewController : UIViewController 
+   &lt;UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, 
+   NSXMLParserDelegate&gt;
+
+ @property (nonatomic, retain) IBOutlet UITableView *tableView;
+ @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
+
+ @end
+</code></pre>
+
+<p> move the instace variables to implementation section as following:</p>
+
+<pre><code> @implementation MainViewController
+ {
+     NSOperationQueue *queue;
+     NSMutableString *currentStringValue;
+ }
+</code></pre></li>
+<li><p>Generally, dealloc method isn&rsquo;t need.The only reason for keeping a dealloc method around is when you need to free certain resources that do not fall under ARC’s umbrella. Examples of this are calling CFRelease() on Core Foundation objects, calling free() on memory that you allocated with malloc(), unregistering for notifications, invalidating a timer, and so on.</p></li>
+<li>Toll-Free Bridging</li>
+</ol>
+
+
+<p> Change ownership from Core Foundation to Objecttive-C, use CFBridgingRelease().</p>
+
+<p> Change ownership from Objective-C to Core Foundation, use CFBridgingRetain().</p>
+
+<p> Want to use one type temporarily as if it were another without owership change, use __bridge.</p>
+
+		
+		
+	</div>
+
+</article>
 
 
     <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
@@ -682,49 +777,6 @@ UserQueue = dispatch_queue_create("use for storing image to disk", nil);
 
 
 <p>那么，希望各位能在一个开放自由的互联网环境中学习，成长。</p>
-
-		
-		
-	</div>
-
-</article>
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-09T17:23:00+08:00" data-updated="true" itemprop="datePublished">Mar 9<span>th</span>, 2013</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/debug/'>Debug</a>
-
-
-</div>
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2013/03/09/crashlytics-diao-shi-li-qi/" itemprop="url">Crashlytics 调试利器</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<p>今天收到Crashlytics员工发来的邮件，说他收到很多我发的重复请求，如果已收到邀请，请及时回复。话说他这个注册还挺麻烦，先发一个邮件地址过去，要等一天的样子，然后会收到一个邮件说你是否通过验证，通过验证才能注册。不知道要等那么久，以为是邮箱的关系，就不断的请求请求。哈。不管怎样，总算可以注册了。</p>
-
-<p>说一下Crashlytics吧。</p>
-
-<p>了解的不多，大概是将它的sdk加入到工程中可以随时监控iOS的崩溃情况，甚至可以定位到代码行级别。这个比iOS的崩溃日志强多了。</p>
-
-<p>更多优点使用之后再和大家分享。</p>
-
-<p><a href="http://www.flickr.com/photos/tuchangwei/8540600027/" title="Flickr 上 涂 涂 的 DEE758DA-B46C-477A-B790-13C9B14DE43F"><img src="http://static.flickr.com/8106/8540600027_a9a942a4ba.jpg" width="500" height="325" alt="DEE758DA-B46C-477A-B790-13C9B14DE43F"></a></p>
 
 		
 		
