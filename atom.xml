@@ -4,7 +4,7 @@
   <title><![CDATA[Vale's Blog]]></title>
   <link href="http://tuchangwei.github.io/atom.xml" rel="self"/>
   <link href="http://tuchangwei.github.io/"/>
-  <updated>2013-09-17T10:01:47+08:00</updated>
+  <updated>2013-09-17T10:22:51+08:00</updated>
   <id>http://tuchangwei.github.io/</id>
   <author>
     <name><![CDATA[Vale T.]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[All Activities]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/09/17/all-activities/"/>
+    <updated>2013-09-17T10:20:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/09/17/all-activities</id>
+    <content type="html"><![CDATA[<!-- configurable section -->
+
+
+<script type="text/javascript">
+if (typeof rtapi == 'undefined') var rtapi = {}; rtapi.kZlp = {};
+rtapi.kZlp.title = 'All Activities ';
+rtapi.kZlp.kind = 'sidebar';
+rtapi.kZlp.styling = { width:300, height:300 };
+</script>
+
+
+<!-- below is required -->
+
+
+<div id="rtdivkZlp"><p id="rtmsg">RescueTime: <a href="http://www.rescuetime.com/tour"> Project Time Tracking Software</a> 
+&amp; Team <a href="http://www.rescuetime.com">Time Management Software</a></p></div>
+
+
+<script src="https://www.rescuetime.com/anapi/js/embed/B63ZlpfCES1H5YXfRYazNNI4wzIoE_1CtV33kfXc" type="text/javascript"></script>
+
+
+<script type='text/javascript'>RTAPI.render_all(rtapi);</script>
+
+
+<!-- a little how-to 
+- Paste this into your web page where you want the chart.
+- You may have multiple embedded charts on the same page.
+- You can change the title, width and height by editing the named properties.
+- You can opt for the more verbose full chart by setting .kind to 'default'.
+- If you want your own css control, you can add 'rtapi.my_css = true;' before the render function.
+- css class names are: 
+-   rtdiv : the whole container
+-   rttitle : the title, rtchart : the chart, rtfeed : the footer
+-->
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to import one project to another one in Xcode.]]></title>
@@ -1341,76 +1384,6 @@ promptViewController.dismissPromptViewBlock = ^(SWDPromptViewController     *pro
 For the exact same reason, also enable the Run Static Analyzer option under the Build Options header, Xcode will now run the analyzer every time we build the app. That makes the builds a bit slower but for an app of this size that’s barely noticeable.</p>
 
 <p>如果大家有什么好的代码规范，欢迎补充。O(∩_∩)O~。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Blocks的申明调用与Queue当做锁的用法]]></title>
-    <link href="http://tuchangwei.github.io/blog/2013/03/10/blocksde-shen-ming-diao-yong-yu-queuedang-zuo-suo-de-yong-fa/"/>
-    <updated>2013-03-10T11:40:00+08:00</updated>
-    <id>http://tuchangwei.github.io/blog/2013/03/10/blocksde-shen-ming-diao-yong-yu-queuedang-zuo-suo-de-yong-fa</id>
-    <content type="html"><![CDATA[<h3>Blocks的申明与调用</h3>
-
-<p>话说Blocks在方法内使用还是挺方便的，之前都是把相同的代码封装成外部函数，然后在一个方法里需要的时候调用，这样挺麻烦的。使用Blocks之后，我们可以把相同代码在这个方法里封装起来，然后再在这个方法中需要的地方直接调用，逻辑清晰，操作也不会那么繁琐。</p>
-
-<p>上代码：</p>
-
-<pre><code>//在方法体内
-//block申明与初始化
- void(^removePicViewBlock)(int,int) = ^(int start,int stop){
-
-    while (start &lt;= stop)
-    {
-        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-        SWDPictureView *view = (SWDPictureView *)[self.scroller viewWithTag:start + 1];
-        view.imageView.image = nil;
-        view.imageView = nil;
-        view.delegate2 = nil;
-        [view removeFromSuperview];
-        start ++;
-        [pool drain];
-    }
-
-
-};
-if (page &lt; self.currentPage)
-{
-    //block的调用
-    removePicViewBlock(0,page);
-}
-else if(page &gt; self.currentPage)
-{
-    //block的调用
-    removePicViewBlock(page,[self.picList count]-1);
-}
-</code></pre>
-
-<h3>Queue作为锁的用法</h3>
-
-<p>说到多线程就必须要提到锁了，话说用锁也蛮麻烦，需要在初始化的时候申明一个锁，然后每个方法的开头加一把锁，结尾再把锁去掉。如果用queue就不必那么麻烦了。根据task在queue中FIFO的特性就可以防止多线程中资源被同时访问。</p>
-
-<p>上代码。</p>
-
-<pre><code>//初始化时初始化一个queue
-UserQueue = dispatch_queue_create("use for storing image to disk", nil);
-
-//多线程调用时，将任务放在queue中执行。此时queue充当锁的角色。
-//存储图片缓冲到硬盘
--(void)storeImage:(UIImage *)image key:(NSString *)key
-{
-    dispatch_async(UserQueue, ^{
-
-        NSFileManager *fileManager = [[NSFileManager alloc] init];
-        BOOL succ = [fileManager createFileAtPath:[self cachePathForKey:key] contents:UIImageJPEGRepresentation(image, (CGFloat)0.6) attributes:nil];
-        NSLog(@"store successfully!!! %d",succ);
-        [fileManager release];
-        fileManager = nil;
-    });
-
-}
-</code></pre>
-
-<p>好了，就这些。</p>
 ]]></content>
   </entry>
   
