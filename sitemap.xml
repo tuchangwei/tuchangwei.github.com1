@@ -133,8 +133,14 @@
         <lastmod>2013-09-15T10:08:57+08:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://tuchangwei.github.io/blog/2013/09/16/how-to-import-one-project-to-another-one-in-xcode/
+        </loc>
+        <lastmod>2013-09-17T09:52:21+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://tuchangwei.github.io/blog/archives/</loc>
-        <lastmod>2013-09-15T10:08:57+08:00</lastmod>
+        <lastmod>2013-09-17T09:52:21+08:00</lastmod>
     </url>
     <url>
         <loc>http://tuchangwei.github.io/blog/categories/</loc>
@@ -142,7 +148,7 @@
     </url>
     <url>
         <loc>http://tuchangwei.github.io/</loc>
-        <lastmod>2013-09-15T10:08:57+08:00</lastmod>
+        <lastmod>2013-09-17T09:52:21+08:00</lastmod>
     </url>
     <url>
         <loc>http://tuchangwei.github.io/robots.txt</loc>

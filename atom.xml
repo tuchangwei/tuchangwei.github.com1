@@ -4,7 +4,7 @@
   <title><![CDATA[Vale's Blog]]></title>
   <link href="http://tuchangwei.github.io/atom.xml" rel="self"/>
   <link href="http://tuchangwei.github.io/"/>
-  <updated>2013-09-15T10:09:10+08:00</updated>
+  <updated>2013-09-17T09:53:11+08:00</updated>
   <id>http://tuchangwei.github.io/</id>
   <author>
     <name><![CDATA[Vale T.]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to import one project to another one in Xcode.]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/09/16/how-to-import-one-project-to-another-one-in-xcode/"/>
+    <updated>2013-09-16T21:42:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/09/16/how-to-import-one-project-to-another-one-in-xcode</id>
+    <content type="html"><![CDATA[<p>Due to user needs, I have to import one project to another one as a sub-project. The final result should be like the following picture.</p>
+
+<p><img src="http://farm4.staticflickr.com/3803/9773083175_1c842daf5c.jpg"></p>
+
+<p>It is not easy to do this. We need some steps.</p>
+
+<ul>
+<li>Step 1, Add &ldquo;iPadBrakeTester.xcodeproj&rdquo; file to BusinessBaseApp project, note that don&rsquo;t choose the &ldquo;Copy items into…&rdquo; checkbox.</li>
+</ul>
+
+
+<p><img src="http://farm6.staticflickr.com/5458/9778845934_895459e499.jpg"></p>
+
+<ul>
+<li><p>Step 2, close the iPadBrakeTester project, because you have opened the project in BusinessBaseApp project. If you don&rsquo;t, you can just see the &ldquo;iPadBrakeTester.xcodeproj&rdquo; file and there is no triangle front of it, you will can&rsquo;t expand it.</p></li>
+<li><p>Step 3, generate static library. Choose &ldquo;iPadBrakeTester.xcodeproj&rdquo;,add Target. After generating static library, add .m, .h and .framework files to it.</p></li>
+</ul>
+
+
+<p><img src="http://farm4.staticflickr.com/3723/9779659835_52fc37d5b6.jpg"></p>
+
+<p><img src="http://farm8.staticflickr.com/7373/9779677046_8d37cdc81b.jpg"></p>
+
+<ul>
+<li>Step 4, generate Bundle, and change the relevant settings to iOS target.</li>
+</ul>
+
+
+<p><img src="http://farm6.staticflickr.com/5337/9779800343_4fac8e3d22.jpg"></p>
+
+<p><img src="http://farm8.staticflickr.com/7311/9779854353_1698045cb4.jpg"></p>
+
+<p>Then, add .xib and iamge files to it, like this:</p>
+
+<p><img src="http://farm4.staticflickr.com/3743/9779815366_2d5c974210.jpg"></p>
+
+<ul>
+<li>Step 5, Use static library and Bundle in BusinessBaseApp project.</li>
+</ul>
+
+
+<p><img src="http://farm8.staticflickr.com/7306/9779890825_2a8960475a.jpg"></p>
+
+<p>&ldquo;Target Dependencies&rdquo; means that it needs to rebuild the app object code if code in the dependency changes.</p>
+
+<p>In &ldquo;Link Binary With Libraries&rdquo;,beside adding the static library, you need add the .framework files which you import to the sub-project.</p>
+
+<ul>
+<li><p>Step 6, add &ldquo;-ObjC&rdquo; and &ldquo;-all_load&rdquo; flags to &ldquo;Other Linker Flags&rdquo;.</p>
+
+<p>  <strong>-ObjC</strong> because otherwise the linker does not properly load your classes.</p>
+
+<p>  <strong>-all_load</strong> if you have categories in the library, because otherwise those are not loaded.</p></li>
+<li><p>Step 7, add the sub-project path to &ldquo;User Header Search Paths&rdquo;, like this:</p></li>
+</ul>
+
+
+<p><img src="http://farm3.staticflickr.com/2843/9780044276_76d5679574.jpg"></p>
+
+<p>Some references:</p>
+
+<p><a href="http://www.cocoanetics.com/2011/12/sub-projects-in-xcode/">Sub-Projects in Xcode</a></p>
+
+<p><a href="http://www.galloway.me.uk/tutorials/ios-library-with-resources/">iOS Library With Resources</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Some git commands]]></title>
@@ -1291,25 +1363,6 @@ UserQueue = dispatch_queue_create("use for storing image to disk", nil);
 </code></pre>
 
 <p>好了，就这些。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[说说翻墙软件 GoAgentX]]></title>
-    <link href="http://tuchangwei.github.io/blog/2013/03/10/shuo-shuo-fan-qiang-ruan-jian-goagentx/"/>
-    <updated>2013-03-10T08:19:00+08:00</updated>
-    <id>http://tuchangwei.github.io/blog/2013/03/10/shuo-shuo-fan-qiang-ruan-jian-goagentx</id>
-    <content type="html"><![CDATA[<p>翻墙软件对程序猿来说应该都是必备的吧，最近翻墙又出现了问题，所以又捣鼓了一遍。现在记下来，免得以后出问题又要翻半天。</p>
-
-<ol>
-<li><a href="https://appengine.google.com/">申请Google Appengine</a>。这是需要注意的是：申请时填写的app id不要包含移动平台的字段，比如iphone或者android。不然进入facebook，twitter网站会默认进入移动版。</li>
-<li><a href="https://github.com/ohdarling/GoAgentX/downloads">下载GoAgentX</a>。最新的版本里已经包含了goagent，所以不再需要下载goagent。</li>
-<li>安装GoAgentX并配置。这里要注意的是：服务配置选项卡里面的服务密码要填写。其他设置中的“导入goagent根证书”要点击导入。一个是为了防止出现url/2的错误，一个是为了防止无法登陆https网站。</li>
-<li>chrome安装<a href="https://chrome.google.com/webstore/detail/proxy-switchysharp/dpplabbmogkhghncfbfdeeokoefdjegm">SwitchySharp插件</a>,并在插件中导入<a href="http://goagent.googlecode.com/files/SwitchyOptions.bak">http://goagent.googlecode.com/files/SwitchyOptions.bak</a></li>
-</ol>
-
-
-<p>那么，希望各位能在一个开放自由的互联网环境中学习，成长。</p>
 ]]></content>
   </entry>
   

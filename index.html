@@ -9,20 +9,7 @@
 	<meta name="author" content="Vale T.">
 
 	
-	<meta name="description" content="Sep 15th, 2013 Git Some Git Commands 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14 git config --global color.ui true # support color global. git reset --hard &hellip;">
+	<meta name="description" content="Sep 16th, 2013 Sub-Project How to Import One Project to Another One in Xcode. Due to user needs, I have to import one project to another one as a &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -109,6 +96,104 @@
 			<div class="mid-col-container">
 				<div id="content" class="inner">
 <div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-16T21:42:00+08:00" data-updated="true" itemprop="datePublished">Sep 16<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/sub-project/'>Sub-Project</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/09/16/how-to-import-one-project-to-another-one-in-xcode/" itemprop="url">How to Import One Project to Another One in Xcode.</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Due to user needs, I have to import one project to another one as a sub-project. The final result should be like the following picture.</p>
+
+<p><img src="http://farm4.staticflickr.com/3803/9773083175_1c842daf5c.jpg"></p>
+
+<p>It is not easy to do this. We need some steps.</p>
+
+<ul>
+<li>Step 1, Add &ldquo;iPadBrakeTester.xcodeproj&rdquo; file to BusinessBaseApp project, note that don&rsquo;t choose the &ldquo;Copy items into…&rdquo; checkbox.</li>
+</ul>
+
+
+<p><img src="http://farm6.staticflickr.com/5458/9778845934_895459e499.jpg"></p>
+
+<ul>
+<li><p>Step 2, close the iPadBrakeTester project, because you have opened the project in BusinessBaseApp project. If you don&rsquo;t, you can just see the &ldquo;iPadBrakeTester.xcodeproj&rdquo; file and there is no triangle front of it, you will can&rsquo;t expand it.</p></li>
+<li><p>Step 3, generate static library. Choose &ldquo;iPadBrakeTester.xcodeproj&rdquo;,add Target. After generating static library, add .m, .h and .framework files to it.</p></li>
+</ul>
+
+
+<p><img src="http://farm4.staticflickr.com/3723/9779659835_52fc37d5b6.jpg"></p>
+
+<p><img src="http://farm8.staticflickr.com/7373/9779677046_8d37cdc81b.jpg"></p>
+
+<ul>
+<li>Step 4, generate Bundle, and change the relevant settings to iOS target.</li>
+</ul>
+
+
+<p><img src="http://farm6.staticflickr.com/5337/9779800343_4fac8e3d22.jpg"></p>
+
+<p><img src="http://farm8.staticflickr.com/7311/9779854353_1698045cb4.jpg"></p>
+
+<p>Then, add .xib and iamge files to it, like this:</p>
+
+<p><img src="http://farm4.staticflickr.com/3743/9779815366_2d5c974210.jpg"></p>
+
+<ul>
+<li>Step 5, Use static library and Bundle in BusinessBaseApp project.</li>
+</ul>
+
+
+<p><img src="http://farm8.staticflickr.com/7306/9779890825_2a8960475a.jpg"></p>
+
+<p>&ldquo;Target Dependencies&rdquo; means that it needs to rebuild the app object code if code in the dependency changes.</p>
+
+<p>In &ldquo;Link Binary With Libraries&rdquo;,beside adding the static library, you need add the .framework files which you import to the sub-project.</p>
+
+<ul>
+<li><p>Step 6, add &ldquo;-ObjC&rdquo; and &ldquo;-all_load&rdquo; flags to &ldquo;Other Linker Flags&rdquo;.</p>
+
+<p>  <strong>-ObjC</strong> because otherwise the linker does not properly load your classes.</p>
+
+<p>  <strong>-all_load</strong> if you have categories in the library, because otherwise those are not loaded.</p></li>
+<li><p>Step 7, add the sub-project path to &ldquo;User Header Search Paths&rdquo;, like this:</p></li>
+</ul>
+
+
+<p><img src="http://farm3.staticflickr.com/2843/9780044276_76d5679574.jpg"></p>
+
+<p>Some references:</p>
+
+<p><a href="http://www.cocoanetics.com/2011/12/sub-projects-in-xcode/">Sub-Projects in Xcode</a></p>
+
+<p><a href="http://www.galloway.me.uk/tutorials/ios-library-with-resources/">iOS Library With Resources</a></p>
+
+		
+		
+	</div>
+
+</article>
 
 
     <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
@@ -1191,51 +1276,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 <p>after do that, we need add a view to playerViewController, and set the view is transparent  , we can add custom button on the view to control the move playing. The effect as below:</p>
 
 <p><a href="http://www.flickr.com/photos/tuchangwei/8624399482/" title="Flickr 上 涂 涂 的 Screenshot 2013.04.03 09.32.26"><img src="http://static.flickr.com/8111/8624399482_3801facaf7.jpg" width="500" height="375" alt="Screenshot 2013.04.03 09.32.26"></a></p>
-
-		
-		
-	</div>
-
-</article>
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-06T16:59:00+08:00" data-updated="true" itemprop="datePublished">Apr 6<span>th</span>, 2013</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/life/'>life</a>
-
-
-</div>
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2013/04/06/how-to-learn-to-cattle-men/" itemprop="url">How to Learn to Cattle Men</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<p>修行之道：</p>
-
-<p>关注大师的言行，</p>
-
-<p>跟随大师的举动，</p>
-
-<p>和大师一并修行，</p>
-
-<p>领会大师的意境，</p>
-
-<p>成为真正的大师。</p>
 
 		
 		

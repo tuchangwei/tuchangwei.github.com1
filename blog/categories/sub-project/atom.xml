@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Sub-Project | Vale's Blog]]></title>
+  <link href="http://tuchangwei.github.io/blog/categories/sub-project/atom.xml" rel="self"/>
+  <link href="http://tuchangwei.github.io/"/>
+  <updated>2013-09-17T09:53:11+08:00</updated>
+  <id>http://tuchangwei.github.io/</id>
+  <author>
+    <name><![CDATA[Vale T.]]></name>
+    <email><![CDATA[tcwliphone@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to import one project to another one in Xcode.]]></title>
+    <link href="http://tuchangwei.github.io/blog/2013/09/16/how-to-import-one-project-to-another-one-in-xcode/"/>
+    <updated>2013-09-16T21:42:00+08:00</updated>
+    <id>http://tuchangwei.github.io/blog/2013/09/16/how-to-import-one-project-to-another-one-in-xcode</id>
+    <content type="html"><![CDATA[<p>Due to user needs, I have to import one project to another one as a sub-project. The final result should be like the following picture.</p>
+
+<p><img class="<a" src="href="http://farm4.staticflickr.com/3803/9773083175_1c842daf5c.jpg">http://farm4.staticflickr.com/3803/9773083175_1c842daf5c.jpg</a>"></p>
+
+<p>It is not easy to do this. We need some steps.</p>
+
+<ul>
+<li>Step 1, Add &ldquo;iPadBrakeTester.xcodeproj&rdquo; file to BusinessBaseApp project, note that don&rsquo;t choose the &ldquo;Copy items into…&rdquo; checkbox.</li>
+</ul>
+
+
+<p><img class="<a" src="href="http://farm6.staticflickr.com/5458/9778845934_895459e499.jpg">http://farm6.staticflickr.com/5458/9778845934_895459e499.jpg</a>"></p>
+
+<ul>
+<li><p>Step 2, close the iPadBrakeTester project, because you have opened the project in BusinessBaseApp project. If you don&rsquo;t, you can just see the &ldquo;iPadBrakeTester.xcodeproj&rdquo; file and there is no triangle front of it, you will can&rsquo;t expand it.</p></li>
+<li><p>Step 3, generate static library. Choose &ldquo;iPadBrakeTester.xcodeproj&rdquo;,add Target. After generating static library, add .m, .h and .framework files to it.</p></li>
+</ul>
+
+
+<p><img class="<a" src="href="http://farm4.staticflickr.com/3723/9779659835_52fc37d5b6.jpg">http://farm4.staticflickr.com/3723/9779659835_52fc37d5b6.jpg</a>"></p>
+
+<p><img class="<a" src="href="http://farm8.staticflickr.com/7373/9779677046_8d37cdc81b.jpg">http://farm8.staticflickr.com/7373/9779677046_8d37cdc81b.jpg</a>"></p>
+
+<ul>
+<li>Step 4, generate Bundle, and change the relevant settings to iOS target.</li>
+</ul>
+
+
+<p><img class="<a" src="href="http://farm6.staticflickr.com/5337/9779800343_4fac8e3d22.jpg">http://farm6.staticflickr.com/5337/9779800343_4fac8e3d22.jpg</a>"></p>
+
+<p><img class="<a" src="href="http://farm8.staticflickr.com/7311/9779854353_1698045cb4.jpg">http://farm8.staticflickr.com/7311/9779854353_1698045cb4.jpg</a>"></p>
+
+<p>Then, add .xib and iamge files to it, like this:</p>
+
+<p><img class="<a" src="href="http://farm4.staticflickr.com/3743/9779815366_2d5c974210.jpg">http://farm4.staticflickr.com/3743/9779815366_2d5c974210.jpg</a>"></p>
+
+<ul>
+<li>Step 5, Use static library and Bundle in BusinessBaseApp project.</li>
+</ul>
+
+
+<p><img class="<a" src="href="http://farm8.staticflickr.com/7306/9779890825_2a8960475a.jpg">http://farm8.staticflickr.com/7306/9779890825_2a8960475a.jpg</a>"></p>
+
+<p>&ldquo;Target Dependencies&rdquo; means that it needs to rebuild the app object code if code in the dependency changes.</p>
+
+<p>In &ldquo;Link Binary With Libraries&rdquo;,beside adding the static library, you need add the .framework files which you import to the sub-project.</p>
+
+<ul>
+<li><p>Step 6, add &ldquo;-ObjC&rdquo; and &ldquo;-all_load&rdquo; flags to &ldquo;Other Linker Flags&rdquo;.</p>
+
+<p>  <strong>-ObjC</strong> because otherwise the linker does not properly load your classes.</p>
+
+<p>  <strong>-all_load</strong> if you have categories in the library, because otherwise those are not loaded.</p></li>
+<li><p>Step 7, add the sub-project path to &ldquo;User Header Search Paths&rdquo;, like this:</p></li>
+</ul>
+
+
+<p><img class="<a" src="href="http://farm3.staticflickr.com/2843/9780044276_76d5679574.jpg">http://farm3.staticflickr.com/2843/9780044276_76d5679574.jpg</a>"></p>
+
+<p>Some references:</p>
+
+<p><a href="http://www.cocoanetics.com/2011/12/sub-projects-in-xcode/">Sub-Projects in Xcode</a></p>
+
+<p><a href="http://www.galloway.me.uk/tutorials/ios-library-with-resources/">iOS Library With Resources</a></p>
+]]></content>
+  </entry>
+  
+</feed>
