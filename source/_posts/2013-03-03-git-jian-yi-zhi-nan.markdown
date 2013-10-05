@@ -125,6 +125,8 @@ categories: git
 #有用的图片
 <a href="http://www.flickr.com/photos/tuchangwei/9559884789/" title="Flickr 上 涂 涂 的 1352126739_7909"><img src="http://static.flickr.com/7301/9559884789_bee6b04c14.jpg" width="500" height="261" alt="1352126739_7909"></a>
 
+{%img http://static.flickr.com/7459/10095028305_05c95b40f5.jpg %}
+
 转自：<http://rogerdudler.github.com/git-guide/index.zh.html>
 
 	
