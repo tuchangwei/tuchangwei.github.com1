@@ -127,6 +127,14 @@ categories: git
 
 {%img http://static.flickr.com/7459/10095028305_05c95b40f5.jpg %}
 
+{%img http://static.flickr.com/3748/10132976156_f6e012e19a.jpg %}
+
+{%img http://static.flickr.com/3709/10132828744_25b14737a5.jpg %}
+
+{%img http://static.flickr.com/7318/10132829334_1733519af4.jpg %}
+
+{%img http://static.flickr.com/7418/10133033043_2db65319b2.jpg %}
+
 转自：<http://rogerdudler.github.com/git-guide/index.zh.html>
 
 	
