@@ -9,8 +9,7 @@
 	<meta name="author" content="Vale T.">
 
 	
-	<meta name="description" content="Sep 17th, 2013 Activities All Activities if (typeof rtapi == 'undefined') var rtapi = {}; rtapi.kZlp = {};
-rtapi.kZlp.title = 'All Activities '; &hellip;">
+	<meta name="description" content="Sep 16th, 2013 Sub-Project How to Import One Project to Another One in Xcode. Due to user needs, I have to import one project to another one as a &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -97,75 +96,6 @@ rtapi.kZlp.title = 'All Activities '; &hellip;">
 			<div class="mid-col-container">
 				<div id="content" class="inner">
 <div itemscope itemtype="http://schema.org/Blog">
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-17T10:20:00+08:00" data-updated="true" itemprop="datePublished">Sep 17<span>th</span>, 2013</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/activities/'>Activities</a>
-
-
-</div>
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2013/09/17/all-activities/" itemprop="url">All Activities</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<!-- configurable section -->
-
-
-<script type="text/javascript">
-if (typeof rtapi == 'undefined') var rtapi = {}; rtapi.kZlp = {};
-rtapi.kZlp.title = 'All Activities ';
-rtapi.kZlp.kind = 'sidebar';
-rtapi.kZlp.styling = { width:300, height:300 };
-</script>
-
-
-<!-- below is required -->
-
-
-<div id="rtdivkZlp"><p id="rtmsg">RescueTime: <a href="http://www.rescuetime.com/tour"> Project Time Tracking Software</a> 
-&amp; Team <a href="http://www.rescuetime.com">Time Management Software</a></p></div>
-
-
-<script src="https://www.rescuetime.com/anapi/js/embed/B63ZlpfCES1H5YXfRYazNNI4wzIoE_1CtV33kfXc" type="text/javascript"></script>
-
-
-<script type='text/javascript'>RTAPI.render_all(rtapi);</script>
-
-
-<!-- a little how-to 
-- Paste this into your web page where you want the chart.
-- You may have multiple embedded charts on the same page.
-- You can change the title, width and height by editing the named properties.
-- You can opt for the more verbose full chart by setting .kind to 'default'.
-- If you want your own css control, you can add 'rtapi.my_css = true;' before the render function.
-- css class names are: 
--   rtdiv : the whole container
--   rttitle : the title, rtchart : the chart, rtfeed : the footer
--->
-
-
-		
-		
-	</div>
-
-</article>
 
 
     <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
@@ -1349,6 +1279,58 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 </article>
 
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-06T17:18:00+08:00" data-updated="true" itemprop="datePublished">Apr 6<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/mpmovieplayerviewcontroller/'>MPMoviePlayerViewController</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/04/06/how-to-customize-the-ui-of-mpmovieplayerviewcontroller/" itemprop="url">How to Customize the UI of MPMoviePlayerViewController</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>As we all know, the user interface of MPMoviePlayerViewController is ugly. Sometimes, our customer needs a better UI, so let&rsquo;s do it.</p>
+
+<p>Some codes like this:</p>
+
+<pre><code>MPMoviePlayerViewController *player = [[MPMoviePlayerViewController alloc] init];
+    player.moviePlayer.contentURL = self.url;
+    //here, i set the controlStyle equal to MPMovieControlStyleNone, as a result, we only see the movie view, yet volume button, progress slider, play button as so on.
+    player.moviePlayer.controlStyle = MPMovieControlStyleNone;
+    player.moviePlayer.view.frame = self.playerViewController.view.frame;
+    //next, i create a UIViewController named playerViewController, and insert the moverPlay view to the view of playerViewController.
+    [self.playerViewController.view insertSubview:player.moviePlayer.view atIndex:0];
+    [player.moviePlayer play];
+    [self presentModalViewController:self.playerViewController animated:YES];
+</code></pre>
+
+<p>after do that, we need add a view to playerViewController, and set the view is transparent  , we can add custom button on the view to control the move playing. The effect as below:</p>
+
+<p><a href="http://www.flickr.com/photos/tuchangwei/8624399482/" title="Flickr 上 涂 涂 的 Screenshot 2013.04.03 09.32.26"><img src="http://static.flickr.com/8111/8624399482_3801facaf7.jpg" width="500" height="375" alt="Screenshot 2013.04.03 09.32.26"></a></p>
+
+		
+		
+	</div>
+
+</article>
+
 </div>
 <nav id="pagenavi">
     
@@ -1359,7 +1341,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 </nav></div>
 			</div>
 			<footer id="footer" class="inner"><p>
-  Copyright &copy; 2013 - Vale T. -
+  Copyright &copy; 2014 - Vale T. -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

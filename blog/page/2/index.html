@@ -9,7 +9,7 @@
 	<meta name="author" content="Vale T.">
 
 	
-	<meta name="description" content="Apr 6th, 2013 MPMoviePlayerViewController How to Customize the UI of MPMoviePlayerViewController As we all know, the user interface of &hellip;">
+	<meta name="description" content="Apr 6th, 2013 life How to Learn to Cattle Men 修行之道： 关注大师的言行， 跟随大师的举动， 和大师一并修行， 领会大师的意境， 成为真正的大师。 Mar 31st, 2013 ARC Some Advice About Using ARC As &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -96,58 +96,6 @@
 			<div class="mid-col-container">
 				<div id="content" class="inner">
 <div itemscope itemtype="http://schema.org/Blog">
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-06T17:18:00+08:00" data-updated="true" itemprop="datePublished">Apr 6<span>th</span>, 2013</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/mpmovieplayerviewcontroller/'>MPMoviePlayerViewController</a>
-
-
-</div>
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2013/04/06/how-to-customize-the-ui-of-mpmovieplayerviewcontroller/" itemprop="url">How to Customize the UI of MPMoviePlayerViewController</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<p>As we all know, the user interface of MPMoviePlayerViewController is ugly. Sometimes, our customer needs a better UI, so let&rsquo;s do it.</p>
-
-<p>Some codes like this:</p>
-
-<pre><code>MPMoviePlayerViewController *player = [[MPMoviePlayerViewController alloc] init];
-    player.moviePlayer.contentURL = self.url;
-    //here, i set the controlStyle equal to MPMovieControlStyleNone, as a result, we only see the movie view, yet volume button, progress slider, play button as so on.
-    player.moviePlayer.controlStyle = MPMovieControlStyleNone;
-    player.moviePlayer.view.frame = self.playerViewController.view.frame;
-    //next, i create a UIViewController named playerViewController, and insert the moverPlay view to the view of playerViewController.
-    [self.playerViewController.view insertSubview:player.moviePlayer.view atIndex:0];
-    [player.moviePlayer play];
-    [self presentModalViewController:self.playerViewController animated:YES];
-</code></pre>
-
-<p>after do that, we need add a view to playerViewController, and set the view is transparent  , we can add custom button on the view to control the move playing. The effect as below:</p>
-
-<p><a href="http://www.flickr.com/photos/tuchangwei/8624399482/" title="Flickr 上 涂 涂 的 Screenshot 2013.04.03 09.32.26"><img src="http://static.flickr.com/8111/8624399482_3801facaf7.jpg" width="500" height="375" alt="Screenshot 2013.04.03 09.32.26"></a></p>
-
-		
-		
-	</div>
-
-</article>
 
 
     <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
@@ -740,6 +688,102 @@ For the exact same reason, also enable the Run Static Analyzer option under the 
 
 </article>
 
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-10T11:40:00+08:00" data-updated="true" itemprop="datePublished">Mar 10<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gcd/'>GCD</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2013/03/10/blocksde-shen-ming-diao-yong-yu-queuedang-zuo-suo-de-yong-fa/" itemprop="url">Blocks的申明调用与Queue当做锁的用法</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<h3>Blocks的申明与调用</h3>
+
+<p>话说Blocks在方法内使用还是挺方便的，之前都是把相同的代码封装成外部函数，然后在一个方法里需要的时候调用，这样挺麻烦的。使用Blocks之后，我们可以把相同代码在这个方法里封装起来，然后再在这个方法中需要的地方直接调用，逻辑清晰，操作也不会那么繁琐。</p>
+
+<p>上代码：</p>
+
+<pre><code>//在方法体内
+//block申明与初始化
+ void(^removePicViewBlock)(int,int) = ^(int start,int stop){
+
+    while (start &lt;= stop)
+    {
+        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        SWDPictureView *view = (SWDPictureView *)[self.scroller viewWithTag:start + 1];
+        view.imageView.image = nil;
+        view.imageView = nil;
+        view.delegate2 = nil;
+        [view removeFromSuperview];
+        start ++;
+        [pool drain];
+    }
+
+
+};
+if (page &lt; self.currentPage)
+{
+    //block的调用
+    removePicViewBlock(0,page);
+}
+else if(page &gt; self.currentPage)
+{
+    //block的调用
+    removePicViewBlock(page,[self.picList count]-1);
+}
+</code></pre>
+
+<h3>Queue作为锁的用法</h3>
+
+<p>说到多线程就必须要提到锁了，话说用锁也蛮麻烦，需要在初始化的时候申明一个锁，然后每个方法的开头加一把锁，结尾再把锁去掉。如果用queue就不必那么麻烦了。根据task在queue中FIFO的特性就可以防止多线程中资源被同时访问。</p>
+
+<p>上代码。</p>
+
+<pre><code>//初始化时初始化一个queue
+UserQueue = dispatch_queue_create("use for storing image to disk", nil);
+
+//多线程调用时，将任务放在queue中执行。此时queue充当锁的角色。
+//存储图片缓冲到硬盘
+-(void)storeImage:(UIImage *)image key:(NSString *)key
+{
+    dispatch_async(UserQueue, ^{
+
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        BOOL succ = [fileManager createFileAtPath:[self cachePathForKey:key] contents:UIImageJPEGRepresentation(image, (CGFloat)0.6) attributes:nil];
+        NSLog(@"store successfully!!! %d",succ);
+        [fileManager release];
+        fileManager = nil;
+    });
+
+}
+</code></pre>
+
+<p>好了，就这些。</p>
+
+		
+		
+	</div>
+
+</article>
+
 </div>
 <nav id="pagenavi">
     
@@ -752,7 +796,7 @@ For the exact same reason, also enable the Run Static Analyzer option under the 
 </nav></div>
 			</div>
 			<footer id="footer" class="inner"><p>
-  Copyright &copy; 2013 - Vale T. -
+  Copyright &copy; 2014 - Vale T. -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
