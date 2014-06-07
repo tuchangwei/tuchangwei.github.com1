@@ -139,8 +139,14 @@
         <lastmod>2013-09-17T10:01:30+08:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://tuchangwei.github.io/blog/2014/06/07/one-tip-for-creating-uiscrollview-in-interface-builder-using-auto-layout/
+        </loc>
+        <lastmod>2014-06-07T14:37:26+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://tuchangwei.github.io/blog/archives/</loc>
-        <lastmod>2013-10-07T14:37:14+08:00</lastmod>
+        <lastmod>2014-06-07T14:37:26+08:00</lastmod>
     </url>
     <url>
         <loc>http://tuchangwei.github.io/blog/categories/</loc>
@@ -148,7 +154,7 @@
     </url>
     <url>
         <loc>http://tuchangwei.github.io/</loc>
-        <lastmod>2013-10-07T14:37:14+08:00</lastmod>
+        <lastmod>2014-06-07T14:37:26+08:00</lastmod>
     </url>
     <url>
         <loc>http://tuchangwei.github.io/robots.txt</loc>
