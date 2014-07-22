@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    
+    <temp value="-300,-6">
+        
+        <weather_condition value="clear sky,few clouds,scattered clouds,broken clouds,shower rain,rain,thunderstorm,snow,mist">
+	        <headline>
+	            If you’re thinking of going to work, there’s something wrong with you.
+	        </headline>
+	        <headline>
+	            This app should not be working at these temperatures. We’ll look into it.
+	        </headline>
+	        <headline>
+	            Unless you are a Polar Bear, you should not even think of going out.
+	        </headline>
+	        <headline>
+	            Stop looking at the weather app, it’s still freaking cold.
+	        </headline>
+	        <headline>
+	            Call your boss tell’em your eyeballs are frozen, what should you do?
+	        </headline>
+	        <headline>
+	            This app is made to shut down at these temperatures, save yourself.
+	        </headline>
+	        <headline>
+	            Go ahead and cross Antarctica off your bucket list.
+	        </headline>
+	        <headline>
+	            You might see some Penguins outside today.
+	        </headline>
+	        <headline>
+	            Today, you’ll wonder why hot water bottle jackets have not been invented.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="windy">
+	        <headline>
+	            Today you'll be doing wind resistance training, whether you like it or not.
+	        </headline>
+        </weather_condition>
+    </temp>
+    <temp value="-5,13">
+        <weather_condition value="clear sky,few clouds,scattered clouds">
+            <headline>
+                Time to wear the scarf that looks like a duvet, or vice versa.
+            </headline>
+            <headline>
+                Today, you’ll wonder why hot water bottle jackets have not been invented.
+            </headline>
+            <headline>
+                Keep your friends close, but your gloves closer.
+            </headline>
+        </weather_condition>
+        <weather_condition value="broken clouds,shower rain">
+             
+                <headline>
+                    Today, you’ll see shades of grey you did not know existed.
+                </headline>
+                <headline>
+                    If you love clouds, then today is your day.
+                </headline>
+             
+        </weather_condition>
+        <weather_condition value="rain,thunderstorm">
+            <headline>
+                Today, you’ll see shades of grey you did not know existed.
+            </headline>
+            <headline>
+                If you love clouds, then today is your day.
+            </headline>
+            <headline>
+                Today, only youtube videos will cheer you up.
+            </headline>
+            <headline>
+                Today you’ll be seeing fifty shades of grey (no, not what you’re thinking)
+            </headline>
+            <headline>
+                Forget the wallet, you'll need your umbrella.
+            </headline>
+            <headline>
+                Keep your friends close, your umbrella closer.
+            </headline>
+            <headline>
+                Today, wear your waterproof socks.
+            </headline>
+            <headline>
+                All you need is love and your umbrella.
+            </headline>
+        </weather_condition>
+        <weather_condition value="snow,mist">
+            <headline>
+                Time to wear the scarf that looks like a duvet, or vice versa.
+            </headline>
+            <headline>
+                Today, you’ll wonder why hot water bottle jackets have not been invented.
+            </headline>
+            <headline>
+                Keep your friends close, but your gloves closer.
+            </headline>
+        </weather_condition>
+        <weather_condition value="windy">
+            <headline>
+                Today you'll be doing wind resistance training, whether you like it or not.
+            </headline>
+        </weather_condition>
+    </temp>
+    <temp value="14,29">
+        <weather_condition value="clear sky,few clouds,scattered clouds">
+	        <headline>
+	            Even a bird shit won't ruin your day.
+	        </headline>
+	        <headline>
+	            Even two bird shits won’t ruin your day.
+	        </headline>
+	        <headline>
+	            Today, you’ll take up smoking just to go outside for a few mins.
+	        </headline>
+	        <headline>
+	            If Californians are spoiled with this climate, then spoiled sounds perfect.
+	        </headline>
+	        <headline>
+	            Today your guess is as good as ours.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="broken clouds,shower rain">
+            <headline>
+                Today, you’ll see shades of grey you did not know existed.
+            </headline>
+            <headline>
+                If you love clouds, then today is your day.
+            </headline>
+        </weather_condition>
+        <weather_condition value="rain,thunderstorm">
+             
+            <headline>
+                Today, you’ll see shades of grey you did not know existed.
+            </headline>
+            <headline>
+                If you love clouds, then today is your day.
+            </headline>
+            <headline>
+                Today, only youtube videos will cheer you up.
+            </headline>
+            <headline>
+                Today you’ll be seeing fifty shades of grey (no, not what you’re thinking)
+            </headline>
+            <headline>
+                Forget the wallet, you'll need your umbrella.
+            </headline>
+            <headline>
+                Keep your friends close, your umbrella closer.
+            </headline>
+            <headline>
+                Today, wear your waterproof socks.
+            </headline>
+            <headline>
+                All you need is love and your umbrella.
+            </headline>
+             
+        </weather_condition>
+        <weather_condition value="snow,mist">
+           
+            <headline>
+                Time to wear the scarf that looks like a duvet, or vice versa.
+            </headline>
+            <headline>
+                Today, you’ll wonder why hot water bottle jackets have not been invented.
+            </headline>
+            <headline>
+                Keep your friends close, but your gloves closer.
+            </headline>
+             
+        </weather_condition>
+        <weather_condition value="windy">
+             
+	        <headline>
+	            Today you'll be doing wind resistance training, whether you like it or not.
+	        </headline>
+         
+        </weather_condition>
+    </temp>
+    <temp value="30,33">
+        <weather_condition value="clear sky,few clouds,scattered clouds">
+            
+                <headline>
+                    Today even the fish are gonna sweat.
+                </headline>
+                <headline>
+                    You won’t need the gym to work up a sweat.
+                </headline>
+                <headline>
+                    Today, you’ll be sweating just walking to the gym
+                </headline>
+                <headline>
+                    If you like sweat patches, wear grey today.
+                </headline>
+                <headline>
+                    You think your job sucks, wait till you get outside.
+                </headline>
+                <headline>
+                    This app should not be working at these temperatures. We’ll look into it.
+                </headline>
+            
+        </weather_condition>
+        <weather_condition value="broken clouds,shower rain">
+        
+                <headline>
+                    Today, you’ll see shades of grey you did not know existed.
+                </headline>
+                <headline>
+                    If you love clouds, then today is your day.
+                </headline>
+            
+        </weather_condition>
+        <weather_condition value="rain,thunderstorm">
+            
+                <headline>
+                    Today, you’ll see shades of grey you did not know existed.
+                </headline>
+                <headline>
+                    If you love clouds, then today is your day.
+                </headline>
+                <headline>
+                    Today, only youtube videos will cheer you up.
+                </headline>
+                <headline>
+                    Today you’ll be seeing fifty shades of grey (no, not what you’re thinking)
+                </headline>
+                <headline>
+                    Forget the wallet, you'll need your umbrella.
+                </headline>
+                <headline>
+                    Keep your friends close, your umbrella closer.
+                </headline>
+                <headline>
+                    Today, wear your waterproof socks.
+                </headline>
+                <headline>
+                    All you need is love and your umbrella.
+                </headline>
+            
+        </weather_condition>
+        <weather_condition value="snow,mist">
+                <headline>
+                    Time to wear the scarf that looks like a duvet, or vice versa.
+                </headline>
+                <headline>
+                    Today, you’ll wonder why hot water bottle jackets have not been invented.
+                </headline>
+                <headline>
+                    Keep your friends close, but your gloves closer.
+                </headline>
+            
+        </weather_condition>
+        <weather_condition value="windy">
+                <headline>
+                    Today you'll be doing wind resistance training, whether you like it or not.
+                </headline>
+        </weather_condition>
+    </temp>
+    <temp value="34,300">
+        <weather_condition value="broken clouds,shower rain">
+            
+                <headline>
+                    Today, you’ll see shades of grey you did not know existed.
+                </headline>
+                <headline>
+                    If you love clouds, then today is your day.
+                </headline>
+            
+        </weather_condition>
+        
+    </temp>
+        
+</root>
