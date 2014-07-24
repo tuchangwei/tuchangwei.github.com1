@@ -258,14 +258,12 @@
         </weather_condition>
     </temp>
     <temp value="34,300">
-        <weather_condition value="broken clouds,shower rain">
+        <weather_condition value="clear sky,few clouds,scattered clouds,broken clouds,shower rain,rain,thunderstorm,snow,mist,mist">
             
                 <headline>
-                    Today, you’ll see shades of grey you did not know existed.
+                   Today even the fish are going to be sweeting.
                 </headline>
-                <headline>
-                    If you love clouds, then today is your day.
-                </headline>
+               
             
         </weather_condition>
         
