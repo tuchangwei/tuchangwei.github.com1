@@ -268,5 +268,10 @@
         </weather_condition>
         
     </temp>
-        
+    <day_color>
+		<color>0,182,173</color>
+		<color>224,130,165</color>
+		<color>248,107,79</color>
+		<color>147,101,184</color>
+	</day_color>   
 </root>
