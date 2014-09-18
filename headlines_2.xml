@@ -692,6 +692,170 @@
 
         </weather_condition>
     </temp>
+	
+    <temp_night value="-300,5">
+        <weather_condition value="Moderate or heavy snow in area with thunder,Patchy light snow in area with thunder,Moderate snow,Patchy moderate snow,Light snow,Patchy heavy snow,Patchy light snow,Heavy snow,Blowing snow,Patchy snow nearby,Blizzard">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Moderate or heavy sleet,Light sleet,Light sleet showers,Ice pellets,Patchy sleet nearby">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Light freezing rain,Moderate rain,Moderate rain at times,Light rain,Patchy light rain,Patchy rain nearby,Patchy freezing drizzle nearby,Light rain shower">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+	        
+        </weather_condition>
+        <weather_condition value="Heavy freezing drizzle,Moderate or Heavy freezing rain,Torrential rain shower,Moderate or heavy rain shower,Freezing drizzle,Light drizzle,Patchy light drizzle,Heavy rain at times,Heavy rain">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Freezing fog,Fog,Mist">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Thundery outbreaks in nearby">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Overcast,Cloudy,Partly Cloudy">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Clear/Sunny">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+    </temp_night>
+    <temp_night value="6,17">
+        
+        <weather_condition value="Moderate or heavy snow in area with thunder,Patchy light snow in area with thunder,Moderate snow,Patchy moderate snow,Light snow,Patchy heavy snow,Patchy light snow,Heavy snow,Blowing snow,Patchy snow nearby,Blizzard">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Light freezing rain,Moderate rain,Moderate rain at times,Light rain,Patchy light rain,Patchy rain nearby,Patchy freezing drizzle nearby,Light rain shower">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Heavy freezing drizzle,Moderate or Heavy freezing rain,Torrential rain shower,Moderate or heavy rain shower,Freezing drizzle,Light drizzle,Patchy light drizzle,Heavy rain at times,Heavy rain">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Freezing fog,Fog,Mist">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Thundery outbreaks in nearby">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Overcast,Cloudy,Partly Cloudy">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Clear/Sunny">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+	        
+        </weather_condition>
+    </temp_night>
+    <temp_night value="18,29">
+        
+        <weather_condition value="Moderate or heavy snow in area with thunder,Patchy light snow in area with thunder,Moderate snow,Patchy moderate snow,Light snow,Patchy heavy snow,Patchy light snow,Heavy snow,Blowing snow,Patchy snow nearby,Blizzard">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Light freezing rain,Moderate rain,Moderate rain at times,Light rain,Patchy light rain,Patchy rain nearby,Patchy freezing drizzle nearby,Light rain shower">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Heavy freezing drizzle,Moderate or Heavy freezing rain,Torrential rain shower,Moderate or heavy rain shower,Freezing drizzle,Light drizzle,Patchy light drizzle,Heavy rain at times,Heavy rain">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Freezing fog,Fog,Mist">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Thundery outbreaks in nearby">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Overcast,Cloudy,Partly Cloudy">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Clear/Sunny">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+    </temp_night>
+    <temp_night value="30,300">
+        
+        <weather_condition value="Moderate or heavy snow in area with thunder,Patchy light snow in area with thunder,Moderate snow,Patchy moderate snow,Light snow,Patchy heavy snow,Patchy light snow,Heavy snow,Blowing snow,Patchy snow nearby,Blizzard">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Moderate or heavy sleet,Light sleet,Light sleet showers,Ice pellets,Patchy sleet nearby">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Light freezing rain,Moderate rain,Moderate rain at times,Light rain,Patchy light rain,Patchy rain nearby,Patchy freezing drizzle nearby,Light rain shower">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Heavy freezing drizzle,Moderate or Heavy freezing rain,Torrential rain shower,Moderate or heavy rain shower,Freezing drizzle,Light drizzle,Patchy light drizzle,Heavy rain at times,Heavy rain">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Freezing fog,Fog,Mist">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Thundery outbreaks in nearby">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Overcast,Cloudy,Partly Cloudy">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+        <weather_condition value="Clear/Sunny">
+	        <headline>
+	           this is headline for night time.
+	        </headline>
+        </weather_condition>
+    </temp_night>
     <day_color>
 		<color>0,182,173</color>
 		<color>224,130,165</color>
